@@ -21,146 +21,130 @@ export interface CaseStudy {
 
 export const caseStudies: CaseStudy[] = [
     {
-        id: "3",
-        slug: "sampoerna-due-diligence",
-        title: "HM Sampoerna Technical Due Diligence",
-        company: "HM Sampoerna",
-        industry: "Enterprise / FMCG",
-        period: "2025",
-        summary: "Led technical product assessment for HM Sampoerna's system decoupling initiative, providing strategic recommendations for technology modernization.",
-        challenge: "HM Sampoerna required an independent technical assessment of their existing systems to inform a major decoupling initiative. The goal was to identify dependencies, risks, and opportunities for modernization.",
-        process: [
-            "Assembled and led cross-functional technical assessment team",
-            "Conducted comprehensive system architecture review",
-            "Interviewed key stakeholders across technology and business units",
-            "Mapped system dependencies and integration points",
-            "Developed risk assessment framework and mitigation strategies",
-        ],
-        solution: "Delivered comprehensive due diligence report with actionable recommendations for system decoupling, including phased migration strategy, risk mitigation plans, and technology stack recommendations.",
-        outcomes: [
-            {
-                metric: "Strategic",
-                description: "Comprehensive technical assessment",
-            },
-            {
-                metric: "Actionable",
-                description: "Clear decoupling roadmap",
-            },
-            {
-                metric: "Risk-Aware",
-                description: "Detailed mitigation strategies",
-            },
-        ],
-        tags: ["Enterprise", "Due Diligence", "System Architecture", "Consulting"],
-        featured: true,
-        publishDate: "2025-01-01"
-    },
-    {
         id: "1",
         slug: "ai-lms-platform",
         title: "AI-Powered Learning Management System",
         company: "Zero One Group (Client under NDA)",
-        industry: "Edtech / AI",
-        period: "2023",
-        summary: "Led the development of a comprehensive AI-enabled learning platform that personalizes educational content and automates assessment processes.",
-        challenge: "The client needed a modern LMS that could scale to thousands of users while providing personalized learning paths. Traditional LMS solutions lacked the intelligence to adapt to individual learner needs, resulting in poor completion rates and engagement.",
+        industry: "EdTech / GovTech / AI",
+        period: "2025",
+        summary:
+            "Delivered a web-based AI-powered Learning Management System for a public-sector client, enabling intelligent content exploration, AI-assisted assessments, and conversational learning experiences.",
+        challenge:
+            "The client required a modern LMS capable of supporting administrators, teachers, and students while leveraging AI to enhance learning engagement, automate assessment workflows, and enable conversational learning—capabilities not supported by traditional LMS platforms.",
         process: [
-            "Conducted extensive user research with educators and learners to map pain points",
-            "Defined product vision and roadmap aligned with business objectives",
-            "Collaborated with AI/ML team to design recommendation and assessment algorithms",
-            "Led agile sprints with cross-functional team of designers and engineers",
-            "Implemented data-driven iteration based on user feedback and analytics",
+            "Defined system roles and access models for administrators, teachers, and students",
+            "Designed end-to-end learning flows including content consumption, AI-assisted Q&A, and assessment",
+            "Integrated OpenAI-based capabilities for conversational learning, quiz generation, and automated scoring",
+            "Designed AI-driven audio learning experience enabling real-time, voice-based interaction",
+            "Collaborated with product, engineering, and stakeholder teams to deliver a secure, web-based application"
         ],
-        solution: "Developed an AI-powered LMS featuring personalized learning paths, automated content recommendations, intelligent assessment generation, and real-time progress analytics. The platform adapts to each learner's pace and style.",
+        solution:
+            "Built a web-based AI-powered LMS featuring chat-based learning, voice-enabled conversational study, AI-generated quizzes, and automated quiz scoring. The platform supports structured learning from existing materials while enabling interactive, AI-assisted study experiences for students and teachers.",
         outcomes: [
             {
-                metric: "AI-Powered",
-                description: "Personalized learning recommendations",
+                metric: "AI-Enabled Learning",
+                description: "Conversational chat and audio-based learning powered by AI"
             },
             {
-                metric: "Comprehensive",
-                description: "End-to-end learning experience",
+                metric: "Educator Productivity",
+                description: "AI-assisted quiz creation and automated assessment scoring"
             },
             {
-                metric: "Scalable",
-                description: "Architecture supporting thousands of concurrent users",
-            },
-        ],
-        tags: ["AI/ML", "Edtech", "Product Strategy", "User Research"],
-        featured: true,
-        publishDate: "2023-06-01"
-    },
-    {
-        id: "5",
-        slug: "apiary-academy-learning-platform",
-        title: "Personalized Learning Platform – Apiary Academy",
-        company: "Apiary Academy (Product Design Challenge)",
-        industry: "Competition",
-        period: "2023",
-        summary: "Designed a personalized learning platform concept focused on helping young professionals discover relevant courses, understand learning outcomes, and track acquired skills through curated recommendations and goal-based learning flows.",
-        challenge: "Learners struggled to find relevant learning materials, understand what skills they would gain after completing courses, and manage courses of interest. Existing platforms lacked clear skill visibility, personalization, and efficient discovery mechanisms.",
-        process: [
-            "Defined problem statements using HMW questions around skill visibility, personalization, discovery, and saving courses",
-            "Conducted competitor analysis of platforms such as Coursera, Udemy, and LinkedIn Learning to identify feature gaps",
-            "Developed a primary user persona (young professional aged 21–25) with clear goals, behaviors, and constraints",
-            "Mapped an end-to-end user journey from discovery to learning completion to identify friction points",
-            "Designed proposed user flows covering onboarding, exploration, purchase, and learning stages",
-            "Created wireframes, high-fidelity UI, and interactive prototypes, followed by usability validation with respondents"
-        ],
-        solution: "Proposed a personalized learning experience where users define career goals during onboarding, receive curated course recommendations, clearly see expected skill outcomes on course detail pages, save courses to favorites, and track ongoing learning progress within a streamlined home experience.",
-        outcomes: [
-            {
-                metric: "8.5 / 10",
-                description: "Average UI design rating from usability testing respondents"
-            },
-            {
-                metric: "8.9 / 10",
-                description: "Average UX flow rating from usability testing respondents"
-            },
-            {
-                metric: "100%",
-                description: "Respondents understood course outcomes and found curated courses helpful"
+                metric: "Role-Based Platform",
+                description: "Clear separation of admin, teacher, and student capabilities"
             }
         ],
-        tags: ["Product Design", "UX Research", "Edtech", "Learning Platform", "UI/UX"],
+        tags: [
+            "AI",
+            "Edtech - LMS",
+            "Web Application"
+        ],
         featured: true,
-        articleUrl: "https://www.linkedin.com/feed/update/urn:li:activity:7043913213268160514/",
-        publishDate: "2023-03-01"
+        publishDate: "2025-06-01"
     },
     {
         id: "2",
         slug: "transfez-mobile-app",
-        title: "Transfez Mobile App",
+        title: "Transfez Consumer Remittance Platform",
         company: "Transfez",
-        industry: "Fintech / Payments",
-        period: "2023",
-        summary: "Spearheaded the mobile app development for Indonesia's leading cross-border payment platform, driving significant growth in user acquisition and transaction volume.",
-        challenge: "Transfez needed to expand beyond web to mobile to capture a larger market share. The challenge was creating a seamless, trustworthy experience for international money transfers while navigating complex regulatory requirements.",
+        industry: "Fintech / Cross-Border Payments",
+        period: "2024",
+        summary:
+            "Contributed as an Associate Product Manager to the development and growth of Transfez’s consumer remittance platform, focusing on onboarding, verification, transaction experience, and growth initiatives across mobile and web.",
+        challenge:
+            "Transfez aimed to scale its consumer remittance product while improving user verification rates, transaction completion, and trust in cross-border payments. The platform needed to balance growth experimentation with strict compliance and regulatory requirements.",
         process: [
-            "Analyzed competitor landscape and identified differentiation opportunities",
-            "Led user research to understand pain points in cross-border payments",
-            "Defined mobile-first product strategy and feature prioritization",
-            "Worked closely with compliance team to ensure regulatory adherence",
-            "Orchestrated phased rollout with continuous user feedback loops",
+            "Worked with cross-functional teams to deliver consumer-side remittance features across onboarding, transaction flow, and growth initiatives",
+            "Led day-to-day product execution with a squad of frontend, backend, QA, and UI/UX team members",
+            "Revamped the user verification (KYC) flow to reduce friction while maintaining compliance standards",
+            "Designed and executed A/B tests to optimize the user journey from registration to transaction completion",
+            "Conducted competitive analysis and user research to inform feature prioritization and product differentiation",
+            "Produced and maintained product documentation including PRDs, user stories, and product roadmaps"
         ],
-        solution: "Launched a feature-rich mobile app with streamlined onboarding, real-time exchange rates, transparent fee structure, and robust KYC processes. Focused on building trust through clear communication and reliable service.",
+        solution:
+            "Delivered continuous improvements to the Transfez consumer remittance experience, including a redesigned verification flow, voucher engine for growth campaigns, and optimizations across onboarding and transaction journeys to support scalable user and transaction growth.",
         outcomes: [
             {
-                metric: "Rp 2 Trillion+",
-                description: "Total transfer volume processed",
+                metric: "Revenue & Transaction Impact",
+                description: "Supported the platform in generating over 2 trillion rupiah in GTV across more than 114,000 remittance transactions"
             },
             {
-                metric: "55% Increase",
-                description: "Growth in verified user base",
+                metric: "User Growth & Conversion",
+                description: "Improved verification flow contributed to significant growth in verified users and new paying users within months"
             },
             {
-                metric: "Mobile-First",
-                description: "Native experience for iOS and Android",
-            },
+                metric: "Growth Enablement",
+                description: "Implemented a voucher engine and referral-related initiatives to drive transaction adoption and repeat usage"
+            }
         ],
-        tags: ["Fintech", "Mobile", "User Growth", "Compliance"],
+        tags: [
+            "Fintech",
+            "Product Management",
+            "Mobile Application",
+            "Growth Experimentation",
+            "KYC & Compliance",
+            "Cross-Border Payments"
+        ],
         featured: true,
-        publishDate: "2022-01-01"
+        publishDate: "2024-09-01"
+    },
+    {
+        id: "3",
+        slug: "sampoerna-myhero-decoupling",
+        title: "HM Sampoerna – My Hero Decoupling",
+        company: "HM Sampoerna",
+        industry: "Enterprise / FMCG",
+        period: "2025",
+        summary:
+            "Contributed to a technical due diligence and pre-decoupling initiative for HM Sampoerna, focusing on separating the 'My Hero' module from the AYO ecosystem through system analysis and C4 architectural modeling.",
+        challenge:
+            "HM Sampoerna planned to decouple the 'My Hero' module from their AYO environment to improve modularity and long-term scalability. The complexity stemmed from tightly coupled components across two backoffice systems (AYO Backoffice and My Hero Backoffice) and a shared iPad application used in the field.",
+        process: [
+            "Conducted joint technical assessment with Nusantara Beta Studio (NBS) as part of a tag-team consulting engagement with Zero One Group",
+            "Analyzed existing system landscape including AYO Backoffice, My Hero Backoffice, and iPad application",
+            "Identified functional boundaries, shared services, and data dependencies across systems",
+            "Produced C4 diagrams (Context, Container, and Component levels) to visualize current-state architecture",
+            "Performed pre-analysis of decoupling scenarios, risks, and architectural constraints"
+        ],
+        solution:
+            "Delivered structured specifications, current-state C4 diagrams, and a pre-analysis outlining feasible decoupling strategies for the My Hero module, providing HM Sampoerna with a clearer architectural baseline prior to execution.",
+        outcomes: [
+            {
+                metric: "Architecture Clarity",
+                description: "Documented existing system interactions and dependencies using C4 modeling"
+            },
+            {
+                metric: "Readiness",
+                description: "Established a technical baseline to support future decoupling decisions"
+            },
+            {
+                metric: "Collaboration",
+                description: "Effective joint consulting delivery between Zero One Group and NBS"
+            }
+        ],
+        tags: ["Enterprise Architecture", "Decoupling", "Consulting"],
+        featured: true,
+        publishDate: "2025-12-01"
     },
     {
         id: "4",
@@ -197,6 +181,123 @@ export const caseStudies: CaseStudy[] = [
         featured: true,
         articleUrl: "https://dhemalamf.medium.com/product-journey-revamping-dana-indonesia-4ae1ba26428c",
         publishDate: "2021-12-01"
+    },
+    {
+        id: "5",
+        slug: "apiary-academy-learning-platform",
+        title: "Apiary Product Design Challenge – Personalized Learning Platform Concept",
+        company: "Apiary Academy",
+        industry: "EdTech / Product Design",
+        period: "2023",
+        summary:
+            "Designed a personalized learning platform concept for Apiary Academy focused on helping young professionals discover relevant courses, clearly understand skill outcomes, and manage learning progress through goal-driven curation.",
+        challenge:
+            "Learners faced difficulty understanding what skills they would gain after completing courses, discovering materials aligned with their interests, and organizing courses they wanted to take. Existing learning platforms emphasized content volume over clarity, personalization, and long-term learning direction.",
+        process: [
+            "Translated problem exploration into structured How Might We (HMW) questions around skill visibility, personalization, discovery, and course saving",
+            "Conducted competitor analysis across major learning platforms to identify gaps in personalization and outcome transparency",
+            "Defined a primary user persona representing young professionals with career-oriented learning goals and limited time availability",
+            "Mapped an end-to-end user journey to uncover emotional states, friction points, and unmet needs across the learning lifecycle",
+            "Designed a complete user flow from onboarding to learning completion, emphasizing goal-setting and curated discovery",
+            "Produced wireframes, high-fidelity UI designs, and an interactive prototype, followed by qualitative usability validation"
+        ],
+        solution:
+            "Proposed a goal-based personalized learning experience where users define their current or desired career during onboarding. The platform curates relevant courses on the home page, clearly communicates expected skill outcomes on course detail pages, allows users to save courses for later, and supports ongoing learning through progress visibility and offline access.",
+        outcomes: [
+            {
+                metric: "Winning the Most Liked Design",
+                description: "The design concept received the strongest positive reception among challenge submissions for its clarity and relevance"
+            },
+            {
+                metric: "Clarity of Learning Outcomes",
+                description: "Users were able to easily understand what skills they would gain before committing to a course"
+            },
+            {
+                metric: "Improved Content Relevance",
+                description: "Curated course recommendations helped users quickly find learning materials aligned with their goals"
+            }
+        ],
+        tags: [
+            "Product Design",
+            "UX Research",
+            "User Journey Mapping",
+            "EdTech",
+            "Personalized Learning",
+            "UI/UX"
+        ],
+        featured: true,
+        articleUrl: "https://www.linkedin.com/feed/update/urn:li:activity:7043913213268160514/",
+        publishDate: "2023-03-01"
+    },
+    {
+        id: "6",
+        slug: "ai-sales-forecasting-dashboard",
+        title: "AI-Powered Sales Forecasting Dashboard",
+        company: "Zero One Group (Client under NDA)",
+        industry: "Web Dashboard / AI Analytics",
+        period: "2025",
+        summary: "Built an AI-powered dashboard enabling business users to forecast sales and explore performance insights through a conversational analytics interface.",
+        challenge: "The client needed a way to move beyond static reporting and predefined dashboards. Business users struggled to manually analyze complex sales data to identify top performers or forecast trends, leading to delayed decision-making and missed opportunities.",
+        process: [
+            "Analyzed business requirements for sales forecasting and performance tracking",
+            "Designed a conversational UI (ChatGPT-like) to enable natural language data querying",
+            "Developed an AI engine to translate natural language questions into SQL/data queries",
+            "Implemented dynamic charting capabilities that adapt visualizations based on the data context",
+            "Integrated predictive modeling for future sales forecasting"
+        ],
+        solution: "Delivered a Generative AI-powered dashboard where users can ask broad questions about their business conditions (e.g., 'Top 5 outlets'). The system provides instant answers, generates relevant interactive charts, and offers AI-driven recommendations for improving sales performance.",
+        outcomes: [
+            {
+                metric: "Conversational Analytics",
+                description: "Democratized data access with natural language querying"
+            },
+            {
+                metric: "Predictive Insights",
+                description: "Automated sales forecasting and trend analysis"
+            },
+            {
+                metric: "Dynamic Visualization",
+                description: "Charts generated on-the-fly based on user intent"
+            }
+        ],
+        tags: ["AI/ML", "Dashboard", "Data Visualization", "Conversational UI", "B2B"],
+        featured: true,
+        publishDate: "2025-04-01"
+    },
+    {
+        id: "7",
+        slug: "ai-talent-matching-dashboard",
+        title: "AI-Powered Talent Matching Dashboard",
+        company: "Zero One Group (Client under NDA)",
+        industry: "Web Application / AI Matching System",
+        period: "2025",
+        summary: "Developed an AI-powered dashboard enabling organizations to optimize internal talent mobility by matching employees to open roles through a conversational interface.",
+        challenge: "Organizations struggled to efficiently identify suitable internal candidates for open roles, leading to unnecessary external hiring and poor talent utilization. Existing systems lacked the intelligence to match qualitative skills and experience with job requirements.",
+        process: [
+            "Analyzed requirements for internal talent mobility and skill matching",
+            "Designed bidirectional matching logic for Job-to-Employee and Employee-to-Job scenarios",
+            "Developed a conversational AI interface for querying talent pools using natural language",
+            "Implemented insight-driven recommendations to explain match quality",
+            "Built a dashboard for visualizing talent alignment and workforce planning"
+        ],
+        solution: "Delivered an AI-driven talent matching platform where stakeholders can use natural language to find the best internal candidates. The system provides bidirectional recommendations, explains match reasoning, and facilitates data-driven workforce planning.",
+        outcomes: [
+            {
+                metric: "Internal Mobility",
+                description: "Optimized utilization of existing talent pools"
+            },
+            {
+                metric: "Hiring Efficiency",
+                description: "Reduced reliance on external recruitment for fillable roles"
+            },
+            {
+                metric: "AI Precision",
+                description: "Accelerated decision-making with explainable AI recommendations"
+            }
+        ],
+        tags: ["AI/ML", "HR Tech", "Talent Matching", "Conversational UI", "B2B"],
+        featured: true,
+        publishDate: "2025-06-01"
     }
 ]
 
