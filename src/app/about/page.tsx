@@ -24,11 +24,10 @@ export default function AboutPage() {
                             Building products that{' '}
                             <span className="gradient-text">matter</span>
                         </h1>
-                        <div className="prose prose-lg prose-invert">
-                            <p className="text-neutral-300 text-lg leading-relaxed mb-6">
-                                {profile.bio}
-                            </p>
-                        </div>
+                        <p className="text-neutral-400 text-lg leading-relaxed whitespace-pre-line">
+                            Product Manager with <span className="text-white font-bold">4+ years of experience</span> across <span className="text-white font-medium">fintech, edtech, government/BUMN</span>, and <span className="text-white font-medium">AI-enabled web platforms</span>.
+                            I thrive in both <span className="text-white font-medium">corporate, startup and consulting environments</span>, leading cross-functional teams to deliver products that drive <span className="text-white font-medium">real business outcomes</span>.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -77,7 +76,7 @@ export default function AboutPage() {
                         description="My path across diverse industries, building products that create value."
                     />
 
-                    <div className="max-w-4xl">
+                    <div className="space-y-6">
                         {experiences.map((exp, index) => (
                             <TimelineExperienceCard
                                 key={exp.id}
@@ -105,7 +104,7 @@ export default function AboutPage() {
                         description="Capabilities I've developed across product management disciplines."
                     />
 
-                    <div className="max-w-4xl">
+                    <div>
                         <SkillsGrid />
                     </div>
                 </div>
