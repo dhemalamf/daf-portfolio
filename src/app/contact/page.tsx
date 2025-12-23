@@ -88,10 +88,10 @@ export default function ContactPage() {
                 </div>
 
                 {/* Availability Note - Centered */}
-                <div className="max-w-md mx-auto p-6 bg-accent-500/10 border border-accent-500/20 rounded-2xl text-center">
+                <div className="max-w-md mx-auto p-6 bg-green-500/10 border border-green-500/20 rounded-2xl text-center">
                     <div className="flex items-center justify-center gap-2 mb-3">
-                        <span className="w-3 h-3 bg-accent-400 rounded-full animate-pulse" />
-                        <span className="text-accent-400 font-semibold">Open to Opportunities</span>
+                        <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-green-400 font-semibold">Open to collaboration</span>
                     </div>
                     <p className="text-neutral-400">
                         Currently exploring new product management roles and consulting opportunities.

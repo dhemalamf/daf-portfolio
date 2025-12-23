@@ -1,16 +1,17 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 const navItems = [
     { label: 'Home', href: '/' },
     { label: 'About', href: '/about' },
     { label: 'Work', href: '/work' },
-    { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navigation() {
+    const pathname = usePathname()
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -25,8 +26,8 @@ export default function Navigation() {
     return (
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                    ? 'bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-800/50'
-                    : 'bg-transparent'
+                ? 'bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-800/50'
+                : 'bg-transparent'
                 }`}
         >
             <div className="section-container">
@@ -41,15 +42,24 @@ export default function Navigation() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center gap-8">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className="text-sm font-medium text-neutral-300 hover:text-white animated-underline transition-colors"
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
+                        {navItems.map((item) => {
+                            const isActive = item.href === '/'
+                                ? pathname === '/'
+                                : pathname.startsWith(item.href)
+
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={`text-sm font-medium transition-colors animated-underline ${isActive
+                                        ? 'text-white'
+                                        : 'text-neutral-300 hover:text-white'
+                                        }`}
+                                >
+                                    {item.label}
+                                </Link>
+                            )
+                        })}
                         <Link
                             href="/contact"
                             className="px-4 py-2 bg-accent-500 hover:bg-accent-600 text-white text-sm font-medium rounded-lg transition-colors"
@@ -93,16 +103,25 @@ export default function Navigation() {
                 {isMobileMenuOpen && (
                     <div className="md:hidden py-4 border-t border-neutral-800/50">
                         <div className="flex flex-col gap-4">
-                            {navItems.map((item) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="text-neutral-300 hover:text-white transition-colors"
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
+                            {navItems.map((item) => {
+                                const isActive = item.href === '/'
+                                    ? pathname === '/'
+                                    : pathname.startsWith(item.href)
+
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={`transition-colors ${isActive
+                                            ? 'text-white font-semibold'
+                                            : 'text-neutral-300 hover:text-white'
+                                            }`}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                )
+                            })}
                             <Link
                                 href="/contact"
                                 onClick={() => setIsMobileMenuOpen(false)}

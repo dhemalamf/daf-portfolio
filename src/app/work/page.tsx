@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import SectionHeading from '@/components/SectionHeading'
 import WorkGrid from '@/components/WorkGrid'
 import { caseStudies } from '@/data/caseStudies'
+import { profile } from '@/data/profile'
 
 export const metadata: Metadata = {
     title: "Work | Dhema'alam Fajrianto",
@@ -33,7 +34,7 @@ export default function WorkPage() {
                 {/* NDA Note & Call to Action */}
                 <div className="mt-20 border border-dashed border-neutral-800 rounded-2xl p-8 md:p-12 text-center bg-neutral-900/30">
                     <div className="inline-flex items-center justify-center w-12 h-12 bg-accent-500/10 rounded-xl mb-6 text-2xl">
-                        <span className="text-xl"> 💡 </span>
+                        💡
                     </div>
                     <h3 className="text-xl font-bold mb-3 text-white">Looking for deeper insights?</h3>
                     <p className="text-neutral-400 max-w-xl mx-auto leading-relaxed mb-8">
@@ -41,7 +42,9 @@ export default function WorkPage() {
                         However, I’m always open to walking through my process and methodology in a private conversation.
                     </p>
                     <a
-                        href="/contact"
+                        href={profile.whatsapp}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center justify-center px-6 py-3 bg-white text-neutral-900 font-semibold rounded-lg hover:bg-neutral-200 transition-colors"
                     >
                         Let&apos;s Schedule a Chat

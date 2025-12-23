@@ -12,10 +12,10 @@ export default function Hero() {
             <div className="section-container relative z-10">
                 <div className="max-w-4xl">
                     {/* Eyebrow */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-500/10 border border-accent-500/20 rounded-full mb-6 animate-fade-in">
-                        <span className="w-2 h-2 bg-accent-400 rounded-full animate-pulse-subtle" />
-                        <span className="text-accent-400 text-sm font-medium">
-                            Open to new opportunities
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6 animate-fade-in">
+                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse-subtle" />
+                        <span className="text-green-400 text-sm font-medium">
+                            Open to collaboration
                         </span>
                     </div>
 
@@ -29,12 +29,7 @@ export default function Hero() {
 
                     {/* Tagline */}
                     <p className="text-lg md:text-xl text-neutral-400 max-w-2xl mb-8 animate-slide-up stagger-1">
-                        Building products with measurable business and user impact across{' '}
-                        <span className="text-white">fintech</span>,{' '}
-                        <span className="text-white">edtech</span>,{' '}
-                        <span className="text-white">government</span>, and{' '}
-                        <span className="text-white">AI-enabled platforms</span>.{' '}
-                        <span className="font-bold text-white">Backed by 4+ years</span> of experience leading cross-functional teams from discovery to delivery.
+                        With <span className="text-white font-bold">4+ years of experience</span>, I’ve helped organizations turn <span className="text-white font-medium">complex challenges into impactful digital products</span> and scale products across <span className="text-white font-medium">fintech</span>, <span className="text-white font-medium">public sector</span>, and <span className="text-white font-medium">edtech</span>, using <span className="text-white font-medium">AI-powered systems</span>.
                     </p>
 
                     {/* CTA Buttons */}
@@ -85,7 +80,7 @@ export default function Hero() {
             {/* Scroll indicator */}
             <a
                 href="#featured-work"
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex items-center gap-2 animate-float cursor-pointer hover:text-white transition-colors group"
+                className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center items-center gap-2 animate-float cursor-pointer hover:text-white transition-colors group"
             >
                 <span className="text-sm font-medium text-accent-400 tracking-wide relative group-hover:text-accent-300 transition-colors">
                     <span className="relative z-10">Explore My Work</span>
