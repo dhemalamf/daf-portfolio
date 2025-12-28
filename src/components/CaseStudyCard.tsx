@@ -20,7 +20,7 @@ export default function CaseStudyCard({ caseStudy, featured = false }: CaseStudy
                         <span className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full">
                             {caseStudy.industry}
                         </span>
-                        <span className="px-3 py-1 bg-neutral-800 text-neutral-400 text-xs font-medium rounded-full">
+                        <span className="px-3 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-full">
                             {caseStudy.period}
                         </span>
                     </div>
@@ -31,10 +31,10 @@ export default function CaseStudyCard({ caseStudy, featured = false }: CaseStudy
                     </h3>
 
                     {/* Company */}
-                    <p className="text-neutral-500 text-sm mb-4">{caseStudy.company}</p>
+                    <p className="text-muted-foreground text-sm mb-4">{caseStudy.company}</p>
 
                     {/* Summary */}
-                    <p className="text-neutral-400 leading-relaxed mb-6 line-clamp-3">
+                    <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3">
                         {caseStudy.summary}
                     </p>
 
@@ -43,7 +43,7 @@ export default function CaseStudyCard({ caseStudy, featured = false }: CaseStudy
                         {caseStudy.outcomes.slice(0, 3).map((outcome, index) => (
                             <div key={index} className="flex items-center gap-2">
                                 <div className="w-2 h-2 bg-accent-500 rounded-full" />
-                                <span className="text-sm text-white font-medium">
+                                <span className="text-sm text-foreground font-medium">
                                     {outcome.metric}
                                 </span>
                             </div>

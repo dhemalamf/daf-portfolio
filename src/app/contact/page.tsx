@@ -18,7 +18,7 @@ export default function ContactPage() {
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                         Let&apos;s <span className="gradient-text">Connect</span>
                     </h1>
-                    <p className="text-neutral-400 text-lg leading-relaxed">
+                    <p className="text-muted-foreground text-lg leading-relaxed">
                         Whether you have an exciting product role, a collaboration idea, or just want to chat about product management — I&apos;d love to hear from you.
                     </p>
                 </div>
@@ -28,7 +28,7 @@ export default function ContactPage() {
                     {/* Email */}
                     <a
                         href={`mailto:${profile.email}`}
-                        className="group p-6 bg-neutral-900/50 border border-neutral-800 hover:border-accent-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-center"
+                        className="group p-6 bg-muted/50 border border-border hover:border-accent/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-center"
                     >
                         <div className="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-accent-500/30 transition-colors">
                             <svg className="w-8 h-8 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@ export default function ContactPage() {
                             </svg>
                         </div>
                         <h3 className="text-lg font-semibold mb-2 group-hover:text-accent-400 transition-colors">Email</h3>
-                        <p className="text-neutral-400 text-sm">{profile.email}</p>
+                        <p className="text-muted-foreground text-sm">{profile.email}</p>
                     </a>
 
                     {/* LinkedIn */}
@@ -44,7 +44,7 @@ export default function ContactPage() {
                         href={profile.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group p-6 bg-neutral-900/50 border border-neutral-800 hover:border-accent-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-center"
+                        className="group p-6 bg-muted/50 border border-border hover:border-accent/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-center"
                     >
                         <div className="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-accent-500/30 transition-colors">
                             <svg className="w-8 h-8 text-accent-400" fill="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@ export default function ContactPage() {
                             </svg>
                         </div>
                         <h3 className="text-lg font-semibold mb-2 group-hover:text-accent-400 transition-colors">LinkedIn</h3>
-                        <p className="text-neutral-400 text-sm">Connect with me</p>
+                        <p className="text-muted-foreground text-sm">Connect with me</p>
                     </a>
 
                     {/* WhatsApp */}
@@ -60,7 +60,7 @@ export default function ContactPage() {
                         href={profile.whatsapp}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group p-6 bg-neutral-900/50 border border-neutral-800 hover:border-accent-500/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-center"
+                        className="group p-6 bg-muted/50 border border-border hover:border-accent/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-center"
                     >
                         <div className="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-accent-500/30 transition-colors">
                             <svg className="w-8 h-8 text-accent-400" fill="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ export default function ContactPage() {
                             </svg>
                         </div>
                         <h3 className="text-lg font-semibold mb-2 group-hover:text-accent-400 transition-colors">WhatsApp</h3>
-                        <p className="text-neutral-400 text-sm">Send a message</p>
+                        <p className="text-muted-foreground text-sm">Send a message</p>
                     </a>
                 </div>
 
@@ -78,7 +78,7 @@ export default function ContactPage() {
                         href={profile.resume}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent-500/25"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -93,7 +93,7 @@ export default function ContactPage() {
                         <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
                         <span className="text-green-400 font-semibold">Open to collaboration</span>
                     </div>
-                    <p className="text-neutral-400">
+                    <p className="text-muted-foreground">
                         Currently exploring new product management roles and consulting opportunities.
                     </p>
                 </div>

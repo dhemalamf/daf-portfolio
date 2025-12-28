@@ -24,16 +24,16 @@ export default function AboutPage() {
                             Building products that{' '}
                             <span className="gradient-text">matter</span>
                         </h1>
-                        <p className="text-neutral-400 text-lg leading-relaxed whitespace-pre-line">
-                            Product Manager with <span className="text-white font-bold">4+ years of experience</span> across <span className="text-white font-medium">fintech, edtech, government/BUMN</span>, and <span className="text-white font-medium">AI-enabled web platforms</span>.
-                            I thrive in both <span className="text-white font-medium">corporate, startup and consulting environments</span>, leading cross-functional teams to deliver products that drive <span className="text-white font-medium">real business outcomes</span>.
+                        <p className="text-muted-foreground text-lg leading-relaxed whitespace-pre-line">
+                            Product Manager with <span className="text-foreground font-bold">4+ years of experience</span> across <span className="text-foreground font-medium">fintech, edtech, government/BUMN</span>, and <span className="text-foreground font-medium">AI-enabled web platforms</span>.
+                            I thrive in both <span className="text-foreground font-medium">corporate, startup and consulting environments</span>, leading cross-functional teams to deliver products that drive <span className="text-foreground font-medium">real business outcomes</span>.
                         </p>
                     </div>
                 </div>
             </section>
 
             {/* Philosophy */}
-            <section className="py-20 bg-neutral-900/30">
+            <section className="py-20 bg-muted/30">
                 <div className="section-container">
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="glass-card p-6 md:p-8 hover-lift">
@@ -41,7 +41,7 @@ export default function AboutPage() {
                                 <span className="text-2xl">🎯</span>
                             </div>
                             <h3 className="text-lg font-bold mb-2">Outcome-Driven</h3>
-                            <p className="text-neutral-400">
+                            <p className="text-muted-foreground">
                                 I measure success by impact, not output. Every feature shipped should move the needle on metrics that matter.
                             </p>
                         </div>
@@ -50,7 +50,7 @@ export default function AboutPage() {
                                 <span className="text-2xl">🤝</span>
                             </div>
                             <h3 className="text-lg font-bold mb-2">Cross-Functional Leader</h3>
-                            <p className="text-neutral-400">
+                            <p className="text-muted-foreground">
                                 The best products emerge from aligned teams. I bridge engineering, design, and business to drive shared success.
                             </p>
                         </div>
@@ -59,7 +59,7 @@ export default function AboutPage() {
                                 <span className="text-2xl">🔬</span>
                             </div>
                             <h3 className="text-lg font-bold mb-2">User-Centered</h3>
-                            <p className="text-neutral-400">
+                            <p className="text-muted-foreground">
                                 Deep user understanding is non-negotiable. I let research and data guide decisions, not assumptions.
                             </p>
                         </div>
@@ -96,7 +96,7 @@ export default function AboutPage() {
             </section>
 
             {/* Skills */}
-            <section className="py-20 md:py-32 bg-neutral-900/30">
+            <section className="py-20 md:py-32 bg-muted/30">
                 <div className="section-container">
                     <SectionHeading
                         eyebrow="Toolkit"
@@ -116,13 +116,13 @@ export default function AboutPage() {
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         Want to know more?
                     </h2>
-                    <p className="text-neutral-400 mb-8 max-w-xl mx-auto">
+                    <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
                         Check out my case studies to see how I approach product challenges, or get in touch directly.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link
                             href="/work"
-                            className="px-6 py-3 bg-accent-500 hover:bg-accent-600 text-white font-medium rounded-lg transition-colors"
+                            className="px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-colors"
                         >
                             View Case Studies
                         </Link>
@@ -130,7 +130,7 @@ export default function AboutPage() {
                             href={profile.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-6 py-3 border border-neutral-700 hover:border-neutral-500 text-white font-medium rounded-lg transition-colors"
+                            className="px-6 py-3 border border-border hover:border-muted-foreground text-foreground font-medium rounded-lg transition-colors"
                         >
                             LinkedIn Profile
                         </a>

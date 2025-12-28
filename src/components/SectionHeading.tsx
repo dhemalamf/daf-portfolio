@@ -23,7 +23,7 @@ export default function SectionHeading({
             </h2>
             {description && (
                 <p
-                    className={`text-neutral-400 text-lg max-w-2xl ${centered ? 'mx-auto' : ''
+                    className={`text-muted-foreground text-lg max-w-2xl ${centered ? 'mx-auto' : ''
                         }`}
                 >
                     {description}

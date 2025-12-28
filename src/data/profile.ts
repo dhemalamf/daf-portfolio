@@ -6,7 +6,7 @@ export const profile = {
   
 I thrive in both startup and consulting environments, leading cross-functional teams to deliver products that drive real business outcomes. My approach combines strategic thinking with hands-on execution, always focused on quantifiable results.`,
     shortBio: "Seasoned Product Manager driving impact across fintech, edtech, and AI platforms. 4+ years of cross-functional leadership delivering measurable business outcomes.",
-    email: "dhema.work@gmail.com",
+    email: "hello@dhema.me",
     linkedin: "https://www.linkedin.com/in/dhemalamf/",
     whatsapp: "https://wa.me/6281313095302",
     resume: "https://drive.google.com/file/d/1Q26ZrHd4_368xNdhslPehsPk_c3D7tZQ/view?usp=drive_link",

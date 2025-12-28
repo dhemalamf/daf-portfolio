@@ -44,26 +44,26 @@ export default function ExperienceCard({
                     </div>
                 </div>
                 <div className="flex flex-col items-start md:items-end gap-2">
-                    <span className="px-3 py-1 bg-neutral-800 text-neutral-300 text-sm rounded-full">
+                    <span className="px-3 py-1 bg-muted text-muted-foreground text-sm rounded-full">
                         {period}
                     </span>
-                    <span className="text-neutral-500 text-sm">{type}</span>
+                    <span className="text-muted-foreground text-sm">{type}</span>
                 </div>
             </div>
 
             {/* Description */}
-            <p className="text-neutral-400 mb-6 leading-relaxed">{description}</p>
+            <p className="text-muted-foreground mb-6 leading-relaxed">{description}</p>
 
             {/* Highlights */}
             <div className="mb-6">
-                <h4 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-3">
+                <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">
                     Key Achievements
                 </h4>
                 <ul className="space-y-2">
                     {highlights.map((highlight, index) => (
                         <li key={index} className="flex items-start gap-3">
                             <span className="w-1.5 h-1.5 bg-accent-500 rounded-full mt-2 flex-shrink-0" />
-                            <span className="text-neutral-300">{highlight}</span>
+                            <span className="text-muted-foreground">{highlight}</span>
                         </li>
                     ))}
                 </ul>

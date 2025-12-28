@@ -34,16 +34,16 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
         <div>
             {/* Controls */}
             <div className="flex flex-col sm:flex-row justify-end mb-8 gap-4">
-                <div className="flex items-center gap-3 bg-neutral-900/50 p-2 rounded-lg border border-neutral-800">
-                    <span className="text-sm text-neutral-400 pl-2">Sort by:</span>
+                <div className="flex items-center gap-3 bg-slate-200/50 dark:bg-muted/50 p-2 rounded-lg border border-border">
+                    <span className="text-sm text-muted-foreground pl-2">Sort by:</span>
 
                     {/* Sort Key Selector */}
-                    <div className="flex bg-neutral-800 rounded-md p-1">
+                    <div className="flex bg-slate-200 dark:bg-muted rounded-md p-1">
                         <button
                             onClick={() => setSortKey('title')}
                             className={`px-3 py-1.5 text-sm rounded-sm transition-all ${sortKey === 'title'
-                                    ? 'bg-neutral-700 text-white shadow-sm'
-                                    : 'text-neutral-400 hover:text-white'
+                                ? 'bg-background text-foreground shadow-sm'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             Name
@@ -51,23 +51,23 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                         <button
                             onClick={() => setSortKey('publishDate')}
                             className={`px-3 py-1.5 text-sm rounded-sm transition-all ${sortKey === 'publishDate'
-                                    ? 'bg-neutral-700 text-white shadow-sm'
-                                    : 'text-neutral-400 hover:text-white'
+                                ? 'bg-background text-foreground shadow-sm'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             Date
                         </button>
                     </div>
 
-                    <div className="w-px h-4 bg-neutral-700 mx-1"></div>
+                    <div className="w-px h-4 bg-border mx-1"></div>
 
                     {/* Sort Direction Selector */}
-                    <div className="flex bg-neutral-800 rounded-md p-1">
+                    <div className="flex bg-slate-200 dark:bg-muted rounded-md p-1">
                         <button
                             onClick={() => setSortDirection('asc')}
                             className={`px-3 py-1.5 text-sm rounded-sm transition-all ${sortDirection === 'asc'
-                                    ? 'bg-neutral-700 text-white shadow-sm'
-                                    : 'text-neutral-400 hover:text-white'
+                                ? 'bg-background text-foreground shadow-sm'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                             aria-label="Sort Ascending"
                         >
@@ -76,8 +76,8 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                         <button
                             onClick={() => setSortDirection('desc')}
                             className={`px-3 py-1.5 text-sm rounded-sm transition-all ${sortDirection === 'desc'
-                                    ? 'bg-neutral-700 text-white shadow-sm'
-                                    : 'text-neutral-400 hover:text-white'
+                                ? 'bg-background text-foreground shadow-sm'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                             aria-label="Sort Descending"
                         >

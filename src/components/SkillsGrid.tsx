@@ -20,7 +20,7 @@ export default function SkillsGrid() {
                         {category.items.map((skill, skillIndex) => (
                             <span
                                 key={skillIndex}
-                                className="px-3 py-1.5 bg-neutral-800/50 text-neutral-300 text-sm rounded-lg hover:bg-accent-500/20 hover:text-accent-400 transition-colors cursor-default"
+                                className="px-3 py-1.5 bg-muted/50 text-muted-foreground text-sm rounded-lg hover:bg-accent/20 hover:text-accent transition-colors cursor-default"
                             >
                                 {skill}
                             </span>

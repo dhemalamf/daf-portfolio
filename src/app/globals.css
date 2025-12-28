@@ -6,9 +6,66 @@
 
 @layer base {
   :root {
-    --background: 10 15 28;
+    --background: 247 250 252;
+    /* Slate-50 */
+    --foreground: 15 23 42;
+    /* Slate-900 */
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
+    --primary: 8 145 178;
+    /* Cyan-600 for better contrast on light bg */
+    --primary-foreground: 255 255 255;
+    --secondary: 241 245 249;
+    /* Slate-100 */
+    --secondary-foreground: 15 23 42;
+    --muted: 241 245 249;
+    --muted-foreground: 100 116 139;
+    /* Slate-500 */
+    --accent: 8 145 178;
+    /* Cyan-600 for better contrast on light bg */
+    --accent-foreground: 255 255 255;
+    --destructive: 239 68 68;
+    /* Red-500 */
+    --destructive-foreground: 248 250 252;
+    --border: 226 232 240;
+    /* Slate-200 */
+    --input: 226 232 240;
+    --ring: 6 182 212;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 2 6 23;
+    /* neutral-950 #020617 */
     --foreground: 248 250 252;
+    /* Slate-50 */
+    --card: 15 23 42;
+    /* Slate-900 */
+    --card-foreground: 248 250 252;
+    --popover: 15 23 42;
+    --popover-foreground: 248 250 252;
+    --primary: 6 182 212;
+    --primary-foreground: 255 255 255;
+    --secondary: 30 41 59;
+    /* Slate-800 */
+    --secondary-foreground: 248 250 252;
+    --muted: 30 41 59;
+    --muted-foreground: 148 163 184;
+    /* Slate-400 */
     --accent: 6 182 212;
+    --accent-foreground: 255 255 255;
+    --destructive: 127 29 29;
+    /* Red-900 */
+    --destructive-foreground: 248 250 252;
+    --border: 30 41 59;
+    --input: 30 41 59;
+    --ring: 6 182 212;
+  }
+
+  * {
+    @apply border-border;
   }
 
   html {
@@ -16,12 +73,11 @@
   }
 
   body {
-    @apply bg-neutral-950 text-neutral-100 antialiased;
-    font-feature-settings: 'cv11', 'ss01';
+    @apply bg-background text-foreground antialiased transition-colors duration-300;
   }
 
   ::selection {
-    @apply bg-accent-500/30 text-white;
+    @apply bg-accent text-accent-foreground;
   }
 
   /* Custom scrollbar */
@@ -30,19 +86,20 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-neutral-900;
+    @apply bg-muted;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-700 rounded-full;
+    @apply bg-muted-foreground/50 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-neutral-600;
+    @apply bg-muted-foreground;
   }
 }
 
 @layer components {
+
   /* Gradient text utility */
   .gradient-text {
     @apply bg-gradient-to-r from-accent-400 via-accent-500 to-accent-600 bg-clip-text text-transparent;
@@ -50,7 +107,7 @@
 
   /* Glass card effect */
   .glass-card {
-    @apply bg-neutral-900/50 backdrop-blur-xl border border-neutral-800/50 rounded-2xl;
+    @apply bg-card/50 backdrop-blur-xl border border-border/50 rounded-2xl;
   }
 
   /* Hover lift effect */
@@ -88,11 +145,25 @@
   }
 
   /* Stagger animation delays */
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-1 {
+    animation-delay: 0.1s;
+  }
+
+  .stagger-2 {
+    animation-delay: 0.2s;
+  }
+
+  .stagger-3 {
+    animation-delay: 0.3s;
+  }
+
+  .stagger-4 {
+    animation-delay: 0.4s;
+  }
+
+  .stagger-5 {
+    animation-delay: 0.5s;
+  }
 }
 
 @layer utilities {
