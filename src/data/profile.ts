@@ -59,6 +59,13 @@ export const certifications = [
         issuer: "Digital Talent Incubator (DTI)",
         issuedDate: "Jan 2021",
         credentialUrl: "https://drive.google.com/file/d/1UroT8oPReY-vmYqFWhILxBk0MqgE-Y5z/view?usp=sharing",
+    },
+    {
+        id: 4,
+        name: "Product Management First Steps",
+        issuer: "LinkedIn Learning",
+        issuedDate: "Nov 2021",
+        credentialUrl: "https://www.linkedin.com/learning/product-management-first-steps",
     }
 ]
 
