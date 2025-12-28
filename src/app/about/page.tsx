@@ -25,8 +25,9 @@ export default function AboutPage() {
                             <span className="gradient-text">matter</span>
                         </h1>
                         <p className="text-muted-foreground text-lg leading-relaxed whitespace-pre-line">
-                            Product Manager with <span className="text-foreground font-bold">4+ years of experience</span> across <span className="text-foreground font-medium">fintech, edtech, government/BUMN</span>, and <span className="text-foreground font-medium">AI-enabled web platforms</span>.
-                            I thrive in both <span className="text-foreground font-medium">corporate, startup and consulting environments</span>, leading cross-functional teams to deliver products that drive <span className="text-foreground font-medium">real business outcomes</span>.
+                            <span className="text-foreground font-semibold">Product Manager with 4+ years of experience</span> building products across fintech, edtech, and government/BUMN, including AI-enabled web platforms.
+                            I lead cross-functional teams in corporate, startup, and consulting settings
+                            <span className="text-foreground font-semibold"> to deliver measurable business outcomes</span>.
                         </p>
                     </div>
                 </div>

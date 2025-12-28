@@ -44,7 +44,12 @@ export default function ExperienceCard({
                     </div>
                 </div>
                 <div className="flex flex-col items-start md:items-end gap-2">
-                    <span className="px-3 py-1 bg-muted text-muted-foreground text-sm rounded-full">
+                    <span
+                        className={`px-3 py-1 text-sm rounded-full font-medium ${period.includes('Present')
+                                ? 'bg-green-500/10 text-green-400 border border-green-500/20'
+                                : 'bg-muted text-muted-foreground'
+                            }`}
+                    >
                         {period}
                     </span>
                     <span className="text-muted-foreground text-sm">{type}</span>

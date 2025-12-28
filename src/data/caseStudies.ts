@@ -150,7 +150,7 @@ export const caseStudies: CaseStudy[] = [
         id: "4",
         slug: "revamping-dana-indonesia",
         title: "Product Journey: Revamping DANA Indonesia",
-        company: "DANA Indonesia (Academic Project)",
+        company: "Binar Academy (Final Bootcamp Project)",
         industry: "Fintech / Digital Wallet",
         period: "2021",
         summary: "Led a product design and research initiative to revamp key user flows of the DANA digital wallet as part of a Binar Academy final project, focusing on improving onboarding, login, premium upgrade, and customer support experience.",

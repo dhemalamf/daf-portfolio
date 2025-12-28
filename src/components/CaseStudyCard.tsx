@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { CaseStudy } from '@/data/caseStudies'
+import { trackCaseStudyView } from '@/lib/analytics'
 
 interface CaseStudyCardProps {
     caseStudy: CaseStudy
@@ -8,7 +11,11 @@ interface CaseStudyCardProps {
 
 export default function CaseStudyCard({ caseStudy, featured = false }: CaseStudyCardProps) {
     return (
-        <Link href={`/work/${caseStudy.slug}`} className="h-full block">
+        <Link
+            href={`/work/${caseStudy.slug}`}
+            onClick={() => trackCaseStudyView(caseStudy.title)}
+            className="h-full block"
+        >
             <article
                 className={`group glass-card overflow-hidden hover-lift h-full flex flex-col ${featured ? 'md:col-span-2' : ''
                     }`}

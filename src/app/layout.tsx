@@ -3,6 +3,7 @@ import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/components/theme-provider'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 export const metadata: Metadata = {
     title: "Dhema'alam Fajrianto | Product Manager",
@@ -24,6 +25,7 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body className="min-h-screen flex flex-col">
+                <GoogleAnalytics />
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"

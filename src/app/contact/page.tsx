@@ -1,10 +1,7 @@
-import { Metadata } from 'next'
-import { profile } from '@/data/profile'
+'use client'
 
-export const metadata: Metadata = {
-    title: "Contact | Dhema'alam Fajrianto",
-    description: 'Get in touch with Dhema for product management opportunities and collaboration.',
-}
+import { profile } from '@/data/profile'
+import { trackButtonClick } from '@/lib/analytics'
 
 export default function ContactPage() {
     return (
@@ -110,6 +107,7 @@ export default function ContactPage() {
                         href={profile.resume}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => trackButtonClick('contact_view_resume')}
                         className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

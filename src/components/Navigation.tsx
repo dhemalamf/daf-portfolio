@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { trackButtonClick } from '@/lib/analytics'
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 
@@ -59,6 +60,7 @@ export default function Navigation() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
+                                    onClick={() => trackButtonClick(`nav_${item.label.toLowerCase()}`)}
                                     className={`text-sm font-medium transition-colors animated-underline ${isActive
                                         ? 'text-foreground'
                                         : 'text-muted-foreground hover:text-foreground'
@@ -155,7 +157,10 @@ export default function Navigation() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        onClick={() => {
+                                            trackButtonClick(`nav_mobile_${item.label.toLowerCase()}`)
+                                            setIsMobileMenuOpen(false)
+                                        }}
                                         className={`transition-colors ${isActive
                                             ? 'text-foreground font-semibold'
                                             : 'text-muted-foreground hover:text-foreground'
@@ -167,7 +172,10 @@ export default function Navigation() {
                             })}
                             <Link
                                 href="/contact"
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => {
+                                    trackButtonClick('nav_mobile_get_in_touch')
+                                    setIsMobileMenuOpen(false)
+                                }}
                                 className="inline-block px-4 py-2 bg-accent hover:bg-accent/90 text-accent-foreground text-sm font-medium rounded-lg transition-colors text-center"
                             >
                                 Get in Touch
