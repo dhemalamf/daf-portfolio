@@ -33,7 +33,7 @@ export default function Home() {
                     <div className="mt-12 text-center">
                         <Link
                             href="/work"
-                            className="inline-flex items-center gap-2 px-6 py-3 border border-neutral-700 hover:border-accent-500 text-white font-medium rounded-lg transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 border border-border hover:border-accent text-foreground font-medium rounded-lg transition-colors"
                         >
                             View All Work
                             <span>→</span>
@@ -43,7 +43,7 @@ export default function Home() {
             </section>
 
             {/* Experience Section */}
-            <section className="py-20 md:py-32 bg-neutral-900/30">
+            <section className="py-20 md:py-32 bg-muted/30">
                 <div className="section-container">
                     <SectionHeading
                         eyebrow="Experience"
@@ -70,7 +70,7 @@ export default function Home() {
                     <div className="mt-12 text-center">
                         <Link
                             href="/about"
-                            className="inline-flex items-center gap-2 px-6 py-3 border border-neutral-700 hover:border-accent-500 text-white font-medium rounded-lg transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 border border-border hover:border-accent text-foreground font-medium rounded-lg transition-colors"
                         >
                             Learn More About Me
                             <span>→</span>
@@ -93,7 +93,7 @@ export default function Home() {
             </section>
 
             {/* Certifications Section */}
-            <section className="py-20 md:py-32 bg-neutral-900/30">
+            <section className="py-20 md:py-32 bg-muted/30">
                 <div className="section-container">
                     <SectionHeading
                         eyebrow="Credentials"
@@ -106,8 +106,8 @@ export default function Home() {
                             <div key={cert.id} className="glass-card p-6 md:p-8 hover-lift flex flex-col items-start gap-4">
                                 <div className="flex-1">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-sm font-medium text-accent-400">{cert.issuer}</span>
-                                        <span className="text-xs text-neutral-500">{cert.issuedDate}</span>
+                                        <span className="text-sm font-medium text-accent">{cert.issuer}</span>
+                                        <span className="text-xs text-muted-foreground">{cert.issuedDate}</span>
                                     </div>
                                     <h3 className="text-xl font-bold mb-2">{cert.name}</h3>
                                 </div>
@@ -115,7 +115,7 @@ export default function Home() {
                                     href={cert.credentialUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-accent-400 transition-colors"
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-accent transition-colors"
                                 >
                                     View Credential
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,19 +129,19 @@ export default function Home() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 md:py-32 bg-gradient-to-b from-neutral-900/30 to-neutral-950">
+            <section className="py-20 md:py-32 bg-gradient-to-b from-muted/30 to-background">
                 <div className="section-container text-center">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
                         Let&apos;s Build Something{' '}
                         <span className="gradient-text">Great</span>
                     </h2>
-                    <p className="text-neutral-400 text-lg max-w-2xl mx-auto mb-8">
+                    <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
                         Whether you need a product leader for your next venture or want to discuss collaboration opportunities, I&apos;d love to hear from you.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link
                             href="/contact"
-                            className="px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white font-medium rounded-lg transition-colors"
+                            className="px-8 py-4 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-colors"
                         >
                             Get in Touch
                         </Link>
@@ -149,7 +149,7 @@ export default function Home() {
                             href={profile.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-8 py-4 border border-neutral-700 hover:border-neutral-500 text-white font-medium rounded-lg transition-colors"
+                            className="px-8 py-4 border border-border hover:border-muted-foreground text-foreground font-medium rounded-lg transition-colors"
                         >
                             Connect on LinkedIn
                         </a>

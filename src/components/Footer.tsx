@@ -5,7 +5,7 @@ export default function Footer() {
     const currentYear = new Date().getFullYear()
 
     return (
-        <footer className="border-t border-neutral-800/50 bg-neutral-950">
+        <footer className="border-t border-border/50 bg-background">
             <div className="section-container py-12 md:py-16">
                 <div className="grid md:grid-cols-2 gap-8 md:gap-12">
                     {/* Brand & Connect */}
@@ -17,7 +17,7 @@ export default function Footer() {
                             >
                                 <span className="text-accent-400">D</span>hema
                             </Link>
-                            <p className="text-neutral-400 text-sm leading-relaxed max-w-sm">
+                            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
                                 {profile.shortBio}
                             </p>
                         </div>
@@ -26,7 +26,7 @@ export default function Footer() {
                         <div className="flex gap-4">
                             <a
                                 href={`mailto:${profile.email}`}
-                                className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-neutral-400 hover:bg-accent-500 hover:text-white transition-all hover-lift"
+                                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all hover-lift"
                                 aria-label="Email"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@ export default function Footer() {
                                 href={profile.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-neutral-400 hover:bg-accent-500 hover:text-white transition-all hover-lift"
+                                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all hover-lift"
                                 aria-label="LinkedIn"
                             >
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@ export default function Footer() {
                                 href={profile.whatsapp}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-neutral-400 hover:bg-accent-500 hover:text-white transition-all hover-lift"
+                                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all hover-lift"
                                 aria-label="WhatsApp"
                             >
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -60,20 +60,20 @@ export default function Footer() {
 
                     {/* Quick Links */}
                     <div className="space-y-4 md:text-right">
-                        <h3 className="text-sm font-semibold text-neutral-200 uppercase tracking-wider">
+                        <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
                             Navigation
                         </h3>
                         <div className="flex flex-col gap-2">
-                            <Link href="/" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                            <Link href="/" className="text-muted-foreground hover:text-foreground text-sm transition-colors">
                                 Home
                             </Link>
-                            <Link href="/about" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                            <Link href="/about" className="text-muted-foreground hover:text-foreground text-sm transition-colors">
                                 About
                             </Link>
-                            <Link href="/work" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                            <Link href="/work" className="text-muted-foreground hover:text-foreground text-sm transition-colors">
                                 Work
                             </Link>
-                            <Link href="/contact" className="text-neutral-400 hover:text-white text-sm transition-colors">
+                            <Link href="/contact" className="text-muted-foreground hover:text-foreground text-sm transition-colors">
                                 Contact
                             </Link>
                         </div>
@@ -81,11 +81,11 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="mt-12 pt-8 border-t border-neutral-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-neutral-500 text-sm">
+                <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-muted-foreground text-sm">
                         © {currentYear} {profile.name}. All rights reserved.
                     </p>
-                    <p className="text-neutral-600 text-xs">
+                    <p className="text-muted-foreground text-xs">
                         Built with Next.js & Tailwind CSS
                     </p>
                 </div>

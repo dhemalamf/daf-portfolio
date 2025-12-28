@@ -39,7 +39,7 @@ export default function ContactForm() {
                     </svg>
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
-                <p className="text-neutral-400">
+                <p className="text-muted-foreground">
                     Thank you for reaching out. I&apos;ll get back to you soon.
                 </p>
             </div>
@@ -50,7 +50,7 @@ export default function ContactForm() {
         <form onSubmit={handleSubmit} className="glass-card p-6 md:p-8 space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
+                    <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                         Name
                     </label>
                     <input
@@ -60,12 +60,12 @@ export default function ContactForm() {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-colors"
+                        className="w-full px-4 py-3 bg-muted/50 border border-input rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
                         placeholder="Your name"
                     />
                 </div>
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                         Email
                     </label>
                     <input
@@ -75,14 +75,14 @@ export default function ContactForm() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-colors"
+                        className="w-full px-4 py-3 bg-muted/50 border border-input rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
                         placeholder="your@email.com"
                     />
                 </div>
             </div>
 
             <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
+                <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
                     Subject
                 </label>
                 <input
@@ -92,13 +92,13 @@ export default function ContactForm() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-colors"
+                    className="w-full px-4 py-3 bg-muted/50 border border-input rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
                     placeholder="What's this about?"
                 />
             </div>
 
             <div>
-                <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
                     Message
                 </label>
                 <textarea
@@ -108,7 +108,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 bg-muted/50 border border-input rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors resize-none"
                     placeholder="Your message..."
                 />
             </div>
@@ -116,7 +116,7 @@ export default function ContactForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 bg-accent-500 hover:bg-accent-600 disabled:bg-accent-500/50 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="w-full px-6 py-4 bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-accent-foreground font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
                 {isSubmitting ? (
                     <>

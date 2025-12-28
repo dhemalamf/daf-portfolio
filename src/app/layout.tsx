@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
     title: "Dhema'alam Fajrianto | Product Manager",
@@ -23,11 +24,18 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body className="min-h-screen flex flex-col">
-                <Navigation />
-                <main className="flex-grow">
-                    {children}
-                </main>
-                <Footer />
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <Navigation />
+                    <main className="flex-grow">
+                        {children}
+                    </main>
+                    <Footer />
+                </ThemeProvider>
             </body>
         </html>
     )

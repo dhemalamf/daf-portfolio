@@ -6,25 +6,34 @@ const config: Config = {
         './src/components/**/*.{js,ts,jsx,tsx,mdx}',
         './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     ],
+    darkMode: "class",
     theme: {
         extend: {
             colors: {
-                // Primary - Deep navy for trust and expertise
+                border: "rgb(var(--border))",
+                input: "rgb(var(--input))",
+                ring: "rgb(var(--ring))",
+                background: "rgb(var(--background))",
+                foreground: "rgb(var(--foreground))",
                 primary: {
-                    50: '#f0f4ff',
-                    100: '#e0e8ff',
-                    200: '#c7d4fe',
-                    300: '#a4b8fc',
-                    400: '#8093f8',
-                    500: '#6371f1',
-                    600: '#4f4de5',
-                    700: '#423dca',
-                    800: '#3733a3',
-                    900: '#0f172a',
-                    950: '#0a0f1c',
+                    DEFAULT: "rgb(var(--primary))",
+                    foreground: "rgb(var(--primary-foreground))",
                 },
-                // Accent - Teal/Cyan for modern tech-forward feel
+                secondary: {
+                    DEFAULT: "rgb(var(--secondary))",
+                    foreground: "rgb(var(--secondary-foreground))",
+                },
+                destructive: {
+                    DEFAULT: "rgb(var(--destructive))",
+                    foreground: "rgb(var(--destructive-foreground))",
+                },
+                muted: {
+                    DEFAULT: "rgb(var(--muted))",
+                    foreground: "rgb(var(--muted-foreground))",
+                },
                 accent: {
+                    DEFAULT: "rgb(var(--accent))",
+                    foreground: "rgb(var(--accent-foreground))",
                     50: '#ecfeff',
                     100: '#cffafe',
                     200: '#a5f3fc',
@@ -36,7 +45,15 @@ const config: Config = {
                     800: '#155e75',
                     900: '#164e63',
                 },
-                // Neutral - Slate tones for professional hierarchy
+                popover: {
+                    DEFAULT: "rgb(var(--popover))",
+                    foreground: "rgb(var(--popover-foreground))",
+                },
+                card: {
+                    DEFAULT: "rgb(var(--card))",
+                    foreground: "rgb(var(--card-foreground))",
+                },
+                // Build simple neutral palette mapping for backward compatibility or direct use if needed
                 neutral: {
                     50: '#f8fafc',
                     100: '#f1f5f9',
