@@ -66,6 +66,9 @@
 
   * {
     @apply border-border;
+    transition-property: background-color, border-color, fill, stroke;
+    transition-timing-function: ease-in-out;
+    transition-duration: 500ms;
   }
 
   html {
@@ -73,7 +76,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased transition-colors duration-300;
+    @apply bg-background text-foreground antialiased;
   }
 
   ::selection {

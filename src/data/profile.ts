@@ -10,6 +10,8 @@ I thrive in both startup and consulting environments, leading cross-functional t
     linkedin: "https://www.linkedin.com/in/dhemalamf/",
     whatsapp: "https://wa.me/6281313095302",
     resume: "https://drive.google.com/file/d/1Q26ZrHd4_368xNdhslPehsPk_c3D7tZQ/view?usp=drive_link",
+    github: "https://github.com/dhemalamf",
+    twitter: "https://x.com/alam_dhema",
     location: "Indonesia",
 }
 
