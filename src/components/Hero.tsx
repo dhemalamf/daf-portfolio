@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { profile, impactMetrics } from '@/data/profile'
+import { trackButtonClick } from '@/lib/analytics'
 
 export default function Hero() {
     return (
@@ -24,18 +25,22 @@ export default function Hero() {
                         Hi, I&apos;m{' '}
                         <span className="gradient-text">{profile.name.split(' ')[0]}</span>
                         <br />
-                        <span className="text-muted-foreground">{profile.title}</span>
+                        <span className="text-muted-foreground">A {profile.title}</span>
                     </h1>
 
                     {/* Tagline */}
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 animate-slide-up stagger-1">
-                        With <span className="text-foreground font-bold">4+ years of experience</span>, I’ve helped organizations turn <span className="text-foreground font-medium">complex challenges into impactful digital products</span> and scale products across <span className="text-foreground font-medium">fintech</span>, <span className="text-foreground font-medium">public sector</span>, and <span className="text-foreground font-medium">edtech</span>, using <span className="text-foreground font-medium">AI-powered systems</span>.
+                        With <span className="text-foreground font-semibold">4+ years of experience</span>, I’ve helped organizations turn
+                        <span className="text-foreground font-semibold"> <br /> complex challenges into impactful digital products </span>
+                        and scale products across fintech, public sector, and edtech using
+                        <span className="text-foreground font-semibold"> AI-powered systems</span>.
                     </p>
 
                     {/* CTA Buttons */}
                     <div className="flex flex-wrap gap-4 mb-16 animate-slide-up stagger-2">
                         <Link
                             href="/work"
+                            onClick={() => trackButtonClick('hero_view_my_work')}
                             className="group px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
                         >
                             View My Work
@@ -47,6 +52,7 @@ export default function Hero() {
                             href={profile.resume}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={() => trackButtonClick('hero_view_resume')}
                             className="group px-6 py-3 bg-transparent border border-accent hover:bg-accent/10 text-accent hover:text-accent font-medium rounded-lg transition-colors flex items-center gap-2"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
