@@ -1,11 +1,7 @@
-import { Metadata } from 'next'
+'use client'
+
 import { profile } from '@/data/profile'
 import { trackButtonClick } from '@/lib/analytics'
-
-export const metadata: Metadata = {
-    title: "Contact | Dhema'alam Fajrianto",
-    description: 'Get in touch with Dhema for product management opportunities and collaboration.',
-}
 
 export default function ContactPage() {
     return (

@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { CaseStudy } from '@/data/caseStudies'
 import { trackCaseStudyView } from '@/lib/analytics'

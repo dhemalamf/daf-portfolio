@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { profile, impactMetrics } from '@/data/profile'
 import { trackButtonClick } from '@/lib/analytics'
