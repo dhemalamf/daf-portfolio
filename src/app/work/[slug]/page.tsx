@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { caseStudies, getCaseStudyBySlug } from '@/data/caseStudies'
 import CaseStudyActions from '@/components/CaseStudyActions'
+import BackToTop from '@/components/BackToTop'
 
 interface PageProps {
     params: { slug: string }
@@ -69,6 +70,7 @@ export default function CaseStudyPage({ params }: PageProps) {
                     <CaseStudyActions
                         articleUrl={caseStudy.articleUrl}
                         title={caseStudy.title}
+                        slug={caseStudy.slug}
                     />
                 </header>
 
@@ -160,23 +162,73 @@ export default function CaseStudyPage({ params }: PageProps) {
                     </section>
                 </div>
 
-                {/* Next Steps */}
-                <div className="max-w-2xl mx-auto mt-16">
-                    <div className="glass-card p-8 text-center">
-                        <h3 className="text-xl font-bold mb-2">Interested in working together?</h3>
-                        <p className="text-muted-foreground mb-6">
-                            I&apos;d love to discuss how I can bring this same approach to your product challenges.
-                        </p>
+                {/* Next Steps CTA - Full Width */}
+                <div className="max-w-4xl mx-auto mt-16">
+                    <div className="glass-card p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <h3 className="text-xl font-bold mb-2">Interested in working together?</h3>
+                            <p className="text-muted-foreground">
+                                I&apos;d love to discuss how I can bring this same approach to your product challenges.
+                            </p>
+                        </div>
                         <Link
                             href="/contact"
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-colors"
+                            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-colors"
                         >
                             Get in Touch
                             <span>→</span>
                         </Link>
                     </div>
                 </div>
+
+                {/* Related Case Studies */}
+                {(() => {
+                    const relatedStudies = caseStudies
+                        .filter(cs => cs.slug !== caseStudy.slug)
+                        .slice(0, 3)
+
+                    if (relatedStudies.length === 0) return null
+
+                    return (
+                        <div className="mt-20">
+                            <h2 className="text-2xl md:text-3xl font-bold mb-8">
+                                More <span className="gradient-text">Case Studies</span>
+                            </h2>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {relatedStudies.map((study) => (
+                                    <Link
+                                        key={study.slug}
+                                        href={`/work/${study.slug}`}
+                                        className="group block"
+                                    >
+                                        <article className="glass-card p-6 hover-lift h-full flex flex-col">
+                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs font-medium rounded-full">
+                                                    {study.industry}
+                                                </span>
+                                                <span className="px-2 py-0.5 bg-muted text-muted-foreground text-xs rounded-full">
+                                                    {study.period}
+                                                </span>
+                                            </div>
+                                            <h3 className="font-bold mb-2 group-hover:text-accent-400 transition-colors">
+                                                {study.title}
+                                            </h3>
+                                            <p className="text-sm text-muted-foreground mb-3">
+                                                {study.company}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground line-clamp-2 flex-1">
+                                                {study.summary}
+                                            </p>
+                                        </article>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                })()}
             </article>
+
+            <BackToTop />
         </div>
     )
 }

@@ -4,6 +4,7 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/components/theme-provider'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import StudioShortcut from '@/components/StudioShortcut'
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://dhema.me'),
@@ -41,7 +42,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className="scroll-smooth">
+        <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body className="min-h-screen flex flex-col">
                 <GoogleAnalytics />
                 <ThemeProvider
@@ -49,6 +50,7 @@ export default function RootLayout({
                     defaultTheme="dark"
                     enableSystem
                 >
+                    <StudioShortcut />
                     <Navigation />
                     <main className="flex-grow">
                         {children}
