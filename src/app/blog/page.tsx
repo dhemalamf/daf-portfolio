@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { client } from '@/sanity/client'
 import BlogList from '@/components/BlogList'
 
+// Force fresh data on every request (no caching)
+export const revalidate = 0
+
 export const metadata: Metadata = {
     title: "Blog | Dhema'alam Fajrianto",
     description: 'Insights on Product Management, AI, and building products that matter.',

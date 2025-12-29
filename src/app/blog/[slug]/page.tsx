@@ -8,6 +8,9 @@ import { urlFor } from '@/sanity/image'
 import ShareButtons from '@/components/ShareButtons'
 import BackToTop from '@/components/BackToTop'
 
+// Force fresh data on every request (no caching)
+export const revalidate = 0
+
 interface BlogPost {
     _id: string
     title: string
