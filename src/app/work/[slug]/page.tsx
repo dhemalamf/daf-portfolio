@@ -6,11 +6,12 @@ import CaseStudyActions from '@/components/CaseStudyActions'
 import BackToTop from '@/components/BackToTop'
 
 interface PageProps {
-    params: { slug: string }
+    params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const caseStudy = getCaseStudyBySlug(params.slug)
+    const { slug } = await params
+    const caseStudy = getCaseStudyBySlug(slug)
 
     if (!caseStudy) {
         return { title: 'Not Found' }
@@ -28,8 +29,9 @@ export async function generateStaticParams() {
     }))
 }
 
-export default function CaseStudyPage({ params }: PageProps) {
-    const caseStudy = getCaseStudyBySlug(params.slug)
+export default async function CaseStudyPage({ params }: PageProps) {
+    const { slug } = await params
+    const caseStudy = getCaseStudyBySlug(slug)
 
     if (!caseStudy) {
         notFound()
