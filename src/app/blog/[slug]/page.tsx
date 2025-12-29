@@ -22,7 +22,7 @@ interface BlogPost {
 
 async function getPost(slug: string): Promise<BlogPost | null> {
     const post = await client.fetch(
-        `*[_type == "post" && slug.current == $slug][0] {
+        `*[_type == "post" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
             _id,
             title,
             slug,
@@ -41,7 +41,7 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 async function getRelatedPosts(currentPostId: string, tags: string[]): Promise<BlogPost[]> {
     // First try to get posts with matching tags
     let relatedPosts = await client.fetch(
-        `*[_type == "post" && _id != $currentPostId && count((tags[])[@ in $tags]) > 0] | order(publishedAt desc)[0...3] {
+        `*[_type == "post" && _id != $currentPostId && !(_id in path("drafts.**")) && count((tags[])[@ in $tags]) > 0] | order(publishedAt desc)[0...3] {
             _id,
             title,
             slug,
@@ -57,7 +57,7 @@ async function getRelatedPosts(currentPostId: string, tags: string[]): Promise<B
     // If no related posts found, get recent posts
     if (relatedPosts.length === 0) {
         relatedPosts = await client.fetch(
-            `*[_type == "post" && _id != $currentPostId] | order(publishedAt desc)[0...3] {
+            `*[_type == "post" && _id != $currentPostId && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...3] {
                 _id,
                 title,
                 slug,
