@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Suspense } from 'react'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -44,7 +45,9 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body className="min-h-screen flex flex-col">
-                <GoogleAnalytics />
+                <Suspense fallback={null}>
+                    <GoogleAnalytics />
+                </Suspense>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"
