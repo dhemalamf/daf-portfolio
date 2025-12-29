@@ -428,18 +428,24 @@ function BlogCardGrid({ post }: { post: BlogPost }) {
                         {post.title}
                     </h2>
                     <p className="text-muted-foreground mb-4 line-clamp-3 flex-1">{post.excerpt}</p>
-                    {post.tags && post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-auto">
-                            {post.tags.slice(0, 3).map((tag) => (
-                                <span
-                                    key={tag}
-                                    className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    )}
+                    <div className="flex items-end justify-between gap-4 mt-auto pt-4">
+                        {post.tags && post.tags.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                                {post.tags.slice(0, 3).map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        ) : <div />}
+                        <span className="inline-flex items-center gap-1 text-sm text-accent-400 shrink-0 group-hover:gap-2 transition-all">
+                            Read More
+                            <span>→</span>
+                        </span>
+                    </div>
                 </div>
             </article>
         </Link>
@@ -481,18 +487,24 @@ function BlogCardList({ post }: { post: BlogPost }) {
                         {post.title}
                     </h2>
                     <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
-                    {post.tags && post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-auto">
-                            {post.tags.map((tag) => (
-                                <span
-                                    key={tag}
-                                    className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    )}
+                    <div className="flex items-end justify-between gap-4 mt-auto pt-4">
+                        {post.tags && post.tags.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                                {post.tags.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        ) : <div />}
+                        <span className="inline-flex items-center gap-1 text-sm text-accent-400 shrink-0 group-hover:gap-2 transition-all">
+                            Read More
+                            <span>→</span>
+                        </span>
+                    </div>
                 </div>
             </article>
         </Link>
