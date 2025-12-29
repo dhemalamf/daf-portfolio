@@ -14,7 +14,7 @@ export default function StudioShortcut() {
 
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    })
+    }, [])
 
     // This component doesn't render anything
     return null
