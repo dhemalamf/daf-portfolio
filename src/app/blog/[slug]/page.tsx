@@ -123,11 +123,22 @@ const portableTextComponents = {
                 </pre>
             )
         },
+        divider: ({ value }: any) => {
+            const style = value?.style || 'line'
+            if (style === 'dots') {
+                return <div className="my-10 text-center text-2xl text-muted-foreground tracking-[1em]">• • •</div>
+            }
+            if (style === 'space') {
+                return <div className="my-12" />
+            }
+            return <hr className="my-10 border-t border-border" />
+        },
     },
     block: {
         h1: ({ children }: any) => <h1 className="text-4xl font-bold mt-12 mb-4">{children}</h1>,
         h2: ({ children }: any) => <h2 className="text-3xl font-bold mt-10 mb-4">{children}</h2>,
         h3: ({ children }: any) => <h3 className="text-2xl font-bold mt-8 mb-3">{children}</h3>,
+        h4: ({ children }: any) => <h4 className="text-xl font-bold mt-6 mb-2">{children}</h4>,
         normal: ({ children }: any) => <p className="mb-6 leading-relaxed">{children}</p>,
         blockquote: ({ children }: any) => (
             <blockquote className="border-l-4 border-accent pl-4 my-6 italic text-muted-foreground">
@@ -153,6 +164,20 @@ const portableTextComponents = {
         code: ({ children }: any) => (
             <code className="px-2 py-1 bg-muted rounded text-sm font-mono">{children}</code>
         ),
+        underline: ({ children }: any) => <span className="underline">{children}</span>,
+        'strike-through': ({ children }: any) => <span className="line-through">{children}</span>,
+    },
+    list: {
+        bullet: ({ children }: any) => (
+            <ul className="list-disc list-inside mb-6 space-y-2 pl-4">{children}</ul>
+        ),
+        number: ({ children }: any) => (
+            <ol className="list-decimal list-inside mb-6 space-y-2 pl-4">{children}</ol>
+        ),
+    },
+    listItem: {
+        bullet: ({ children }: any) => <li className="leading-relaxed">{children}</li>,
+        number: ({ children }: any) => <li className="leading-relaxed">{children}</li>,
     },
 }
 

@@ -62,13 +62,20 @@ export const blogPost = defineType({
                         { title: 'H1', value: 'h1' },
                         { title: 'H2', value: 'h2' },
                         { title: 'H3', value: 'h3' },
+                        { title: 'H4', value: 'h4' },
                         { title: 'Quote', value: 'blockquote' },
+                    ],
+                    lists: [
+                        { title: 'Bullet', value: 'bullet' },
+                        { title: 'Numbered', value: 'number' },
                     ],
                     marks: {
                         decorators: [
                             { title: 'Strong', value: 'strong' },
                             { title: 'Emphasis', value: 'em' },
                             { title: 'Code', value: 'code' },
+                            { title: 'Underline', value: 'underline' },
+                            { title: 'Strikethrough', value: 'strike-through' },
                         ],
                         annotations: [
                             {
@@ -80,6 +87,9 @@ export const blogPost = defineType({
                                         name: 'href',
                                         type: 'url',
                                         title: 'URL',
+                                        validation: (Rule) => Rule.uri({
+                                            scheme: ['http', 'https', 'mailto', 'tel']
+                                        })
                                     }
                                 ]
                             }
@@ -101,6 +111,33 @@ export const blogPost = defineType({
                             title: 'Caption',
                         }
                     ]
+                },
+                {
+                    name: 'divider',
+                    type: 'object',
+                    title: 'Divider',
+                    fields: [
+                        {
+                            name: 'style',
+                            type: 'string',
+                            title: 'Style',
+                            options: {
+                                list: [
+                                    { title: 'Line', value: 'line' },
+                                    { title: 'Dots', value: 'dots' },
+                                    { title: 'Space', value: 'space' },
+                                ],
+                            },
+                            initialValue: 'line',
+                        }
+                    ],
+                    preview: {
+                        prepare() {
+                            return {
+                                title: '── Divider ──'
+                            }
+                        }
+                    }
                 },
             ],
         }),
