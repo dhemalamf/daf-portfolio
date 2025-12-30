@@ -424,14 +424,14 @@ function BlogCardGrid({ post }: { post: BlogPost }) {
                             </>
                         )}
                     </div>
-                    <h2 className="text-xl font-bold mb-3 group-hover:text-accent-400 transition-colors">
+                    <h2 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-accent-400 transition-colors">
                         {post.title}
                     </h2>
                     <p className="text-muted-foreground mb-4 line-clamp-3 flex-1">{post.excerpt}</p>
                     <div className="flex items-end justify-between gap-4 mt-auto pt-4">
                         {post.tags && post.tags.length > 0 ? (
-                            <div className="flex flex-wrap gap-2">
-                                {post.tags.slice(0, 3).map((tag) => (
+                            <div className="flex flex-wrap gap-2 items-center">
+                                {post.tags.slice(0, 2).map((tag) => (
                                     <span
                                         key={tag}
                                         className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full"
@@ -439,6 +439,9 @@ function BlogCardGrid({ post }: { post: BlogPost }) {
                                         {tag}
                                     </span>
                                 ))}
+                                {post.tags.length > 2 && (
+                                    <span className="text-xs text-muted-foreground">+{post.tags.length - 2} more</span>
+                                )}
                             </div>
                         ) : <div />}
                         <span className="inline-flex items-center gap-1 text-sm text-accent-400 shrink-0 group-hover:gap-2 transition-all">
@@ -483,14 +486,14 @@ function BlogCardList({ post }: { post: BlogPost }) {
                             </>
                         )}
                     </div>
-                    <h2 className="text-xl font-bold mb-3 group-hover:text-accent-400 transition-colors">
+                    <h2 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-accent-400 transition-colors">
                         {post.title}
                     </h2>
                     <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
                     <div className="flex items-end justify-between gap-4 mt-auto pt-4">
                         {post.tags && post.tags.length > 0 ? (
-                            <div className="flex flex-wrap gap-2">
-                                {post.tags.map((tag) => (
+                            <div className="flex flex-wrap gap-2 items-center">
+                                {post.tags.slice(0, 2).map((tag) => (
                                     <span
                                         key={tag}
                                         className="px-3 py-1 bg-accent-500/10 text-accent-400 text-xs font-medium rounded-full"
@@ -498,6 +501,9 @@ function BlogCardList({ post }: { post: BlogPost }) {
                                         {tag}
                                     </span>
                                 ))}
+                                {post.tags.length > 2 && (
+                                    <span className="text-xs text-muted-foreground">+{post.tags.length - 2} more</span>
+                                )}
                             </div>
                         ) : <div />}
                         <span className="inline-flex items-center gap-1 text-sm text-accent-400 shrink-0 group-hover:gap-2 transition-all">
