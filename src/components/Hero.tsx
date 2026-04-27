@@ -3,107 +3,146 @@
 import Link from 'next/link'
 import { profile, impactMetrics } from '@/data/profile'
 import { trackButtonClick } from '@/lib/analytics'
+import { motion } from 'framer-motion'
+import ConstellationBackground from '@/components/ConstellationBackground'
+import TextScramble from '@/components/animations/TextScramble'
+import AnimatedCounter from '@/components/animations/AnimatedCounter'
+import MagneticButton from '@/components/animations/MagneticButton'
+import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function Hero() {
     return (
-        <section className="relative min-h-screen flex items-center pt-20">
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+        <section className="relative min-h-screen flex flex-col justify-center pt-20 pb-12 overflow-hidden">
+            {/* Constellation Background */}
+            <ConstellationBackground />
 
-            <div className="section-container relative z-10">
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-violet-500/[0.03] via-transparent to-transparent pointer-events-none" />
+            <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
+
+            <div className="section-container relative z-10 flex-1 flex flex-col justify-center">
                 <div className="max-w-4xl">
                     {/* Eyebrow */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6 animate-fade-in">
-                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse-subtle" />
-                        <span className="text-green-400 text-sm font-medium">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-8"
+                    >
+                        <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                        <span className="text-emerald-400 text-sm font-medium">
                             Open to collaboration
                         </span>
-                    </div>
+                    </motion.div>
 
                     {/* Main heading */}
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-slide-up">
-                        Hi, I&apos;m{' '}
-                        <span className="gradient-text">{profile.name.split(' ')[0]}</span>
-                        <br />
-                        <span className="text-muted-foreground">A {profile.title}</span>
-                    </h1>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.3 }}
+                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.95] mb-8"
+                    >
+                        <span className="block mb-2">
+                            Hi, I&apos;m{' '}
+                            <span className="gradient-text">
+                                <TextScramble text={profile.name.split(' ')[0]} delay={600} duration={1000} />
+                            </span>
+                        </span>
+                        <span className="block text-muted-foreground/80">
+                            A {profile.title}
+                        </span>
+                    </motion.h1>
 
                     {/* Tagline */}
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 animate-slide-up stagger-1">
-                        With <span className="text-foreground font-semibold">4+ years of experience</span>, I’ve helped organizations turn
-                        <span className="text-foreground font-semibold"> <br /> complex challenges into impactful digital products </span>
-                        and scale products across fintech, public sector, and edtech using
-                        <span className="text-foreground font-semibold"> AI-powered systems</span>.
-                    </p>
+                    <motion.p
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
+                        className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed"
+                    >
+                        With{' '}
+                        <span className="text-foreground font-semibold">4+ years of experience</span>,
+                        I&apos;ve helped organizations turn{' '}
+                        <span className="text-foreground font-semibold">complex challenges into impactful digital products</span>{' '}
+                        and scale products across fintech, public sector, and edtech using{' '}
+                        <span className="text-foreground font-semibold">AI-powered systems</span>.
+                    </motion.p>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-4 mb-16 animate-slide-up stagger-2">
-                        <Link
-                            href="/work"
-                            onClick={() => trackButtonClick('hero_view_my_work')}
-                            className="group px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
-                        >
-                            View My Work
-                            <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">
-                                →
-                            </span>
-                        </Link>
-                        <a
-                            href={profile.resume}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => trackButtonClick('hero_view_resume')}
-                            className="group px-6 py-3 bg-transparent border border-accent hover:bg-accent/10 text-accent hover:text-accent font-medium rounded-lg transition-colors flex items-center gap-2"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            View Resume
-                        </a>
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.7 }}
+                        className="flex flex-wrap gap-4 mb-16"
+                    >
+                        <MagneticButton strength={0.15}>
+                            <Link
+                                href="/work"
+                                onClick={() => trackButtonClick('hero_view_my_work')}
+                                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/20"
+                            >
+                                View My Work
+                                <svg
+                                    className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </Link>
+                        </MagneticButton>
+                        <MagneticButton strength={0.15}>
+                            <a
+                                href={profile.resume}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackButtonClick('hero_view_resume')}
+                                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-transparent border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                View Resume
+                            </a>
+                        </MagneticButton>
+                    </motion.div>
 
                     {/* Impact Metrics */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 animate-slide-up stagger-3">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.9 }}
+                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+                    >
                         {impactMetrics.map((metric, index) => (
-                            <div
+                            <motion.div
                                 key={index}
-                                className="group glass-card p-4 md:p-6 hover-lift"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 1.0 + index * 0.1 }}
+                                className="group glass-card p-5 md:p-6 hover-lift accent-border"
                             >
-                                <div className="text-2xl md:text-3xl font-bold text-accent mb-1">
-                                    {metric.value}
+                                <div className="text-2xl md:text-3xl font-display font-bold text-amber-400 mb-1">
+                                    <AnimatedCounter value={metric.value} />
                                 </div>
-                                <div className="text-sm font-medium text-foreground mb-1">
+                                <div className="text-sm font-semibold text-foreground mb-1">
                                     {metric.label}
                                 </div>
                                 <div className="text-xs text-muted-foreground hidden md:block">
                                     {metric.description}
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </div>
-            {/* Scroll indicator */}
-            <a
-                href="#featured-work"
-                className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center items-center gap-2 animate-float cursor-pointer hover:text-foreground transition-colors group"
-            >
-                <span className="text-sm font-medium text-accent tracking-wide relative group-hover:text-accent/90 transition-colors">
-                    <span className="relative z-10">Explore My Work</span>
-                    {/* Glow effect */}
-                    <span className="absolute inset-0 blur-lg bg-accent/30 animate-pulse-subtle" />
-                </span>
-                <svg
-                    className="w-4 h-4 text-accent drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] group-hover:text-accent/90 transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-            </a>
+
+            {/* Scroll Indicator */}
+            <div className="section-container relative z-10 flex justify-center pt-12 md:pt-16">
+                <ScrollIndicator />
+            </div>
         </section>
     )
 }
