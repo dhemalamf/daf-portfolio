@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { trackButtonClick } from '@/lib/analytics'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -23,8 +23,28 @@ export default function Navigation() {
     const [isVisible, setIsVisible] = useState(true)
     const [lastScrollY, setLastScrollY] = useState(0)
 
+    const navRef = useRef<HTMLDivElement>(null)
+    const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 })
+
+    const updatePill = useCallback(() => {
+        if (!navRef.current) return
+        const activeLink = navRef.current.querySelector('[data-active="true"]') as HTMLElement
+        if (activeLink) {
+            setPillStyle({
+                left: activeLink.offsetLeft,
+                width: activeLink.offsetWidth,
+                opacity: 1,
+            })
+        } else {
+            setPillStyle(prev => ({ ...prev, opacity: 0 }))
+        }
+    }, [])
+
     useEffect(() => {
         setMounted(true)
+    }, [])
+
+    useEffect(() => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY
             setIsScrolled(currentScrollY > 20)
@@ -35,6 +55,14 @@ export default function Navigation() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [lastScrollY])
 
+    useEffect(() => {
+        // Update pill position after render and on resize
+        updatePill()
+        const handleResize = () => updatePill()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [pathname, mounted, updatePill])
+
     if (!mounted) {
         return null
     }
@@ -44,7 +72,7 @@ export default function Navigation() {
             initial={{ y: 0 }}
             animate={{ y: isVisible ? 0 : -100 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen
                 ? 'bg-background/80 backdrop-blur-xl border-b border-border/40'
                 : 'bg-transparent'
                 }`}
@@ -60,7 +88,18 @@ export default function Navigation() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center gap-1">
+                    <div ref={navRef} className="hidden md:flex items-center gap-1 relative">
+                        {/* Sliding Pill Background */}
+                        <motion.div
+                            className="absolute top-0 bottom-0 bg-muted rounded-lg -z-0 pointer-events-none"
+                            animate={{
+                                left: pillStyle.left,
+                                width: pillStyle.width,
+                                opacity: pillStyle.opacity,
+                            }}
+                            transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
+                        />
+
                         {navItems.map((item) => {
                             const isActive = item.href === '/'
                                 ? pathname === '/'
@@ -70,20 +109,14 @@ export default function Navigation() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
+                                    data-active={isActive}
                                     onClick={() => trackButtonClick(`nav_${item.label.toLowerCase()}`)}
-                                    className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-lg ${isActive
+                                    className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-lg z-10 ${isActive
                                         ? 'text-foreground'
                                         : 'text-muted-foreground hover:text-foreground'
                                         }`}
                                 >
-                                    {isActive && (
-                                        <motion.span
-                                            layoutId="activeNav"
-                                            className="absolute inset-0 bg-muted rounded-lg"
-                                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                                        />
-                                    )}
-                                    <span className="relative z-10">{item.label}</span>
+                                    {item.label}
                                 </Link>
                             )
                         })}
@@ -91,7 +124,7 @@ export default function Navigation() {
                         {/* Theme Toggle */}
                         <button
                             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            className="ml-2 relative w-10 h-10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                            className="ml-2 relative w-10 h-10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all z-10"
                             aria-label="Toggle theme"
                         >
                             <AnimatePresence mode="wait">
@@ -129,7 +162,7 @@ export default function Navigation() {
 
                         <Link
                             href="/contact"
-                            className="ml-4 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-violet-500/20"
+                            className="ml-4 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-violet-500/20 z-10"
                         >
                             Get in Touch
                         </Link>
@@ -178,7 +211,7 @@ export default function Navigation() {
                             transition={{ duration: 0.3 }}
                             className="md:hidden overflow-hidden"
                         >
-                            <div className="py-4 border-t border-border/40 space-y-1">
+                            <div className="py-4 border-t border-border/40 space-y-1 bg-background/95 backdrop-blur-xl rounded-b-2xl -mx-4 px-4 mt-2">
                                 {navItems.map((item) => {
                                     const isActive = item.href === '/'
                                         ? pathname === '/'
@@ -192,8 +225,8 @@ export default function Navigation() {
                                                 trackButtonClick(`nav_mobile_${item.label.toLowerCase()}`)
                                                 setIsMobileMenuOpen(false)
                                             }}
-                                            className={`block px-4 py-3 rounded-lg transition-colors ${isActive
-                                                ? 'bg-muted text-foreground font-semibold'
+                                            className={`block px-4 py-3 rounded-xl transition-colors ${isActive
+                                                ? 'bg-violet-500/10 text-foreground font-semibold border border-violet-500/20'
                                                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                                                 }`}
                                         >

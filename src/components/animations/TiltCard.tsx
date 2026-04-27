@@ -59,7 +59,7 @@ export default function TiltCard({
             transition={{ duration: 0.3 }}
             className={className}
         >
-            <div style={{ transform: 'translateZ(50px)' }}>
+            <div className="h-full" style={{ transform: 'translateZ(50px)' }}>
                 {children}
             </div>
         </motion.div>

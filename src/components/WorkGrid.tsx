@@ -98,7 +98,7 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.3, delay: index * 0.05 }}
-                            className={index === 0 ? 'md:col-span-2' : ''}
+                            className={`h-full ${index === 0 ? 'md:col-span-2' : ''}`}
                         >
                             <CaseStudyCard caseStudy={caseStudy} featured={index === 0} />
                         </motion.div>

@@ -99,11 +99,11 @@
 
   /* Glass card effect */
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-2xl;
+    @apply bg-card/80 dark:bg-card/65 backdrop-blur-xl border border-border/50 rounded-2xl;
   }
 
   .glass-card-strong {
-    @apply bg-card/80 backdrop-blur-2xl border border-border/60 rounded-2xl;
+    @apply bg-card/90 dark:bg-card/80 backdrop-blur-2xl border border-border/60 rounded-2xl;
   }
 
   /* Hover lift effect */

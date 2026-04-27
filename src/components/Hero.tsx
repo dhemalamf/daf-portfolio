@@ -8,10 +8,11 @@ import ConstellationBackground from '@/components/ConstellationBackground'
 import TextScramble from '@/components/animations/TextScramble'
 import AnimatedCounter from '@/components/animations/AnimatedCounter'
 import MagneticButton from '@/components/animations/MagneticButton'
+import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function Hero() {
     return (
-        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <section className="relative min-h-screen flex flex-col justify-center pt-20 pb-12 overflow-hidden">
             {/* Constellation Background */}
             <ConstellationBackground />
 
@@ -20,7 +21,7 @@ export default function Hero() {
             <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
 
-            <div className="section-container relative z-10">
+            <div className="section-container relative z-10 flex-1 flex flex-col justify-center">
                 <div className="max-w-4xl">
                     {/* Eyebrow */}
                     <motion.div
@@ -73,7 +74,7 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.7 }}
-                        className="flex flex-wrap gap-4 mb-20"
+                        className="flex flex-wrap gap-4 mb-16"
                     >
                         <MagneticButton strength={0.15}>
                             <Link
@@ -138,28 +139,10 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* Scroll indicator */}
-            <motion.a
-                href="#featured-work"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
-                className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center items-center gap-2 cursor-pointer group"
-            >
-                <span className="text-sm font-medium text-violet-400 tracking-wide">
-                    Explore My Work
-                </span>
-                <motion.svg
-                    animate={{ y: [0, 6, 0] }}
-                    transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                    className="w-4 h-4 text-violet-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </motion.svg>
-            </motion.a>
+            {/* Scroll Indicator */}
+            <div className="section-container relative z-10 flex justify-center pt-12 md:pt-16">
+                <ScrollIndicator />
+            </div>
         </section>
     )
 }

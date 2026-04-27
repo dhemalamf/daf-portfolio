@@ -11,7 +11,7 @@ import { experiences, profile, certifications } from '@/data/profile'
 import Link from 'next/link'
 
 export default function Home() {
-    const featuredCaseStudies = getFeaturedCaseStudies().slice(0, 4)
+    const featuredCaseStudies = getFeaturedCaseStudies().slice(0, 5)
 
     return (
         <>
@@ -27,11 +27,15 @@ export default function Home() {
                         description="Deep dives into products I've shaped, from problem identification to measurable outcomes."
                     />
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {featuredCaseStudies.map((caseStudy, index) => (
-                            <div key={caseStudy.id} className={index === 0 ? 'md:col-span-2' : ''}>
-                                <CaseStudyCard caseStudy={caseStudy} featured={index === 0} />
-                            </div>
+                    {/* Featured card — full width */}
+                    <div className="mb-6">
+                        <CaseStudyCard caseStudy={featuredCaseStudies[0]} featured />
+                    </div>
+
+                    {/* Remaining 4 cards — strict 2×2 equal-height grid */}
+                    <div className="grid md:grid-cols-2 gap-6 auto-rows-fr">
+                        {featuredCaseStudies.slice(1).map((caseStudy) => (
+                            <CaseStudyCard key={caseStudy.id} caseStudy={caseStudy} />
                         ))}
                     </div>
 

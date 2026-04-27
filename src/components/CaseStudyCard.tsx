@@ -19,7 +19,7 @@ export default function CaseStudyCard({ caseStudy, featured = false }: CaseStudy
         >
             <TiltCard className="h-full" tiltAmount={6} scale={1.01}>
                 <article
-                    className={`glass-card overflow-hidden h-full flex flex-col ${featured ? 'md:col-span-2' : ''}`}
+                    className="glass-card overflow-hidden h-full flex flex-col"
                 >
                     {/* Card Header */}
                     <div className="p-6 md:p-8 flex flex-col flex-1">
