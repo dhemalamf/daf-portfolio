@@ -1,3 +1,8 @@
+'use client'
+
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+
 interface SectionHeadingProps {
     eyebrow?: string
     title: string
@@ -11,23 +16,38 @@ export default function SectionHeading({
     description,
     centered = false,
 }: SectionHeadingProps) {
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, amount: 0.5 })
+
     return (
-        <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : ''}`}>
+        <div ref={ref} className={`mb-14 md:mb-20 ${centered ? 'text-center' : ''}`}>
             {eyebrow && (
-                <span className="inline-block text-accent-400 text-sm font-semibold uppercase tracking-wider mb-3">
+                <motion.span
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5 }}
+                    className="inline-block text-violet-400 text-sm font-semibold uppercase tracking-widest mb-4"
+                >
                     {eyebrow}
-                </span>
+                </motion.span>
             )}
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-5"
+            >
                 {title}
-            </h2>
+            </motion.h2>
             {description && (
-                <p
-                    className={`text-muted-foreground text-lg max-w-2xl ${centered ? 'mx-auto' : ''
-                        }`}
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className={`text-muted-foreground text-lg max-w-2xl leading-relaxed ${centered ? 'mx-auto' : ''}`}
                 >
                     {description}
-                </p>
+                </motion.p>
             )}
         </div>
     )

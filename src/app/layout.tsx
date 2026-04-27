@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/components/theme-provider'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import StudioShortcut from '@/components/StudioShortcut'
+import SmoothScroll from '@/components/SmoothScroll'
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://dhema.me'),
@@ -53,12 +54,14 @@ export default function RootLayout({
                     defaultTheme="dark"
                     enableSystem
                 >
-                    <StudioShortcut />
-                    <Navigation />
-                    <main className="flex-grow">
-                        {children}
-                    </main>
-                    <Footer />
+                    <SmoothScroll>
+                        <StudioShortcut />
+                        <Navigation />
+                        <main className="flex-grow">
+                            {children}
+                        </main>
+                        <Footer />
+                    </SmoothScroll>
                 </ThemeProvider>
             </body>
         </html>
