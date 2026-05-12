@@ -2,135 +2,132 @@ import Link from 'next/link'
 import { profile } from '@/data/profile'
 
 export default function Footer() {
-    const currentYear = new Date().getFullYear()
-
-    const socialLinks = [
-        {
-            href: `mailto:${profile.email}`,
-            label: 'Email',
-            icon: (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                </svg>
-            ),
-        },
-        {
-            href: profile.linkedin,
-            label: 'LinkedIn',
-            external: true,
-            icon: (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                </svg>
-            ),
-        },
-        {
-            href: profile.github,
-            label: 'GitHub',
-            external: true,
-            icon: (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-            ),
-        },
-        {
-            href: profile.twitter,
-            label: 'Twitter',
-            external: true,
-            icon: (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-            ),
-        },
-        {
-            href: profile.whatsapp,
-            label: 'WhatsApp',
-            external: true,
-            icon: (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-                </svg>
-            ),
-        },
-    ]
-
-    const navLinks = [
-        { label: 'Home', href: '/' },
-        { label: 'About', href: '/about' },
-        { label: 'Work', href: '/work' },
-        { label: 'Blog', href: '/blog' },
-        { label: 'Contact', href: '/contact' },
-    ]
+    const year = new Date().getFullYear()
 
     return (
-        <footer className="border-t border-border/40 bg-background relative overflow-hidden">
-            {/* Giant background text */}
-            <div className="absolute bottom-0 left-0 right-0 text-[12rem] md:text-[20rem] font-display font-bold text-foreground/[0.02] leading-none whitespace-nowrap pointer-events-none select-none text-center translate-y-1/3">
-                DHEMA
-            </div>
-
-            <div className="section-container py-16 md:py-20 relative z-10">
-                <div className="grid md:grid-cols-2 gap-12 md:gap-12">
-                    {/* Brand & Connect */}
-                    <div className="space-y-8">
-                        <div className="space-y-4">
-                            <Link
-                                href="/"
-                                className="text-xl font-display font-bold tracking-widest hover:text-violet-400 transition-colors"
+        <footer className="relative border-t border-foreground/15 mt-24 grain">
+            <div className="section-container py-16 md:py-24 relative z-10">
+                {/* Top: huge editorial CTA */}
+                <div className="border-b border-foreground/15 pb-16 mb-12">
+                    <div className="grid grid-cols-12 gap-6 items-end">
+                        <div className="col-span-12 lg:col-span-8">
+                            <div className="mono-label text-foreground/50 mb-6">
+                                <span className="text-vermillion">●</span> 05 — Get in touch
+                            </div>
+                            <h2 className="h-display text-balance">
+                                Let&apos;s ship
+                                <span className="ital text-vermillion"> something</span>
+                                <br className="hidden md:block" /> meaningful
+                                <span className="text-vermillion">.</span>
+                            </h2>
+                        </div>
+                        <div className="col-span-12 lg:col-span-4 flex flex-col gap-3">
+                            <a
+                                href={`mailto:${profile.email}`}
+                                data-testid="footer-email"
+                                className="btn-ink justify-between w-full"
                             >
-                                <span className="text-violet-500">D</span>hema
-                            </Link>
-                            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-                                {profile.shortBio}
-                            </p>
-                        </div>
-
-                        {/* Social Icons */}
-                        <div className="flex gap-3">
-                            {socialLinks.map((link) => (
-                                <a
-                                    key={link.label}
-                                    href={link.href}
-                                    target={link.external ? '_blank' : undefined}
-                                    rel={link.external ? 'noopener noreferrer' : undefined}
-                                    className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground hover:bg-violet-500/10 hover:text-violet-400 transition-all hover:-translate-y-0.5"
-                                    aria-label={link.label}
-                                >
-                                    {link.icon}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Quick Links */}
-                    <div className="space-y-4 md:text-right">
-                        <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                            Navigation
-                        </h3>
-                        <div className="flex flex-col gap-2">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className="text-muted-foreground hover:text-foreground text-sm transition-colors inline-flex md:justify-end"
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
+                                <span>{profile.email}</span>
+                                <span aria-hidden>→</span>
+                            </a>
+                            <a
+                                href={profile.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-testid="footer-linkedin"
+                                className="btn-outline justify-between w-full"
+                            >
+                                <span>LinkedIn</span>
+                                <span aria-hidden>↗</span>
+                            </a>
+                            <a
+                                href={profile.whatsapp}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-testid="footer-whatsapp"
+                                className="btn-outline justify-between w-full"
+                            >
+                                <span>WhatsApp</span>
+                                <span aria-hidden>↗</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-muted-foreground text-sm">
-                        &copy; {currentYear} {profile.name}. All rights reserved.
-                    </p>
-                    <p className="text-muted-foreground/60 text-xs">
-                        Built with Next.js & Tailwind CSS
-                    </p>
+                {/* Mid columns */}
+                <div className="grid grid-cols-12 gap-6 mb-16">
+                    <div className="col-span-12 md:col-span-6">
+                        <div className="font-serif text-3xl leading-tight tracking-tight mb-3">
+                            Dhema<span className="text-vermillion">.</span>
+                        </div>
+                        <p className="text-sm text-foreground/65 max-w-md">
+                            {profile.shortBio}
+                        </p>
+                    </div>
+
+                    <div className="col-span-6 md:col-span-3">
+                        <div className="mono-label text-foreground/40 mb-4">Navigate</div>
+                        <ul className="space-y-2 text-sm">
+                            {[
+                                ['Index', '/'],
+                                ['About', '/about'],
+                                ['Work', '/work'],
+                                ['Journal', '/blog'],
+                                ['Contact', '/contact'],
+                            ].map(([label, href]) => (
+                                <li key={href}>
+                                    <Link
+                                        href={href}
+                                        className="text-foreground/75 hover:text-vermillion link-underline transition-colors"
+                                    >
+                                        {label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="col-span-6 md:col-span-3">
+                        <div className="mono-label text-foreground/40 mb-4">Elsewhere</div>
+                        <ul className="space-y-2 text-sm">
+                            {[
+                                ['LinkedIn', profile.linkedin],
+                                ['GitHub', profile.github],
+                                ['Twitter / X', profile.twitter],
+                                ['Email', `mailto:${profile.email}`],
+                                ['Resume', profile.resume],
+                            ].map(([label, href]) => (
+                                <li key={label}>
+                                    <a
+                                        href={href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-foreground/75 hover:text-vermillion link-underline transition-colors"
+                                    >
+                                        {label} ↗
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Bottom bar */}
+                <div className="grid grid-cols-12 border-t border-foreground/15 pt-6 mono-label text-foreground/45 gap-y-2">
+                    <div className="col-span-12 md:col-span-4">© {year} Dhema. All rights reserved.</div>
+                    <div className="col-span-12 md:col-span-4 md:text-center">
+                        Jakarta · Indonesia · UTC+7
+                    </div>
+                    <div className="col-span-12 md:col-span-4 md:text-right">
+                        Set in Instrument Serif · Geist · JetBrains Mono
+                    </div>
+                </div>
+            </div>
+
+            {/* Giant background wordmark */}
+            <div className="select-none pointer-events-none overflow-hidden border-t border-foreground/15">
+                <div className="font-serif text-[28vw] leading-[0.78] tracking-tightest text-foreground/[0.05] text-center">
+                    Dhema<span className="ital text-vermillion/20">.</span>
                 </div>
             </div>
         </footer>

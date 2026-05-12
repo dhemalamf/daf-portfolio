@@ -1,53 +1,74 @@
 'use client'
 
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, ReactNode } from 'react'
 
 interface SectionHeadingProps {
+    numeral?: string
     eyebrow?: string
-    title: string
-    description?: string
-    centered?: boolean
+    title: ReactNode
+    description?: ReactNode
+    align?: 'left' | 'center'
+    accent?: string
 }
 
 export default function SectionHeading({
+    numeral,
     eyebrow,
     title,
     description,
-    centered = false,
+    align = 'left',
+    accent,
 }: SectionHeadingProps) {
     const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, amount: 0.5 })
+    const isInView = useInView(ref, { once: true, amount: 0.4 })
 
     return (
-        <div ref={ref} className={`mb-14 md:mb-20 ${centered ? 'text-center' : ''}`}>
-            {eyebrow && (
-                <motion.span
-                    initial={{ opacity: 0, y: 10 }}
+        <div
+            ref={ref}
+            className={`mb-12 md:mb-20 ${align === 'center' ? 'text-center' : ''}`}
+        >
+            {/* numeral + eyebrow */}
+            {(numeral || eyebrow) && (
+                <motion.div
+                    initial={{ opacity: 0, y: 8 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5 }}
-                    className="inline-block text-violet-400 text-sm font-semibold uppercase tracking-widest mb-4"
+                    className={`flex items-center gap-3 mb-5 ${align === 'center' ? 'justify-center' : ''}`}
                 >
-                    {eyebrow}
-                </motion.span>
+                    {numeral && (
+                        <span className="mono-label text-vermillion">{numeral}</span>
+                    )}
+                    {eyebrow && (
+                        <>
+                            <span className="h-px w-8 bg-foreground/30" />
+                            <span className="mono-label text-foreground/60">{eyebrow}</span>
+                        </>
+                    )}
+                </motion.div>
             )}
+
             <motion.h2
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 18 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-5"
+                className="h-2 mb-4 text-balance"
             >
                 {title}
+                {accent && <span className="ital text-vermillion"> {accent}</span>}
             </motion.h2>
+
             {description && (
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
+                <motion.div
+                    initial={{ opacity: 0, y: 18 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className={`text-muted-foreground text-lg max-w-2xl leading-relaxed ${centered ? 'mx-auto' : ''}`}
+                    transition={{ duration: 0.6, delay: 0.15 }}
+                    className={`text-foreground/70 text-base sm:text-lg leading-relaxed max-w-2xl text-pretty ${
+                        align === 'center' ? 'mx-auto' : ''
+                    }`}
                 >
                     {description}
-                </motion.p>
+                </motion.div>
             )}
         </div>
     )

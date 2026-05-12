@@ -3,158 +3,136 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { trackButtonClick } from '@/lib/analytics'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Work', href: '/work' },
-    { label: 'Blog', href: '/blog' },
+    { label: 'Index', href: '/', short: '00' },
+    { label: 'About', href: '/about', short: '01' },
+    { label: 'Work', href: '/work', short: '02' },
+    { label: 'Journal', href: '/blog', short: '03' },
+    { label: 'Contact', href: '/contact', short: '04' },
 ]
 
 export default function Navigation() {
     const pathname = usePathname()
-    const { theme, setTheme } = useTheme()
+    const { theme, setTheme, resolvedTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const [isVisible, setIsVisible] = useState(true)
-    const [lastScrollY, setLastScrollY] = useState(0)
 
-    const navRef = useRef<HTMLDivElement>(null)
-    const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 })
+    useEffect(() => setMounted(true), [])
 
-    const updatePill = useCallback(() => {
-        if (!navRef.current) return
-        const activeLink = navRef.current.querySelector('[data-active="true"]') as HTMLElement
-        if (activeLink) {
-            setPillStyle({
-                left: activeLink.offsetLeft,
-                width: activeLink.offsetWidth,
-                opacity: 1,
-            })
-        } else {
-            setPillStyle(prev => ({ ...prev, opacity: 0 }))
-        }
+    useEffect(() => {
+        const onScroll = () => setIsScrolled(window.scrollY > 16)
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
-    useEffect(() => {
-        setMounted(true)
-    }, [])
+    if (!mounted) return null
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY
-            setIsScrolled(currentScrollY > 20)
-            setIsVisible(currentScrollY < lastScrollY || currentScrollY < 100)
-            setLastScrollY(currentScrollY)
-        }
-        window.addEventListener('scroll', handleScroll, { passive: true })
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [lastScrollY])
-
-    useEffect(() => {
-        // Update pill position after render and on resize
-        updatePill()
-        const handleResize = () => updatePill()
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [pathname, mounted, updatePill])
-
-    if (!mounted) {
-        return null
-    }
+    const isDark = (resolvedTheme || theme) === 'dark'
 
     return (
         <motion.nav
-            initial={{ y: 0 }}
-            animate={{ y: isVisible ? 0 : -100 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen
-                ? 'bg-background/80 backdrop-blur-xl border-b border-border/40'
-                : 'bg-transparent'
-                }`}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+                isScrolled || isMobileMenuOpen
+                    ? 'bg-background/85 backdrop-blur-xl border-b border-foreground/10'
+                    : 'bg-transparent'
+            }`}
+            data-testid="primary-navigation"
         >
             <div className="section-container">
                 <div className="flex items-center justify-between h-16 md:h-20">
-                    {/* Logo */}
+                    {/* Logo / wordmark */}
                     <Link
                         href="/"
-                        className="text-lg md:text-xl font-display font-bold tracking-tight hover:text-violet-400 transition-colors"
+                        data-testid="nav-logo"
+                        className="group flex items-baseline gap-2"
                     >
-                        <span className="text-violet-500">D</span>hema
+                        <span className="font-serif text-2xl md:text-3xl leading-none tracking-tightest">
+                            Dhema<span className="text-vermillion">.</span>
+                        </span>
+                        <span className="hidden sm:inline mono-label text-foreground/40 group-hover:text-foreground transition-colors">
+                            Product Manager
+                        </span>
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <div ref={navRef} className="hidden md:flex items-center gap-1 relative">
-                        {/* Sliding Pill Background */}
-                        <motion.div
-                            className="absolute top-0 bottom-0 bg-muted rounded-lg -z-0 pointer-events-none"
-                            animate={{
-                                left: pillStyle.left,
-                                width: pillStyle.width,
-                                opacity: pillStyle.opacity,
-                            }}
-                            transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
-                        />
+                    {/* Desktop nav */}
+                    <div className="hidden md:flex items-center gap-8">
+                        <div className="flex items-center gap-7">
+                            {navItems.map((item) => {
+                                const isActive =
+                                    item.href === '/'
+                                        ? pathname === '/'
+                                        : pathname.startsWith(item.href)
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        data-testid={`nav-link-${item.label.toLowerCase()}`}
+                                        onClick={() => trackButtonClick(`nav_${item.label.toLowerCase()}`)}
+                                        className="group flex items-baseline gap-1.5"
+                                    >
+                                        <span className="mono-label text-foreground/35">{item.short}</span>
+                                        <span
+                                            className={`text-sm tracking-tight link-underline transition-colors ${
+                                                isActive
+                                                    ? 'text-foreground link-underline-active'
+                                                    : 'text-foreground/70 group-hover:text-foreground'
+                                            }`}
+                                        >
+                                            {item.label}
+                                        </span>
+                                    </Link>
+                                )
+                            })}
+                        </div>
 
-                        {navItems.map((item) => {
-                            const isActive = item.href === '/'
-                                ? pathname === '/'
-                                : pathname.startsWith(item.href)
+                        <div className="h-5 w-px bg-foreground/15" />
 
-                            return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    data-active={isActive}
-                                    onClick={() => trackButtonClick(`nav_${item.label.toLowerCase()}`)}
-                                    className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-lg z-10 ${isActive
-                                        ? 'text-foreground'
-                                        : 'text-muted-foreground hover:text-foreground'
-                                        }`}
-                                >
-                                    {item.label}
-                                </Link>
-                            )
-                        })}
-
-                        {/* Theme Toggle */}
+                        {/* Theme toggle */}
                         <button
-                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            className="ml-2 relative w-10 h-10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all z-10"
+                            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                            data-testid="theme-toggle-desktop"
+                            className="w-9 h-9 flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors border border-foreground/15 hover:border-foreground/40"
                             aria-label="Toggle theme"
                         >
-                            <AnimatePresence mode="wait">
-                                {theme === 'dark' ? (
+                            <AnimatePresence mode="wait" initial={false}>
+                                {isDark ? (
                                     <motion.svg
                                         key="sun"
-                                        initial={{ scale: 0, rotate: -90 }}
-                                        animate={{ scale: 1, rotate: 0 }}
-                                        exit={{ scale: 0, rotate: 90 }}
+                                        initial={{ rotate: -45, opacity: 0 }}
+                                        animate={{ rotate: 0, opacity: 1 }}
+                                        exit={{ rotate: 45, opacity: 0 }}
                                         transition={{ duration: 0.2 }}
-                                        className="w-5 h-5"
+                                        className="w-4 h-4"
                                         fill="none"
                                         stroke="currentColor"
+                                        strokeWidth={1.5}
                                         viewBox="0 0 24 24"
                                     >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        <circle cx="12" cy="12" r="4" />
+                                        <path strokeLinecap="round" d="M12 2v2m0 16v2M4 12H2m20 0h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5" />
                                     </motion.svg>
                                 ) : (
                                     <motion.svg
                                         key="moon"
-                                        initial={{ scale: 0, rotate: 90 }}
-                                        animate={{ scale: 1, rotate: 0 }}
-                                        exit={{ scale: 0, rotate: -90 }}
+                                        initial={{ rotate: 45, opacity: 0 }}
+                                        animate={{ rotate: 0, opacity: 1 }}
+                                        exit={{ rotate: -45, opacity: 0 }}
                                         transition={{ duration: 0.2 }}
-                                        className="w-5 h-5"
+                                        className="w-4 h-4"
                                         fill="none"
                                         stroke="currentColor"
+                                        strokeWidth={1.5}
                                         viewBox="0 0 24 24"
                                     >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" />
                                     </motion.svg>
                                 )}
                             </AnimatePresence>
@@ -162,87 +140,73 @@ export default function Navigation() {
 
                         <Link
                             href="/contact"
-                            className="ml-4 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-violet-500/20 z-10"
+                            data-testid="nav-cta-contact"
+                            className="btn-ink"
                         >
-                            Get in Touch
+                            Let&apos;s talk
+                            <span className="inline-block">↗</span>
                         </Link>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <div className="flex items-center gap-3 md:hidden">
+                    {/* Mobile */}
+                    <div className="flex md:hidden items-center gap-2">
                         <button
-                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            className="relative w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                            data-testid="theme-toggle-mobile"
+                            className="w-9 h-9 flex items-center justify-center text-foreground/60 border border-foreground/15"
                             aria-label="Toggle theme"
                         >
-                            {theme === 'dark' ? (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                            ) : (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
-                            )}
+                            {isDark ? '☀' : '☾'}
                         </button>
                         <button
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="p-2 text-muted-foreground hover:text-foreground"
+                            onClick={() => setIsMobileMenuOpen((v) => !v)}
+                            data-testid="mobile-menu-toggle"
+                            className="w-9 h-9 flex items-center justify-center text-foreground border border-foreground/15"
                             aria-label="Toggle menu"
                         >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                {isMobileMenuOpen ? (
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                ) : (
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                                )}
-                            </svg>
+                            <span className="font-mono text-xs">{isMobileMenuOpen ? '×' : '≡'}</span>
                         </button>
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
                 <AnimatePresence>
                     {isMobileMenuOpen && (
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
+                            transition={{ duration: 0.25 }}
                             className="md:hidden overflow-hidden"
+                            data-testid="mobile-menu"
                         >
-                            <div className="py-4 border-t border-border/40 space-y-1 bg-background/95 backdrop-blur-xl rounded-b-2xl -mx-4 px-4 mt-2">
+                            <div className="py-4 border-t border-foreground/10 space-y-1">
                                 {navItems.map((item) => {
-                                    const isActive = item.href === '/'
-                                        ? pathname === '/'
-                                        : pathname.startsWith(item.href)
-
+                                    const isActive =
+                                        item.href === '/'
+                                            ? pathname === '/'
+                                            : pathname.startsWith(item.href)
                                     return (
                                         <Link
                                             key={item.href}
                                             href={item.href}
-                                            onClick={() => {
-                                                trackButtonClick(`nav_mobile_${item.label.toLowerCase()}`)
-                                                setIsMobileMenuOpen(false)
-                                            }}
-                                            className={`block px-4 py-3 rounded-xl transition-colors ${isActive
-                                                ? 'bg-violet-500/10 text-foreground font-semibold border border-violet-500/20'
-                                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                                                }`}
+                                            data-testid={`nav-mobile-link-${item.label.toLowerCase()}`}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={`flex items-baseline gap-3 py-3 border-b border-foreground/5 ${
+                                                isActive ? 'text-foreground' : 'text-foreground/70'
+                                            }`}
                                         >
-                                            {item.label}
+                                            <span className="mono-label text-foreground/30">{item.short}</span>
+                                            <span className="font-serif text-2xl tracking-tight">{item.label}</span>
                                         </Link>
                                     )
                                 })}
                                 <Link
                                     href="/contact"
-                                    onClick={() => {
-                                        trackButtonClick('nav_mobile_get_in_touch')
-                                        setIsMobileMenuOpen(false)
-                                    }}
-                                    className="block px-4 py-3 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl transition-colors text-center mt-2"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="mt-4 btn-ink w-full justify-center"
+                                    data-testid="nav-mobile-cta-contact"
                                 >
-                                    Get in Touch
+                                    Let&apos;s talk ↗
                                 </Link>
                             </div>
                         </motion.div>

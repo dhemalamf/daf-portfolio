@@ -1,0 +1,37 @@
+{
+  "summary": "Frontend-only review of Next.js editorial portfolio (dhema.me). All routes load (/, /about, /work, /work/[slug], /contact, /blog), 0 console errors / 0 hydration warnings, theme toggle correctly flips .dark on html and swaps body bg/fg (rgb(12,12,14)/parchment <-> parchment/ink). All critical data-testids (nav, theme-toggle, hero CTAs, mobile menu, case-study-card-{slug}, footer-email/linkedin/whatsapp, sort-by-date/title/asc/desc, work-chat-cta, contact-resume-btn) are present after client mount. /work has 7 case studies and sort buttons reorder correctly (title-asc reordered as expected). Mobile menu opens at 390px and lists all 5 nav-mobile-link-* entries. Marquee renders horizontal (width 1920, height 90, overflow hidden). AnimatedCounter triggers on scroll into view. However, two important issues found: (1) On SectionHeading-based sections (home: 'Case studies, deeply told.' and 'A trajectory across scaling products.'; case-study detail: title + lede), the title and the description paragraph visually OVERLAP each other - a layout bug. (2) The test spec asks for data-testid='case-study-card-portfolio-revamp-68' but no such slug exists in /app/src/data/caseStudies.ts; the actual featured slug is 'sampoerna-myhero-decoupling'.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "SectionHeading (used in app/page.tsx, app/work/[slug]/page.tsx via CaseStudyContent)", "issue": "Section title (e.g. 'Case studies, deeply told.', 'A trajectory across scaling products.', and the case-study detail H1 'AI-Powered Learning Management System') visually overlaps the description paragraph below it. The italic accent word and the body lede render on top of each other. Reproduces on / and /work/ai-lms-platform in both dark and light themes.", "selector": "h2/h1 within section-heading container", "priority": "HIGH"},
+      {"component": "Home featured case study", "issue": "Test spec expects data-testid='case-study-card-portfolio-revamp-68' but featured slug is 'sampoerna-myhero-decoupling'. Either rename the slug to 'portfolio-revamp-68' (as suggested by the spec) or update spec.", "selector": "[data-testid=case-study-card-portfolio-revamp-68]", "priority": "MEDIUM"},
+      {"component": "Hero AnimatedCounter", "issue": "Counter shows mid-tween decimals like '46.0%', '4.2+', '2.5' when scrolled. Final settled values reach the targets, but the easing on integer metrics like '5+' and '3' currently animates through decimals (visual nit; consider rounding for integer-suffix metrics).", "selector": "[data-testid=hero-impact-metrics]", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Home / 'Case studies' section heading", "issues": ["Headline + lede overlap (layout bug)"]},
+      {"screen": "Home / Experience section heading 'A trajectory across scaling products.'", "issues": ["Same headline + lede overlap"]},
+      {"screen": "/work/ai-lms-platform", "issues": ["Title and intro paragraph overlap at top of case study"]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix SectionHeading layout so the italic-accented headline and the description paragraph do not overlap (likely an absolute positioning or negative margin issue in /app/src/components/SectionHeading.tsx or its consumers).",
+    "Decide on the featured case-study slug: either add a 'portfolio-revamp-68' slug entry or update the testing spec to use 'sampoerna-myhero-decoupling'.",
+    "(Optional) Round AnimatedCounter intermediate values for integer-target metrics (e.g. 5+, 3) so decimals aren't shown mid-animation."
+  ],
+  "critical_code_review_comments": [
+    "Navigation.tsx renders null until mounted, meaning nav is missing from SSR HTML; fine for client-only sites but causes initial CLS/blank-nav flicker (~50-150ms). Consider rendering a non-interactive shell during SSR.",
+    "Next.js dev server crashed mid-test (ERR_CONNECTION_REFUSED on /work after several minutes of inactivity) and had to be restarted via `nohup yarn dev`. Not supervisor-managed - flaky for long sessions; recommend wiring into supervisor.",
+    "Cross-origin warning in next dev: 'Cross origin request detected from <preview-host> to /_next/* resource'. Set allowedDevOrigins in next.config.js to silence and future-proof.",
+    "data-testid for experience cards contains parentheses and spaces ('experience-card-learnext-(prev:-gokampus)') — works but is fragile for CSS selectors; consider slugifying."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "85%"},
+  "test_credentials": "none (no auth)",
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Next.js dev server runs at localhost:3000 (not supervisor managed; restart with `cd /app && nohup yarn dev > /var/log/nextjs.log 2>&1 &`). Public preview URL returns 403 from outside, so use localhost for playwright. No /app/backend or /app/frontend - Next.js lives at /app root. All routes tested and load with 0 console errors. The two most important defects to validate after fix: (1) SectionHeading overlap on home + case-study detail, (2) featured slug mismatch. Other testids all verified working.",
+  "rca of the issue": "SectionHeading overlap: most likely the description <p> is absolutely positioned (or has a negative margin-top) intended to sit BESIDE the headline in a 12-col grid but on current viewports collapses on top of it. Check SectionHeading.tsx and its grid placement in app/page.tsx and CaseStudyContent.tsx — verify the description column has correct col-start/col-span and is not absolutely positioned."
+}

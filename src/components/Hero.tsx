@@ -4,144 +4,144 @@ import Link from 'next/link'
 import { profile, impactMetrics } from '@/data/profile'
 import { trackButtonClick } from '@/lib/analytics'
 import { motion } from 'framer-motion'
-import ConstellationBackground from '@/components/ConstellationBackground'
-import TextScramble from '@/components/animations/TextScramble'
 import AnimatedCounter from '@/components/animations/AnimatedCounter'
-import MagneticButton from '@/components/animations/MagneticButton'
-import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function Hero() {
     return (
-        <section className="relative min-h-screen flex flex-col justify-center pt-20 pb-12 overflow-hidden">
-            {/* Constellation Background */}
-            <ConstellationBackground />
+        <section className="relative pt-32 md:pt-40 pb-12 overflow-hidden grain">
+            {/* Hairline grid lines (decorative) */}
+            <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none opacity-[0.06]"
+                style={{
+                    backgroundImage:
+                        'linear-gradient(to right, currentColor 1px, transparent 1px)',
+                    backgroundSize: 'calc(100%/12) 100%',
+                }}
+            />
 
-            {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-b from-violet-500/[0.03] via-transparent to-transparent pointer-events-none" />
-            <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
-
-            <div className="section-container relative z-10 flex-1 flex flex-col justify-center">
-                <div className="max-w-4xl">
-                    {/* Eyebrow */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-8"
-                    >
-                        <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                        <span className="text-emerald-400 text-sm font-medium">
-                            Open to collaboration
+            <div className="section-container relative z-10">
+                {/* Status row */}
+                <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex items-center justify-between mb-10 md:mb-16 border-t border-foreground/15 pt-4"
+                >
+                    <div className="flex items-center gap-3 mono-label text-foreground/70">
+                        <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                         </span>
-                    </motion.div>
+                        Open to collaboration · Jakarta, ID
+                    </div>
+                    <div className="hidden sm:block mono-label text-foreground/40">
+                        Vol. 04 — Edition {new Date().getFullYear()}
+                    </div>
+                </motion.div>
 
-                    {/* Main heading */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.3 }}
-                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.95] mb-8"
-                    >
-                        <span className="block mb-2">
-                            Hi, I&apos;m{' '}
-                            <span className="gradient-text">
-                                <TextScramble text={profile.name.split(' ')[0]} delay={600} duration={1000} />
+                {/* Asymmetric headline grid */}
+                <div className="grid grid-cols-12 gap-x-6 md:gap-x-8 items-end mb-16 md:mb-24">
+                    <div className="col-span-12 lg:col-span-8">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.1 }}
+                            className="mono-label text-foreground/50 mb-6"
+                        >
+                            <span className="text-vermillion">●</span> Currently — Product Manager @ Doitpay
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="h-display text-balance text-foreground"
+                        >
+                            Dhema<span className="ital">&apos;</span>alam{' '}
+                            <span className="ital text-vermillion">Fajrianto</span>
+                            <span className="block text-foreground/45 mt-2 text-[0.55em] leading-none tracking-tight">
+                                — building products with measurable impact.
                             </span>
-                        </span>
-                        <span className="block text-muted-foreground/80">
-                            A {profile.title}
-                        </span>
-                    </motion.h1>
+                        </motion.h1>
+                    </div>
 
-                    {/* Tagline */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.5 }}
-                        className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed"
-                    >
-                        With{' '}
-                        <span className="text-foreground font-semibold">4+ years of experience</span>,
-                        I&apos;ve helped organizations turn{' '}
-                        <span className="text-foreground font-semibold">complex challenges into impactful digital products</span>{' '}
-                        and scale products across fintech, public sector, and edtech using{' '}
-                        <span className="text-foreground font-semibold">AI-powered systems</span>.
-                    </motion.p>
-
-                    {/* CTA Buttons */}
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.7 }}
-                        className="flex flex-wrap gap-4 mb-16"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
+                        className="col-span-12 lg:col-span-4 mt-10 lg:mt-0 lg:pl-6 lg:border-l lg:border-foreground/15"
                     >
-                        <MagneticButton strength={0.15}>
+                        <p className="text-foreground/75 text-base md:text-lg leading-relaxed text-pretty">
+                            Product Manager with{' '}
+                            <span className="ital text-foreground">four+ years</span> turning
+                            complex challenges into impactful digital products across{' '}
+                            <span className="text-foreground">fintech</span>,{' '}
+                            <span className="text-foreground">public sector</span>, and{' '}
+                            <span className="text-foreground">AI-enabled</span> platforms.
+                        </p>
+
+                        <div className="mt-8 flex flex-wrap items-center gap-3">
                             <Link
                                 href="/work"
-                                onClick={() => trackButtonClick('hero_view_my_work')}
-                                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/20"
+                                onClick={() => trackButtonClick('hero_view_work')}
+                                className="btn-ink"
+                                data-testid="hero-view-work-btn"
                             >
-                                View My Work
-                                <svg
-                                    className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
+                                View selected work
+                                <span aria-hidden>→</span>
                             </Link>
-                        </MagneticButton>
-                        <MagneticButton strength={0.15}>
                             <a
                                 href={profile.resume}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackButtonClick('hero_view_resume')}
-                                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-transparent border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
+                                className="btn-outline"
+                                data-testid="hero-view-resume-btn"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                View Resume
+                                Resume
+                                <span aria-hidden>↗</span>
                             </a>
-                        </MagneticButton>
+                        </div>
                     </motion.div>
+                </div>
 
-                    {/* Impact Metrics */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.9 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-                    >
-                        {impactMetrics.map((metric, index) => (
+                {/* Impact metrics — editorial table */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.7 }}
+                    className="border-t border-foreground/20"
+                    data-testid="hero-impact-metrics"
+                >
+                    <div className="mono-label text-foreground/50 py-4 flex items-center justify-between border-b border-foreground/10">
+                        <span>Selected impact · 2021 — 2026</span>
+                        <span className="hidden sm:inline">{impactMetrics.length} metrics</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-foreground/10 border-b border-foreground/20">
+                        {impactMetrics.map((m, i) => (
                             <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
+                                key={i}
+                                initial={{ opacity: 0, y: 16 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 1.0 + index * 0.1 }}
-                                className="group glass-card p-5 md:p-6 hover-lift accent-border"
+                                transition={{ duration: 0.5, delay: 0.9 + i * 0.08 }}
+                                className="p-5 md:p-7 group hover:bg-foreground/[0.03] transition-colors"
                             >
-                                <div className="text-2xl md:text-3xl font-display font-bold text-amber-400 mb-1">
-                                    <AnimatedCounter value={metric.value} />
+                                <div className="mono-label text-foreground/40 mb-3">0{i + 1}</div>
+                                <div className="font-serif text-5xl md:text-6xl leading-none tracking-tighter text-foreground mb-3">
+                                    <AnimatedCounter value={m.value} />
                                 </div>
-                                <div className="text-sm font-semibold text-foreground mb-1">
-                                    {metric.label}
+                                <div className="text-sm font-medium text-foreground mb-1">
+                                    {m.label}
                                 </div>
-                                <div className="text-xs text-muted-foreground hidden md:block">
-                                    {metric.description}
+                                <div className="text-xs text-foreground/55 leading-snug">
+                                    {m.description}
                                 </div>
                             </motion.div>
                         ))}
-                    </motion.div>
-                </div>
-            </div>
-
-            {/* Scroll Indicator */}
-            <div className="section-container relative z-10 flex justify-center pt-12 md:pt-16">
-                <ScrollIndicator />
+                    </div>
+                </motion.div>
             </div>
         </section>
     )

@@ -16,91 +16,95 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
     const [sortKey, setSortKey] = useState<SortKey>('publishDate')
     const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
 
-    const sortedCaseStudies = useMemo(() => {
+    const sorted = useMemo(() => {
         return [...initialCaseStudies].sort((a, b) => {
             if (sortKey === 'title') {
                 return sortDirection === 'asc'
                     ? a.title.localeCompare(b.title)
                     : b.title.localeCompare(a.title)
-            } else {
-                const dateA = new Date(a.publishDate).getTime()
-                const dateB = new Date(b.publishDate).getTime()
-                return sortDirection === 'asc' ? dateA - dateB : dateB - dateA
             }
+            const dateA = new Date(a.publishDate).getTime()
+            const dateB = new Date(b.publishDate).getTime()
+            return sortDirection === 'asc' ? dateA - dateB : dateB - dateA
         })
     }, [initialCaseStudies, sortKey, sortDirection])
 
     return (
         <div>
             {/* Controls */}
-            <div className="flex flex-col sm:flex-row justify-end mb-8 gap-4">
-                <div className="flex items-center gap-3 bg-muted/50 p-2 rounded-xl border border-border/50">
-                    <span className="text-sm text-muted-foreground pl-2">Sort by:</span>
-
-                    {/* Sort Key Selector */}
-                    <div className="flex bg-background/50 rounded-lg p-1">
-                        <button
-                            onClick={() => setSortKey('title')}
-                            className={`px-3 py-1.5 text-sm rounded-md transition-all ${sortKey === 'title'
-                                ? 'bg-background text-foreground shadow-sm border border-border/50'
-                                : 'text-muted-foreground hover:text-foreground'
-                                }`}
-                        >
-                            Name
-                        </button>
-                        <button
-                            onClick={() => setSortKey('publishDate')}
-                            className={`px-3 py-1.5 text-sm rounded-md transition-all ${sortKey === 'publishDate'
-                                ? 'bg-background text-foreground shadow-sm border border-border/50'
-                                : 'text-muted-foreground hover:text-foreground'
-                                }`}
-                        >
-                            Date
-                        </button>
-                    </div>
-
-                    <div className="w-px h-4 bg-border" />
-
-                    {/* Sort Direction Selector */}
-                    <div className="flex bg-background/50 rounded-lg p-1">
-                        <button
-                            onClick={() => setSortDirection('asc')}
-                            className={`px-3 py-1.5 text-sm rounded-md transition-all ${sortDirection === 'asc'
-                                ? 'bg-background text-foreground shadow-sm border border-border/50'
-                                : 'text-muted-foreground hover:text-foreground'
-                                }`}
-                            aria-label="Sort Ascending"
-                        >
-                            ↑ Asc
-                        </button>
-                        <button
-                            onClick={() => setSortDirection('desc')}
-                            className={`px-3 py-1.5 text-sm rounded-md transition-all ${sortDirection === 'desc'
-                                ? 'bg-background text-foreground shadow-sm border border-border/50'
-                                : 'text-muted-foreground hover:text-foreground'
-                                }`}
-                            aria-label="Sort Descending"
-                        >
-                            ↓ Desc
-                        </button>
-                    </div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 border-b border-foreground/15 pb-5">
+                <div className="mono-label text-foreground/50">
+                    {sorted.length} case studies · ordered by{' '}
+                    <span className="text-foreground">
+                        {sortKey === 'title' ? 'name' : 'date'}
+                    </span>{' '}
+                    ({sortDirection})
+                </div>
+                <div className="flex items-center gap-1">
+                    <button
+                        onClick={() => setSortKey('publishDate')}
+                        data-testid="sort-by-date"
+                        className={`mono-label px-3 py-2 border ${
+                            sortKey === 'publishDate'
+                                ? 'border-foreground text-foreground bg-foreground/[0.04]'
+                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                        }`}
+                    >
+                        Date
+                    </button>
+                    <button
+                        onClick={() => setSortKey('title')}
+                        data-testid="sort-by-title"
+                        className={`mono-label px-3 py-2 border ${
+                            sortKey === 'title'
+                                ? 'border-foreground text-foreground bg-foreground/[0.04]'
+                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                        }`}
+                    >
+                        Name
+                    </button>
+                    <span className="w-px h-5 bg-foreground/15 mx-1.5" />
+                    <button
+                        onClick={() => setSortDirection('desc')}
+                        data-testid="sort-desc"
+                        className={`mono-label px-3 py-2 border ${
+                            sortDirection === 'desc'
+                                ? 'border-foreground text-foreground bg-foreground/[0.04]'
+                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                        }`}
+                        aria-label="Sort descending"
+                    >
+                        ↓
+                    </button>
+                    <button
+                        onClick={() => setSortDirection('asc')}
+                        data-testid="sort-asc"
+                        className={`mono-label px-3 py-2 border ${
+                            sortDirection === 'asc'
+                                ? 'border-foreground text-foreground bg-foreground/[0.04]'
+                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                        }`}
+                        aria-label="Sort ascending"
+                    >
+                        ↑
+                    </button>
                 </div>
             </div>
 
             {/* Grid */}
             <motion.div layout className="grid md:grid-cols-2 gap-6">
                 <AnimatePresence mode="popLayout">
-                    {sortedCaseStudies.map((caseStudy, index) => (
+                    {sorted.map((cs, i) => (
                         <motion.div
-                            key={caseStudy.id}
+                            key={cs.id}
                             layout
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            transition={{ duration: 0.3, delay: index * 0.05 }}
-                            className={`h-full ${index === 0 ? 'md:col-span-2' : ''}`}
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            transition={{ duration: 0.4, delay: i * 0.04 }}
+                            className={`h-full ${i === 0 ? 'md:col-span-2' : ''}`}
                         >
-                            <CaseStudyCard caseStudy={caseStudy} featured={index === 0} />
+                            <CaseStudyCard caseStudy={cs} featured={i === 0} index={i} />
                         </motion.div>
                     ))}
                 </AnimatePresence>

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
-interface TimelineExperienceCardProps {
+interface Props {
     company: string
     logo?: string
     role: string
@@ -26,95 +26,93 @@ export default function TimelineExperienceCard({
     description,
     highlights,
     industries,
-    isLast = false,
+    isLast,
     index = 0,
-}: TimelineExperienceCardProps) {
+}: Props) {
     const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, amount: 0.2 })
+    const isInView = useInView(ref, { once: true, amount: 0.15 })
+    const isPresent = period.includes('Present')
 
     return (
         <motion.div
             ref={ref}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 28 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="relative flex gap-6"
+            transition={{ duration: 0.6, delay: index * 0.06 }}
+            className="relative grid grid-cols-12 gap-x-6 py-10 border-t border-foreground/15"
+            data-testid={`timeline-card-${company.toLowerCase().replace(/\s+/g, '-')}`}
         >
-            {/* Timeline */}
-            <div className="hidden md:flex flex-col items-center">
-                {/* Dot */}
-                <div className={`w-4 h-4 rounded-full border-4 border-background z-10 flex-shrink-0 ${period.includes('Present') ? 'bg-violet-500' : 'bg-muted-foreground/30'}`} />
-                {/* Line */}
-                {!isLast && (
-                    <div className="w-px h-full bg-gradient-to-b from-violet-500/40 to-transparent -mt-1" />
-                )}
+            {/* Period column */}
+            <div className="col-span-12 md:col-span-3 lg:col-span-2">
+                <div className="flex items-baseline gap-2 mono-label text-foreground/70">
+                    {isPresent && <span className="text-vermillion">●</span>}
+                    {period}
+                </div>
+                <div className="mono-label text-foreground/40 mt-2">{type}</div>
             </div>
 
-            {/* Card */}
-            <article className="glass-card p-6 md:p-8 hover-lift flex-1 mb-6">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
-                    <div className="flex items-start gap-4">
-                        {/* Company Logo */}
-                        {logo && (
-                            <div className="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center flex-shrink-0 rounded-xl bg-muted/50 p-2">
-                                <Image
-                                    src={logo}
-                                    alt={`${company} logo`}
-                                    width={56}
-                                    height={56}
-                                    className="w-full h-full object-contain"
-                                />
-                            </div>
-                        )}
-                        <div>
-                            <h3 className="text-xl font-display font-bold mb-1">{role}</h3>
-                            <p className="text-violet-400 font-medium">{company}</p>
+            {/* Center: timeline indicator */}
+            <div className="hidden md:flex md:col-span-1 justify-center">
+                <div className="relative flex flex-col items-center">
+                    <div
+                        className={`w-2.5 h-2.5 ${
+                            isPresent ? 'bg-vermillion' : 'bg-foreground'
+                        } shrink-0`}
+                    />
+                    {!isLast && (
+                        <div className="absolute top-3 w-px bg-foreground/20 h-[calc(100%+2.5rem)]" />
+                    )}
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="col-span-12 md:col-span-8 lg:col-span-9">
+                <div className="flex items-center gap-3 mb-3">
+                    {logo && (
+                        <div className="w-9 h-9 bg-surface border border-foreground/10 p-1.5 shrink-0">
+                            <Image
+                                src={logo}
+                                alt={`${company} logo`}
+                                width={36}
+                                height={36}
+                                className="w-full h-full object-contain"
+                            />
                         </div>
-                    </div>
-                    <div className="flex flex-col items-start md:items-end gap-2">
-                        <span
-                            className={`px-3 py-1 text-sm rounded-full font-medium ${period.includes('Present')
-                                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                                    : 'bg-muted text-muted-foreground'
-                                }`}
-                        >
-                            {period}
-                        </span>
-                        <span className="text-muted-foreground text-sm">{type}</span>
+                    )}
+                    <div>
+                        <h3 className="font-serif text-2xl md:text-3xl leading-tight tracking-tight">
+                            {role}
+                        </h3>
+                        <div className="mono-label text-vermillion">{company}</div>
                     </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-muted-foreground mb-6 leading-relaxed">{description}</p>
+                <p className="text-foreground/70 leading-relaxed text-sm md:text-base text-pretty mb-5 max-w-3xl">
+                    {description}
+                </p>
 
-                {/* Highlights */}
-                <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
-                        Key Achievements
-                    </h4>
-                    <ul className="space-y-3">
-                        {highlights.map((highlight, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                                <span className="w-1.5 h-1.5 bg-violet-500 rounded-full mt-2 flex-shrink-0" />
-                                <span className="text-muted-foreground">{highlight}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Industries */}
-                <div className="flex flex-wrap gap-2">
-                    {industries.map((industry, i) => (
-                        <span
+                <ul className="space-y-2.5 mb-5">
+                    {highlights.map((h, i) => (
+                        <li
                             key={i}
-                            className="px-3 py-1 bg-violet-500/10 text-violet-400 text-xs font-medium rounded-full border border-violet-500/10"
+                            className="flex items-baseline gap-3 text-foreground/75 text-sm leading-relaxed"
                         >
-                            {industry}
+                            <span className="mono-label text-foreground/35 w-8 shrink-0">
+                                .{String(i + 1).padStart(2, '0')}
+                            </span>
+                            <span className="flex-1">{h}</span>
+                        </li>
+                    ))}
+                </ul>
+
+                <div className="flex flex-wrap gap-2">
+                    {industries.map((tag, i) => (
+                        <span key={i} className="tag-pill">
+                            {tag}
                         </span>
                     ))}
                 </div>
-            </article>
+            </div>
         </motion.div>
     )
 }

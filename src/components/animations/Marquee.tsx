@@ -17,28 +17,27 @@ export default function Marquee({
     pauseOnHover = false,
     speed = 'normal',
 }: MarqueeProps) {
-    const speedClass = {
-        slow: 'animate-marquee [animation-duration:40s]',
-        normal: 'animate-marquee [animation-duration:25s]',
-        fast: 'animate-marquee [animation-duration:15s]',
-    }
+    const duration =
+        speed === 'slow' ? '50s' : speed === 'fast' ? '18s' : '32s'
 
-    const reverseSpeedClass = {
-        slow: 'animate-marquee-reverse [animation-duration:40s]',
-        normal: 'animate-marquee-reverse [animation-duration:25s]',
-        fast: 'animate-marquee-reverse [animation-duration:15s]',
-    }
+    const anim = reverse ? 'animate-marquee-reverse' : 'animate-marquee'
 
     return (
         <div className={`flex overflow-hidden ${pauseOnHover ? 'group' : ''} ${className}`}>
             <div
-                className={`flex shrink-0 items-center justify-around gap-4 ${reverse ? reverseSpeedClass[speed] : speedClass[speed]} ${pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''}`}
+                className={`flex shrink-0 items-center gap-4 ${anim} ${
+                    pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''
+                }`}
+                style={{ animationDuration: duration }}
             >
                 {children}
             </div>
             <div
-                className={`flex shrink-0 items-center justify-around gap-4 ${reverse ? reverseSpeedClass[speed] : speedClass[speed]} ${pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''}`}
-                aria-hidden="true"
+                aria-hidden
+                className={`flex shrink-0 items-center gap-4 ${anim} ${
+                    pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''
+                }`}
+                style={{ animationDuration: duration }}
             >
                 {children}
             </div>

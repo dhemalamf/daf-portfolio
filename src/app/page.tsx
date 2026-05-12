@@ -3,70 +3,103 @@ import SectionHeading from '@/components/SectionHeading'
 import CaseStudyCard from '@/components/CaseStudyCard'
 import SkillsGrid from '@/components/SkillsGrid'
 import ExperienceCard from '@/components/ExperienceCard'
-import FadeIn from '@/components/animations/FadeIn'
 import Marquee from '@/components/animations/Marquee'
-import MagneticButton from '@/components/animations/MagneticButton'
 import { getFeaturedCaseStudies } from '@/data/caseStudies'
 import { experiences, profile, certifications } from '@/data/profile'
 import Link from 'next/link'
 
 export default function Home() {
-    const featuredCaseStudies = getFeaturedCaseStudies().slice(0, 5)
+    const featured = getFeaturedCaseStudies().slice(0, 5)
 
     return (
         <>
-            {/* Hero Section */}
             <Hero />
 
-            {/* Featured Work Section */}
-            <section id="featured-work" className="py-24 md:py-36 relative">
+            {/* ===========================================
+                Manifesto strip (editorial ribbon)
+                =========================================== */}
+            <section className="border-y border-foreground/15 overflow-hidden bg-background py-6">
+                <Marquee speed="slow">
+                    {Array.from({ length: 2 }).map((_, idx) => (
+                        <div
+                            key={idx}
+                            className="flex items-center gap-8 mr-8 font-serif text-3xl md:text-4xl leading-none tracking-tight whitespace-nowrap"
+                        >
+                            <span>Strategy</span>
+                            <span className="text-vermillion">✦</span>
+                            <span className="ital">Discovery</span>
+                            <span className="text-vermillion">✦</span>
+                            <span>Execution</span>
+                            <span className="text-vermillion">✦</span>
+                            <span className="ital">Measurable impact</span>
+                            <span className="text-vermillion">✦</span>
+                            <span>AI-native products</span>
+                            <span className="text-vermillion">✦</span>
+                            <span className="ital">Fintech</span>
+                            <span className="text-vermillion">✦</span>
+                            <span>Public sector</span>
+                            <span className="text-vermillion">✦</span>
+                        </div>
+                    ))}
+                </Marquee>
+            </section>
+
+            {/* ===========================================
+                Selected case studies
+                =========================================== */}
+            <section id="featured-work" className="py-24 md:py-36 relative grain">
                 <div className="section-container">
                     <SectionHeading
-                        eyebrow="Featured Work"
-                        title="Selected Case Studies"
-                        description="Deep dives into products I've shaped, from problem identification to measurable outcomes."
+                        numeral="02"
+                        eyebrow="Selected work"
+                        title={<>Case studies, &nbsp;<span className="ital text-vermillion">deeply</span> told.</>}
+                        description={
+                            <>
+                                Seven products I&apos;ve shaped from problem framing through
+                                measurable outcome — spanning fintech, edtech, public sector
+                                and AI-native experiences.
+                            </>
+                        }
                     />
 
-                    {/* Featured card — full width */}
+                    {/* Featured (large) */}
                     <div className="mb-6">
-                        <CaseStudyCard caseStudy={featuredCaseStudies[0]} featured />
+                        <CaseStudyCard caseStudy={featured[0]} featured />
                     </div>
 
-                    {/* Remaining 4 cards — strict 2×2 equal-height grid */}
-                    <div className="grid md:grid-cols-2 gap-6 auto-rows-fr">
-                        {featuredCaseStudies.slice(1).map((caseStudy) => (
-                            <CaseStudyCard key={caseStudy.id} caseStudy={caseStudy} />
+                    {/* 2x2 standard cards */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {featured.slice(1).map((cs, i) => (
+                            <CaseStudyCard key={cs.id} caseStudy={cs} index={i} />
                         ))}
                     </div>
 
-                    <div className="mt-14 text-center">
-                        <MagneticButton strength={0.15}>
-                            <Link
-                                href="/work"
-                                className="inline-flex items-center gap-2 px-7 py-3.5 border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
-                            >
-                                View All Work
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </Link>
-                        </MagneticButton>
+                    <div className="mt-12 flex items-center justify-between gap-4 border-t border-foreground/15 pt-8">
+                        <span className="mono-label text-foreground/50">
+                            Showing 5 of {featured.length}+ case studies
+                        </span>
+                        <Link href="/work" data-testid="home-view-all-work" className="btn-outline">
+                            View all work
+                            <span aria-hidden>→</span>
+                        </Link>
                     </div>
                 </div>
             </section>
 
-            {/* Experience Section */}
-            <section className="py-24 md:py-36 bg-muted/[0.3] relative">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-500/[0.02] to-transparent pointer-events-none" />
-                <div className="section-container relative z-10">
+            {/* ===========================================
+                Experience
+                =========================================== */}
+            <section className="py-24 md:py-36 relative border-t border-foreground/15">
+                <div className="section-container">
                     <SectionHeading
-                        eyebrow="Experience"
-                        title="Where I've Made Impact"
-                        description="My journey across startups and consulting, building products that drive real results."
+                        numeral="03"
+                        eyebrow="Experience · 2021 — present"
+                        title={<>A trajectory across <span className="ital text-vermillion">scaling</span> products.</>}
+                        description="From quality assurance at MCF to leading AI integrations at Zero One Group and Doitpay — six chapters of cross-functional product work."
                     />
 
-                    <div className="space-y-6">
-                        {experiences.slice(0, 3).map((exp, index) => (
+                    <div className="border-b border-foreground/15">
+                        {experiences.slice(0, 4).map((exp, i) => (
                             <ExperienceCard
                                 key={exp.id}
                                 company={exp.company}
@@ -77,145 +110,120 @@ export default function Home() {
                                 description={exp.description}
                                 highlights={exp.highlights}
                                 industries={exp.industries}
-                                index={index}
+                                index={i}
                             />
                         ))}
                     </div>
 
-                    <div className="mt-14 text-center">
-                        <MagneticButton strength={0.15}>
-                            <Link
-                                href="/about"
-                                className="inline-flex items-center gap-2 px-7 py-3.5 border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
-                            >
-                                Learn More About Me
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </Link>
-                        </MagneticButton>
+                    <div className="mt-10 flex items-center justify-between">
+                        <span className="mono-label text-foreground/50">
+                            +{experiences.length - 4} more roles in archive
+                        </span>
+                        <Link href="/about" data-testid="home-full-history" className="btn-outline">
+                            Full work history
+                            <span aria-hidden>→</span>
+                        </Link>
                     </div>
                 </div>
             </section>
 
-            {/* Skills Section */}
-            <section className="py-24 md:py-36 relative">
+            {/* ===========================================
+                Skills
+                =========================================== */}
+            <section className="py-24 md:py-36 border-t border-foreground/15 bg-foreground/[0.015] dark:bg-foreground/[0.02]">
                 <div className="section-container">
                     <SectionHeading
-                        eyebrow="Expertise"
-                        title="Skills & Capabilities"
-                        description="The toolkit I bring to every product challenge."
+                        numeral="04"
+                        eyebrow="Toolkit"
+                        title={<>The <span className="ital text-vermillion">craft</span> behind the work.</>}
+                        description="Frameworks, technical fluency, and tools I bring to every product challenge."
                     />
-
                     <SkillsGrid />
                 </div>
             </section>
 
-            {/* Certifications Section */}
-            <section className="py-24 md:py-36 bg-muted/[0.3] relative">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent pointer-events-none" />
-                <div className="section-container relative z-10">
+            {/* ===========================================
+                Certifications
+                =========================================== */}
+            <section className="py-24 md:py-36 border-t border-foreground/15">
+                <div className="section-container">
                     <SectionHeading
+                        numeral="05"
                         eyebrow="Credentials"
-                        title="Certifications"
-                        description="Continuous learning and professional development."
+                        title={<>Continuous <span className="ital text-vermillion">learning</span>.</>}
+                        description="Selected bootcamps, programs and certifications from across my product journey."
                     />
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {certifications.map((cert, index) => (
-                            <FadeIn key={cert.id} delay={index * 0.1}>
-                                <div className="glass-card p-6 md:p-8 hover-lift flex flex-col items-start gap-4 h-full">
-                                    <div className="flex-1">
-                                        <div className="flex items-center justify-between mb-3">
-                                            <span className="text-sm font-semibold text-violet-400">{cert.issuer}</span>
-                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">{cert.issuedDate}</span>
-                                        </div>
-                                        <h3 className="text-xl font-display font-bold mb-2">{cert.name}</h3>
-                                    </div>
+                    <ul className="border-t border-foreground/20">
+                        {certifications.map((cert, i) => (
+                            <li
+                                key={cert.id}
+                                data-testid={`cert-row-${cert.id}`}
+                                className="group grid grid-cols-12 gap-6 items-baseline py-6 md:py-8 border-b border-foreground/10 hover:bg-foreground/[0.02] transition-colors"
+                            >
+                                <div className="col-span-12 md:col-span-1 mono-label text-foreground/40">
+                                    0{i + 1}
+                                </div>
+                                <div className="col-span-12 md:col-span-3 mono-label text-vermillion">
+                                    {cert.issuer}
+                                </div>
+                                <div className="col-span-12 md:col-span-5">
+                                    <h3 className="font-serif text-xl md:text-2xl leading-tight tracking-tight">
+                                        {cert.name}
+                                    </h3>
+                                </div>
+                                <div className="col-span-6 md:col-span-1 mono-label text-foreground/60">
+                                    {cert.issuedDate}
+                                </div>
+                                <div className="col-span-6 md:col-span-2 md:text-right">
                                     <a
                                         href={cert.credentialUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-violet-400 transition-colors group"
+                                        className="mono-label text-foreground/70 hover:text-vermillion link-underline transition-colors"
                                     >
-                                        View Credential
-                                        <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                        </svg>
+                                        View credential ↗
                                     </a>
                                 </div>
-                            </FadeIn>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="py-24 md:py-36 relative overflow-hidden">
-                {/* Marquee Background */}
-                <div className="absolute inset-0 flex items-center opacity-[0.03] pointer-events-none select-none">
-                    <Marquee speed="slow">
-                        <span className="text-7xl md:text-9xl font-display font-bold whitespace-nowrap mx-8">
-                            Let&apos;s Build Something Great
-                        </span>
-                        <span className="text-7xl md:text-9xl font-display font-bold whitespace-nowrap mx-8">
-                            •
-                        </span>
-                        <span className="text-7xl md:text-9xl font-display font-bold whitespace-nowrap mx-8">
-                            Product Management
-                        </span>
-                        <span className="text-7xl md:text-9xl font-display font-bold whitespace-nowrap mx-8">
-                            •
-                        </span>
-                        <span className="text-7xl md:text-9xl font-display font-bold whitespace-nowrap mx-8">
-                            AI & Fintech
-                        </span>
-                        <span className="text-7xl md:text-9xl font-display font-bold whitespace-nowrap mx-8">
-                            •
-                        </span>
-                    </Marquee>
-                </div>
-
-                <div className="section-container relative z-10 text-center">
-                    <FadeIn>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
-                            Let&apos;s Build Something{' '}
-                            <span className="gradient-text">Great</span>
-                        </h2>
-                    </FadeIn>
-                    <FadeIn delay={0.1}>
-                        <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-10">
-                            Whether you need a product leader for your next venture or want to discuss collaboration opportunities, I&apos;d love to hear from you.
-                        </p>
-                    </FadeIn>
-                    <FadeIn delay={0.2}>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <MagneticButton strength={0.2}>
-                                <Link
-                                    href="/contact"
-                                    className="inline-flex items-center gap-2 px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl transition-all hover:shadow-xl hover:shadow-violet-500/20"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
-                                    Get in Touch
-                                </Link>
-                            </MagneticButton>
-                            <MagneticButton strength={0.2}>
-                                <a
-                                    href={profile.linkedin}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 px-8 py-4 border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
-                                >
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                    </svg>
-                                    Connect on LinkedIn
-                                </a>
-                            </MagneticButton>
+            {/* ===========================================
+                Closing CTA
+                =========================================== */}
+            <section className="relative border-t border-foreground/15 py-24 md:py-32 overflow-hidden grain">
+                <div className="section-container relative z-10 grid grid-cols-12 gap-6 items-end">
+                    <div className="col-span-12 lg:col-span-9">
+                        <div className="mono-label text-foreground/50 mb-6">
+                            <span className="text-vermillion">●</span> Currently accepting Q1 2026
                         </div>
-                    </FadeIn>
+                        <h2 className="h-display text-balance">
+                            Have an idea?
+                            <br className="hidden md:block" />
+                            <span className="ital text-vermillion">Let&apos;s</span> build it.
+                        </h2>
+                    </div>
+                    <div className="col-span-12 lg:col-span-3 flex flex-col gap-3">
+                        <Link
+                            href="/contact"
+                            data-testid="home-cta-contact"
+                            className="btn-ink justify-between"
+                        >
+                            Get in touch <span aria-hidden>→</span>
+                        </Link>
+                        <a
+                            href={profile.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-testid="home-cta-linkedin"
+                            className="btn-outline justify-between"
+                        >
+                            Connect on LinkedIn <span aria-hidden>↗</span>
+                        </a>
+                    </div>
                 </div>
             </section>
         </>
