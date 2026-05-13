@@ -32,11 +32,6 @@ export default function CaseStudyCard({
                     featured ? 'lg:flex lg:flex-row' : ''
                 }`}
             >
-                {/* Side numeral */}
-                <div className="absolute top-4 right-4 mono-label text-foreground/30 group-hover:text-vermillion transition-colors">
-                    {String(caseStudy.id).padStart(2, '0')} / Case
-                </div>
-
                 <article
                     className={`p-6 md:p-8 lg:p-10 flex flex-col h-full ${featured ? 'lg:w-1/2' : ''}`}
                 >
