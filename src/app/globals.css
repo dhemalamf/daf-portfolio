@@ -265,15 +265,15 @@
 
   /* Heading scales */
   .h-display {
-    @apply font-serif font-normal leading-[0.95] tracking-tightest text-5xl sm:text-7xl lg:text-[9vw];
+    @apply font-serif font-normal leading-[1.05] tracking-tightest text-5xl sm:text-7xl lg:text-[9vw];
   }
-  .h-1 {
-    @apply font-serif font-normal leading-[0.95] tracking-tightest text-5xl sm:text-6xl lg:text-7xl;
+  .heading-1 {
+    @apply font-serif font-normal leading-[1.05] tracking-tightest text-5xl sm:text-6xl lg:text-7xl;
   }
-  .h-2 {
-    @apply font-serif font-normal leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl;
+  .heading-2 {
+    @apply font-serif font-normal leading-[1.1] tracking-tight text-4xl sm:text-5xl lg:text-6xl;
   }
-  .h-3 {
+  .heading-3 {
     @apply font-serif font-normal leading-[1.1] tracking-tight text-2xl sm:text-3xl lg:text-4xl;
   }
 

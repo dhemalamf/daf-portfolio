@@ -141,7 +141,7 @@ export default function AboutPage() {
             <section className="py-24 md:py-32">
                 <div className="section-container grid grid-cols-12 gap-6 items-end">
                     <div className="col-span-12 lg:col-span-8">
-                        <h2 className="h-2 text-balance">
+                        <h2 className="heading-2 text-balance">
                             Curious to see the <span className="ital text-vermillion">work?</span>
                         </h2>
                     </div>

@@ -60,7 +60,7 @@ export default function Hero() {
                         >
                             Dhema<span className="ital">&apos;</span>alam{' '}
                             <span className="ital text-vermillion">Fajrianto</span>
-                            <span className="block text-foreground/45 mt-2 text-[0.55em] leading-none tracking-tight">
+                            <span className="block text-foreground/45 mt-4 sm:mt-5 text-[0.55em] leading-none tracking-tight">
                                 — building products with measurable impact.
                             </span>
                         </motion.h1>
@@ -128,7 +128,6 @@ export default function Hero() {
                                 transition={{ duration: 0.5, delay: 0.9 + i * 0.08 }}
                                 className="p-5 md:p-7 group hover:bg-foreground/[0.03] transition-colors"
                             >
-                                <div className="mono-label text-foreground/40 mb-3">0{i + 1}</div>
                                 <div className="font-serif text-5xl md:text-6xl leading-none tracking-tighter text-foreground mb-3">
                                     <AnimatedCounter value={m.value} />
                                 </div>

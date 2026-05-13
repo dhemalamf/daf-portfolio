@@ -40,7 +40,7 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="h-1 text-balance mb-5"
+                        className="heading-1 text-balance mb-5"
                     >
                         {caseStudy.title}
                     </motion.h1>
