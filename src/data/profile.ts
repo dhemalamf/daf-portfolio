@@ -79,9 +79,9 @@ export const experiences = [
         type: "Fintech Startup | WFO",
         description: "Leading product initiatives for the next generation of payment solutions.",
         highlights: [
-            "Spearheading the development of new payment gateway features to increase transaction success rates.",
-            "Collaborating with engineering and design teams to launch a seamless merchant onboarding experience.",
-            "Defining product roadmap and strategy for market expansion in Southeast Asia."
+            "Spearheading the core disbursement engine, managing complex fund-transfer logic and high-volume transaction processing for B2B clients.",
+            "Architecting the end-to-end product flow for xallure.co, successfully modularizing core Doitpay services into a white-label solution to enable rapid deployment for sister companies.",
+            "Leading the development of a robust back office system for a new B2C application, focusing on streamlining internal operations, compliance monitoring, and automated reconciliation."
         ],
         industries: ["Fintech", "Payments", "SaaS"]
     },
