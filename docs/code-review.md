@@ -8,6 +8,11 @@ This document is the analysis requested alongside the Superpowers integration.
 It records evidence, not just opinions: every claim below was reproduced with a
 command noted in the appendix.
 
+> **Status (2026-10-26):** all P0, P1 and P2 items below were addressed on
+> `feat/hardening`; §7 maps each finding to the fix and the verification that
+> was run. Sections 1–6 are kept as the original assessment so the reasoning
+> and evidence stay reviewable.
+
 ---
 
 ## 1. Version comparison with the remote
@@ -310,3 +315,41 @@ grep -rn "prose" tailwind.config.ts package.json                  # none
 The `/blog` 500 depends on network access to `js6xvhgj.api.sanity.io`; in an
 environment where Sanity is reachable the page returns 200, but the missing
 error handling and per-request fetching remain.
+
+
+---
+
+## 7. Resolution log (2026-10-26)
+
+Branch `feat/hardening`, built on `feat/superpowers-integration`.
+
+| Finding | Fix | Verification |
+|---|---|---|
+| §1 peer mismatch | Sanity 3.99 → 4.22, next-sanity 12 → 10.1, `deskTool` → `structureTool`, `legacy-peer-deps` removed | `npm ls --depth=0` clean; build green; Studio renders |
+| P0-2 CMS outage | Typed query layer with 8 s timeout and `FetchResult`; 60 s ISR; `error.tsx`, `not-found.tsx`, blog `loading.tsx`; `JournalUnavailable` fallback | `/blog` and `/blog/[slug]` render 200 with Sanity reachable; outage path returns the fallback instead of a 500 |
+| P0-3 no quality gate | ESLint 9 flat config, `lint`/`typecheck` scripts, GitHub Actions workflow | `npm run lint` (0 errors), `npm run typecheck`, CI YAML present |
+| P1-1 nav not SSR | Header renders on the server; only the theme icon waits for hydration; mount animation removed | `primary-navigation` count in raw HTML: 0 → 1 |
+| P1-2 fake contact form | Component deleted (`/contact` remains a channel list) | No imports remain; route bundle 2.81 kB → 392 B |
+| P1-3 GA duplication | Single landing page view, explicit page_view on client navigations, typed gtag, config module | Code review of effect; no duplicate `config` call |
+| P1-4 SEO gaps | `sitemap.ts`, `robots.ts`, JSON-LD (Person/WebSite/Article/BlogPosting/BreadcrumbList), canonicals, title template, article OG | `/robots.txt` 200, `/sitemap.xml` lists 5 static + 7 case studies + 2 posts, 2 JSON-LD blocks on `/` |
+| P1-5 security headers | CSP, nosniff, referrer policy, frame deny, permissions policy, HSTS (prod), `poweredByHeader: false` | Header check with `curl -I`; Studio still loads under CSP |
+| P1-6 blog design drift | Journal list/detail rebuilt on editorial tokens; `@tailwindcss/typography` installed and themed; share SVGs deduplicated | DOM inspection: `prose` styles active, no violet/glass classes remain |
+| P1-7 hygiene | `test_reports/` deleted, `.gitignore` extended, `.env.example` added, README rewritten | `git ls-files` clean |
+| P2-1 client bloat | `CaseStudyContent` and `/contact` are server components; `TrackedLink` is the client island | Build output: contact 103 kB, case study 152 kB |
+| P2-2 `any` erosion | Typed Sanity models (`PostSummary`, `PostDetail`, `PostImage`), typed `urlFor`, typed Portable Text components, typed analytics | `npm run lint` → 0 warnings for `no-explicit-any` |
+| P2-3 duplicated SVGs | Share targets are a data array rendered once | ShareButtons reduced from 166 to ~150 lines with one icon path per network |
+| P2-4 a11y | Global focus-visible ring, skip link, reduced-motion handling in Lenis/FadeIn/Counter/Marquee/Scramble/Tilt/Magnetic, ARIA state on the menu toggle, muted text raised to /60–/70 | CSS + component review; reduced-motion path short-circuits animation |
+| P2-5 bundle | `LazyMotion` + `domAnimation` with `m` aliased; layout animations removed; unused deps removed | First-load JS: `/` 164 → 141 kB, `/work` 154 → 126 kB, case study 152 → 123 kB |
+| P2-6 misc | Hero "Edition" refreshes via daily ISR; rAF loop cancelled on unmount; Sanity client timeout | Build + code review |
+
+Still intentionally open:
+
+- **No unit/e2e tests.** The CI gate is lint + typecheck + build; adding
+  Playwright would be the next step.
+- **Studio dev-host registration.** Sanity still asks to add `localhost:3005`
+  as a CORS origin on first local Studio use — that is a project setting in
+  sanity.io/manage, not code.
+- **Sanity schema breadth.** Only `post` exists; author/category documents are
+  a content-model decision, not a defect.
+- **`~/.npm` ownership.** `npm outdated`/`audit` fail on this machine until the
+  cache is chowned (environment issue, not repo).

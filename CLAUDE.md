@@ -31,21 +31,21 @@ the update procedure.
 
 - Next.js 15.5.9 (App Router, React Server Components), React 19, TypeScript strict
 - Tailwind CSS 3.4 with CSS-variable design tokens (`src/app/globals.css`, `tailwind.config.ts`)
-- Sanity Studio v3 + `next-sanity` for the blog (`/blog`, `/studio`)
-- framer-motion for UI animation, Lenis for smooth scrolling (both client-side)
+- Sanity Studio v4 + `next-sanity` 10 for the blog (`/blog`, `/studio`)
+- framer-motion for UI animation (lazy `m` components), Lenis for smooth scrolling
 - No test framework is installed yet
 
 ## Commands
 
 ```bash
 npm run dev                     # http://localhost:3000
-npm run build                   # production build + type check
-npx tsc --noEmit                # type check only
-npm run lint                    # NOT usable: no ESLint config yet, prompts interactively
+npm run build                   # production build
+npm run typecheck               # tsc --noEmit
+npm run lint                    # eslint (flat config)
 ```
 
-Always run `npm run build` before claiming a change works. There is no test
-suite, so describe manual verification steps explicitly.
+Always run `npm run typecheck` and `npm run build` before claiming a change
+works. There is no test suite, so describe the manual verification you ran.
 
 ## Architecture
 
@@ -57,16 +57,20 @@ suite, so describe manual verification steps explicitly.
 - Path alias: `@/*` → `src/*`
 
 Server components are the default. Add `'use client'` only for state, effects,
-browser APIs, or framer-motion. `CaseStudyContent` and `ContactForm` are current
-examples of over-broad client boundaries.
+browser APIs, or animation. Client islands are deliberately small
+(`TrackedLink`, `ShareButtons`, `BackToTop`, animation leaves).
+
+Animation uses `LazyMotion` (`src/components/motion/MotionProvider.tsx`) with
+framer-motion's `m` component, imported as `import { m as motion }`. Do not
+reintroduce the full `motion` import, and do not use `layout`/drag props — the
+bundle only loads `domAnimation` features.
 
 ## Conventions
 
 - Design language is Swiss/editorial: Instrument Serif display, Geist body,
   JetBrains Mono labels; vermillion `#FF3E00` accent; sharp 2px radii; visible
-  hairline rules. Do not introduce `rounded-xl`, violet accents, gradients, or
-  `glass-card` styling — those are legacy blog/contact-form leftovers being
-  migrated.
+  hairline rules. `rounded-xl`, violet accents, `gradient-text` and
+  `glass-card` are legacy patterns: do not add new usages.
 - Use design tokens (`bg-background`, `text-foreground/70`, `.mono-label`,
   `.btn-ink`, `.section-container`), not raw hex values.
 - Respect `prefers-reduced-motion` for any new animation.
@@ -75,15 +79,17 @@ examples of over-broad client boundaries.
 
 ## Environment
 
-Sanity values fall back to hardcoded defaults in `src/sanity/client.ts` and the
-GA measurement ID falls back in `src/components/GoogleAnalytics.tsx`. For local
-work, put the values in `.env.local` (git-ignored) instead of relying on the
-fallbacks.
+Public identifiers live in `src/lib/config.ts` and `src/sanity/config.ts`, with
+documented defaults so the site works without env vars. For local overrides or a
+fork, copy `.env.example` to `.env.local` (git-ignored).
 
-## Known issues (see docs/code-review.md)
+## Status
 
-- `next-sanity@12` declares peers `next ^16` and `sanity ^5`, but the project
-  runs Next 15 + Sanity 3; `.npmrc` sets `legacy-peer-deps=true`, which hides it.
-- `/blog` returns 500 when Sanity is unreachable (no error boundary or fallback).
-- `test_reports/iteration_1.json` is committed and stale.
-- `README.md` still describes the pre-Sanity Next 14 version of the site.
+- Dependencies are aligned: Next 15 + Sanity 4 + next-sanity 10, no
+  `legacy-peer-deps`. Do not bump one side alone; check peer ranges first.
+- Blog reads are guarded (typed query layer, timeout, ISR, fallback UI).
+- CI runs lint, typecheck and build (`.github/workflows/ci.yml`).
+- There is still no test runner; when adding one, prefer Playwright for the
+  smoke paths listed in `docs/code-review.md`.
+- Studio needs `localhost:3000` (and your preview host) registered as a CORS
+  origin in sanity.io/manage before local editing works.

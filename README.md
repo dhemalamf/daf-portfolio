@@ -31,7 +31,7 @@ because `next-sanity@12` expects Next 16 / Sanity 5 while the project runs Next
 
 The blog reads from Sanity. Values fall back to the project defaults in
 `src/sanity/client.ts`, so local dev works without a `.env`, but for your own
-dataset create `.env.local`:
+dataset copy `.env.example` to `.env.local`:
 
 ```bash
 NEXT_PUBLIC_SANITY_PROJECT_ID=
@@ -49,9 +49,10 @@ it the route currently returns a 500 (tracked in `docs/code-review.md`).
 | `npm run dev` | dev server |
 | `npm run build` | production build + type check |
 | `npm run start` | serve the production build |
-| `npm run lint` | not usable yet — no ESLint config, `next lint` prompts interactively |
+| `npm run lint` | ESLint (flat config) |
+| `npm run typecheck` | `tsc --noEmit` |
 
-Type-check without building: `npx tsc --noEmit`.
+CI runs all three on every pull request (`.github/workflows/ci.yml`).
 
 ## Project structure
 

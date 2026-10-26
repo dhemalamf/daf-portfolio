@@ -23,12 +23,12 @@ Provenance, scope, and update steps: `docs/superpowers.md`.
 
 ```bash
 npm run dev        # local dev server
-npm run build      # production build; also runs the type check
-npx tsc --noEmit   # types only
+npm run build      # production build
+npm run typecheck  # tsc --noEmit
+npm run lint       # eslint (flat config)
 ```
 
-`npm run lint` is not usable yet — there is no ESLint config and `next lint`
-starts an interactive setup prompt. Do not run it unattended.
+Run lint, typecheck and build before claiming success. CI runs the same three.
 
 ## Ground rules
 
@@ -41,6 +41,7 @@ starts an interactive setup prompt. Do not run it unattended.
 
 ## Current state
 
-Next.js 15.5.9 · React 19 · Tailwind 3.4 · Sanity 3.99 + next-sanity 12
-(peer-range mismatch, masked by `legacy-peer-deps=true`). No automated tests.
-Known defects and improvement plan: `docs/code-review.md`.
+Next.js 15.5.9 · React 19 · Tailwind 3.4 · Sanity 4.22 + next-sanity 10
+(aligned peer ranges, no `legacy-peer-deps`). CI runs lint, typecheck and build.
+No test runner yet. The review, fixes and remaining known gaps are documented in
+`docs/code-review.md`.
