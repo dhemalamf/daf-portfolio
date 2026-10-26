@@ -23,9 +23,9 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-`npm install` currently relies on `legacy-peer-deps=true` (see `.npmrc`)
-because `next-sanity@12` expects Next 16 / Sanity 5 while the project runs Next
-15 / Sanity 3. See `docs/code-review.md` §1 before upgrading either side.
+Dependencies are aligned on Next 15.5, Sanity 4.22 and next-sanity 10 with no
+`legacy-peer-deps`. Check peer ranges before bumping either side (see
+`docs/code-review.md` §1).
 
 ### Environment
 
@@ -37,10 +37,32 @@ dataset copy `.env.example` to `.env.local`:
 NEXT_PUBLIC_SANITY_PROJECT_ID=
 NEXT_PUBLIC_SANITY_DATASET=
 NEXT_PUBLIC_GA_MEASUREMENT_ID=
+
+# Server-only: signs the Sanity → /api/revalidate webhook (see below)
+SANITY_REVALIDATE_SECRET=
 ```
 
-The Studio is at `/studio`. `/blog` requires network access to Sanity; without
-it the route currently returns a 500 (tracked in `docs/code-review.md`).
+The Studio is at `/studio`. `/blog` needs network access to Sanity; when the API
+is unreachable the route degrades to a "journal unavailable" panel instead of a
+500, and recovers on the next revalidation.
+
+### Instant revalidation
+
+Posts are cached with ISR (`revalidate = 60`) under the `posts` cache tag. To
+publish without waiting up to a minute, register a Sanity webhook
+(sanity.io/manage → API → Webhooks):
+
+| Field | Value |
+|---|---|
+| URL | `https://<site>/api/revalidate` |
+| Trigger | Create, Update, Delete |
+| Filter | `_type == "post"` |
+| HTTP header | `x-sanity-webhook-secret: <SANITY_REVALIDATE_SECRET>` |
+
+The route also accepts `Authorization: Bearer <secret>` or `?secret=`. It fails
+closed: with no `SANITY_REVALIDATE_SECRET` set it returns 503, and a wrong secret
+returns 401. On a valid call it purges the `posts` tag and revalidates `/blog`,
+`/blog/<slug>` and `/sitemap.xml`.
 
 ## Scripts
 
@@ -106,10 +128,11 @@ TDD → review → finish) — in `.claude/skills/`.
 
 ## Deployment
 
-Any Node host works; the site is Vercel-ready. Set the three environment
-variables above in the project settings, then deploy. Case-study routes are
-pre-rendered at build time; blog routes render on demand and need Sanity
-reachable at runtime.
+Any Node host works; the site is Vercel-ready. Set the four environment
+variables above in the project settings (the three `NEXT_PUBLIC_*` values are
+optional — documented defaults ship — but `SANITY_REVALIDATE_SECRET` is required
+for the publish webhook), then deploy. Case-study routes are pre-rendered at
+build time; blog routes render on demand and need Sanity reachable at runtime.
 
 ## License
 

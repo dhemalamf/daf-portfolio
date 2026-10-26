@@ -1,6 +1,11 @@
 import { client } from './client'
 import type { FetchResult, PostDetail, PostSummary } from './types'
 
+// Every post query shares one cache tag so the /api/revalidate webhook can
+// purge them together on publish.
+const POSTS_TAG = 'posts'
+const CACHE_OPTIONS = { next: { tags: [POSTS_TAG] } }
+
 const SUMMARY_FIELDS = `
     _id,
     title,
@@ -47,7 +52,7 @@ function reportFailure(operation: string, error: unknown) {
 /** All published posts, newest first. */
 export async function getPosts(): Promise<FetchResult<PostSummary[]>> {
     try {
-        const posts = await client.fetch<PostSummary[]>(POSTS_QUERY)
+        const posts = await client.fetch<PostSummary[]>(POSTS_QUERY, {}, CACHE_OPTIONS)
         return { ok: true, data: posts }
     } catch (error) {
         reportFailure('getPosts', error)
@@ -60,7 +65,7 @@ export async function getPost(
     slug: string
 ): Promise<FetchResult<PostDetail | null>> {
     try {
-        const post = await client.fetch<PostDetail | null>(POST_QUERY, { slug })
+        const post = await client.fetch<PostDetail | null>(POST_QUERY, { slug }, CACHE_OPTIONS)
         return { ok: true, data: post }
     } catch (error) {
         reportFailure('getPost', error)
@@ -74,14 +79,17 @@ export async function getRelatedPosts(
     tags: string[]
 ): Promise<FetchResult<PostSummary[]>> {
     try {
-        let posts = await client.fetch<PostSummary[]>(RELATED_QUERY, {
-            currentPostId,
-            tags,
-        })
+        let posts = await client.fetch<PostSummary[]>(
+            RELATED_QUERY,
+            { currentPostId, tags },
+            CACHE_OPTIONS
+        )
         if (posts.length === 0) {
-            posts = await client.fetch<PostSummary[]>(RECENT_QUERY, {
-                currentPostId,
-            })
+            posts = await client.fetch<PostSummary[]>(
+                RECENT_QUERY,
+                { currentPostId },
+                CACHE_OPTIONS
+            )
         }
         return { ok: true, data: posts }
     } catch (error) {
