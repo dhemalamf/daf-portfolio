@@ -115,3 +115,28 @@ reachable at runtime.
 
 Personal portfolio — all rights reserved. Vendored Superpowers skills remain
 MIT-licensed (see `THIRD_PARTY_NOTICES.md`).
+
+## Troubleshooting
+
+**`ChunkLoadError: Loading chunk app/layout failed`**
+The `.next` directory is stale or contains duplicated files (a synced folder or a
+build running alongside `npm run dev` can cause this). Recovery:
+
+```bash
+pkill -f "next dev"
+rm -rf .next
+npm run dev
+```
+
+Then hard-reload the browser (Cmd+Shift+R). Never run `npm run build` while the
+dev server is running — both write to `.next`.
+
+**Keep the project out of iCloud Drive / Dropbox.** `~/Documents` is synced on
+this machine, and file-provider conflict copies inside `.next`/`node_modules`
+break webpack manifests (files named `* 2.json` are the tell). Prefer a local
+path such as `~/Developer/daf-portfolio`; if the project stays in a synced
+folder, `rm -rf .next` is the standard fix after weird chunk errors.
+
+**Studio shows "Connect this studio to your project"**
+The current origin is not an allowed CORS origin for the project. Add it under
+sanity.io/manage → API → CORS origins with *Allow credentials* enabled.
