@@ -1,341 +1,273 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PortableText } from '@portabletext/react'
-import { client } from '@/sanity/client'
+import {
+    PortableText,
+    type PortableTextComponents,
+} from '@portabletext/react'
+import { getPost, getRelatedPosts } from '@/sanity/queries'
+import type { PostImage, PostSummary } from '@/sanity/types'
 import { urlFor } from '@/sanity/image'
 import ShareButtons from '@/components/ShareButtons'
 import BackToTop from '@/components/BackToTop'
+import JournalUnavailable from '@/components/JournalUnavailable'
 
-// Force fresh data on every request (no caching)
-export const revalidate = 0
+export const revalidate = 60
 
-interface BlogPost {
-    _id: string
-    title: string
-    slug: { current: string }
-    publishedAt: string
-    excerpt: string
-    coverImage: any
-    body: any
-    tags: string[]
-    readingTime: string
+const SITE_URL = 'https://dhema.me'
+
+interface PageProps {
+    params: Promise<{ slug: string }>
 }
 
-async function getPost(slug: string): Promise<BlogPost | null> {
-    const post = await client.fetch(
-        `*[_type == "post" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
-            _id,
-            title,
-            slug,
-            publishedAt,
-            excerpt,
-            coverImage,
-            body,
-            tags,
-            readingTime
-        }`,
-        { slug }
-    )
-    return post
+const formatDate = (value: string) =>
+    new Date(value).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    })
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params
+    const result = await getPost(slug)
+
+    if (!result.ok || !result.data) {
+        return { title: 'Journal' }
+    }
+
+    const post = result.data
+    const image = post.coverImage
+        ? urlFor(post.coverImage).width(1200).height(630).url()
+        : undefined
+
+    return {
+        title: post.title,
+        description: post.excerpt,
+        alternates: { canonical: `/blog/${post.slug.current}` },
+        openGraph: {
+            type: 'article',
+            title: post.title,
+            description: post.excerpt,
+            url: `${SITE_URL}/blog/${post.slug.current}`,
+            publishedTime: post.publishedAt,
+            tags: post.tags ?? [],
+            images: image ? [{ url: image, width: 1200, height: 630, alt: post.title }] : [],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.excerpt,
+            images: image ? [image] : [],
+        },
+    }
 }
 
-async function getRelatedPosts(currentPostId: string, tags: string[]): Promise<BlogPost[]> {
-    // First try to get posts with matching tags
-    let relatedPosts = await client.fetch(
-        `*[_type == "post" && _id != $currentPostId && !(_id in path("drafts.**")) && count((tags[])[@ in $tags]) > 0] | order(publishedAt desc)[0...3] {
-            _id,
-            title,
-            slug,
-            publishedAt,
-            excerpt,
-            coverImage,
-            tags,
-            readingTime
-        }`,
-        { currentPostId, tags: tags || [] }
-    )
+interface CodeValue {
+    code: string
+}
 
-    // If no related posts found, get recent posts
-    if (relatedPosts.length === 0) {
-        relatedPosts = await client.fetch(
-            `*[_type == "post" && _id != $currentPostId && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...3] {
-                _id,
-                title,
-                slug,
-                publishedAt,
-                excerpt,
-                coverImage,
-                tags,
-                readingTime
-            }`,
-            { currentPostId }
+interface DividerValue {
+    style?: 'line' | 'dots' | 'space'
+}
+
+const portableTextComponents: PortableTextComponents = {
+    types: {
+        image: ({ value }: { value: PostImage }) => (
+            <figure className="my-10">
+                <div className="relative w-full aspect-[3/2] border border-foreground/15 overflow-hidden">
+                    <Image
+                        src={urlFor(value).width(1200).url()}
+                        alt={value.alt || 'Article illustration'}
+                        fill
+                        sizes="(min-width: 768px) 720px, 100vw"
+                        className="object-cover"
+                    />
+                </div>
+                {value.caption && (
+                    <figcaption className="mono-label text-foreground/50 mt-3">
+                        {value.caption}
+                    </figcaption>
+                )}
+            </figure>
+        ),
+        code: ({ value }: { value: CodeValue }) => (
+            <pre className="my-8 overflow-x-auto border border-foreground/15 bg-foreground/[0.03] p-5 text-sm leading-relaxed">
+                <code>{value.code}</code>
+            </pre>
+        ),
+        divider: ({ value }: { value: DividerValue }) => {
+            if (value?.style === 'dots') {
+                return (
+                    <div className="my-10 text-center font-serif text-2xl text-foreground/40 tracking-[0.8em]">
+                        •••
+                    </div>
+                )
+            }
+            if (value?.style === 'space') {
+                return <div className="my-12" />
+            }
+            return <hr className="my-10 border-foreground/15" />
+        },
+    },
+    marks: {
+        link: ({ children, value }) => (
+            <a
+                href={value?.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-vermillion underline underline-offset-4 decoration-vermillion/40 hover:decoration-vermillion"
+            >
+                {children}
+            </a>
+        ),
+    },
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
+    const { slug } = await params
+    const result = await getPost(slug)
+
+    if (!result.ok) {
+        return (
+            <div className="pt-32 md:pt-36 pb-20">
+                <div className="section-container max-w-3xl">
+                    <JournalUnavailable detail="This entry could not load." />
+                </div>
+            </div>
         )
     }
 
-    return relatedPosts
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-    const { slug } = await params
-    const post = await getPost(slug)
-
-    if (!post) {
-        return {
-            title: 'Post Not Found'
-        }
-    }
-
-    return {
-        title: `${post.title} | Dhema'alam Fajrianto`,
-        description: post.excerpt,
-        openGraph: {
-            title: post.title,
-            description: post.excerpt,
-            images: post.coverImage ? [urlFor(post.coverImage).width(1200).height(630).url()] : [],
-        },
-    }
-}
-
-const portableTextComponents = {
-    types: {
-        image: ({ value }: any) => {
-            return (
-                <div className="my-8">
-                    <Image
-                        src={urlFor(value).width(1200).url()}
-                        alt={value.alt || 'Blog post image'}
-                        width={1200}
-                        height={675}
-                        className="rounded-lg"
-                    />
-                    {value.caption && (
-                        <p className="text-sm text-muted-foreground text-center mt-2">{value.caption}</p>
-                    )}
-                </div>
-            )
-        },
-        code: ({ value }: any) => {
-            return (
-                <pre className="my-6 p-4 bg-muted rounded-lg overflow-x-auto">
-                    <code className="text-sm">{value.code}</code>
-                </pre>
-            )
-        },
-        divider: ({ value }: any) => {
-            const style = value?.style || 'line'
-            if (style === 'dots') {
-                return <div className="my-10 text-center text-2xl text-muted-foreground tracking-[1em]">• • •</div>
-            }
-            if (style === 'space') {
-                return <div className="my-12" />
-            }
-            return <hr className="my-10 border-t border-border" />
-        },
-    },
-    block: {
-        h1: ({ children }: any) => <h1 className="text-4xl font-bold mt-12 mb-4">{children}</h1>,
-        h2: ({ children }: any) => <h2 className="text-3xl font-bold mt-10 mb-4">{children}</h2>,
-        h3: ({ children }: any) => <h3 className="text-2xl font-bold mt-8 mb-3">{children}</h3>,
-        h4: ({ children }: any) => <h4 className="text-xl font-bold mt-6 mb-2">{children}</h4>,
-        normal: ({ children }: any) => <p className="mb-6 leading-relaxed">{children}</p>,
-        blockquote: ({ children }: any) => (
-            <blockquote className="border-l-4 border-accent pl-4 my-6 italic text-muted-foreground">
-                {children}
-            </blockquote>
-        ),
-    },
-    marks: {
-        link: ({ children, value }: any) => {
-            return (
-                <a
-                    href={value.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:underline"
-                >
-                    {children}
-                </a>
-            )
-        },
-        strong: ({ children }: any) => <strong className="font-bold">{children}</strong>,
-        em: ({ children }: any) => <em className="italic">{children}</em>,
-        code: ({ children }: any) => (
-            <code className="px-2 py-1 bg-muted rounded text-sm font-mono">{children}</code>
-        ),
-        underline: ({ children }: any) => <span className="underline">{children}</span>,
-        'strike-through': ({ children }: any) => <span className="line-through">{children}</span>,
-    },
-    list: {
-        bullet: ({ children }: any) => (
-            <ul className="list-disc list-inside mb-6 space-y-2 pl-4">{children}</ul>
-        ),
-        number: ({ children }: any) => (
-            <ol className="list-decimal list-inside mb-6 space-y-2 pl-4">{children}</ol>
-        ),
-    },
-    listItem: {
-        bullet: ({ children }: any) => <li className="leading-relaxed">{children}</li>,
-        number: ({ children }: any) => <li className="leading-relaxed">{children}</li>,
-    },
-}
-
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params
-    const post = await getPost(slug)
-
+    const post = result.data
     if (!post) {
         notFound()
     }
 
-    const relatedPosts = await getRelatedPosts(post._id, post.tags || [])
+    const related = await getRelatedPosts(post._id, post.tags ?? [])
+    const relatedPosts: PostSummary[] = related.ok ? related.data : []
 
     return (
-        <div className="pt-24 md:pt-32 pb-20">
+        <div className="pt-32 md:pt-36 pb-20">
             <div className="section-container">
-                <article className="max-w-4xl mx-auto">
-                    {/* Back Link */}
+                <article className="mx-auto max-w-3xl">
                     <Link
                         href="/blog"
-                        className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
+                        className="group inline-flex items-center gap-2 mono-label text-foreground/55 hover:text-vermillion transition-colors mb-10"
                     >
-                        <span>←</span>
-                        <span>Back to Blog</span>
+                        <span aria-hidden className="transition-transform group-hover:-translate-x-1">
+                            ←
+                        </span>
+                        All entries
                     </Link>
 
-                    {/* Header */}
-                    <header className="mb-8">
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
+                    <header className="border-b border-foreground/15 pb-10 mb-10">
+                        <div className="flex flex-wrap items-center gap-3 mono-label text-foreground/50 mb-5">
                             <time dateTime={post.publishedAt}>
-                                {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
+                                {formatDate(post.publishedAt)}
                             </time>
                             {post.readingTime && (
                                 <>
-                                    <span>•</span>
+                                    <span aria-hidden>·</span>
                                     <span>{post.readingTime}</span>
                                 </>
                             )}
                         </div>
 
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
+                        <h1 className="heading-1 text-balance mb-5">{post.title}</h1>
 
-                        <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
+                        <p className="text-foreground/75 text-lg md:text-xl leading-relaxed text-pretty mb-6">
+                            {post.excerpt}
+                        </p>
 
-                        {/* Tags */}
-                        {post.tags && post.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                {post.tags.map((tag) => (
-                                    <span
-                                        key={tag}
-                                        className="px-3 py-1 bg-accent-500/10 text-accent-400 text-sm font-medium rounded-full"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Share Buttons (Compact) */}
-                        <ShareButtons
-                            title={post.title}
-                            url={`https://dhema.me/blog/${post.slug.current}`}
-                            compact
-                        />
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            {post.tags && post.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                    {post.tags.map((tag) => (
+                                        <span key={tag} className="tag-pill">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                            <ShareButtons
+                                title={post.title}
+                                url={`${SITE_URL}/blog/${post.slug.current}`}
+                                compact
+                            />
+                        </div>
                     </header>
 
-                    {/* Cover Image */}
                     {post.coverImage && (
-                        <div className="relative w-full h-[400px] mb-12 rounded-lg overflow-hidden">
+                        <div className="relative w-full aspect-[3/2] border border-foreground/15 overflow-hidden mb-12">
                             <Image
-                                src={urlFor(post.coverImage).width(1200).height(630).url()}
+                                src={urlFor(post.coverImage).width(1200).height(800).url()}
                                 alt={post.coverImage.alt || post.title}
                                 fill
+                                priority
+                                sizes="(min-width: 768px) 768px, 100vw"
                                 className="object-cover"
                             />
                         </div>
                     )}
 
-                    {/* Content */}
                     <div className="prose prose-lg max-w-none">
                         <PortableText value={post.body} components={portableTextComponents} />
                     </div>
 
-                    {/* Share Buttons (Full) */}
-                    <div className="mt-12 pt-8 border-t border-border">
+                    <div className="mt-14 pt-8 border-t border-foreground/15">
                         <ShareButtons
                             title={post.title}
-                            url={`https://dhema.me/blog/${post.slug.current}`}
+                            url={`${SITE_URL}/blog/${post.slug.current}`}
                         />
                     </div>
                 </article>
 
-                {/* Back to Blog CTA */}
-                <div className="max-w-4xl mx-auto mt-12 pt-8 border-t border-border">
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-medium rounded-lg transition-colors"
-                    >
-                        ← Back to All Posts
-                    </Link>
-                </div>
-
-                {/* Recommended Posts */}
                 {relatedPosts.length > 0 && (
-                    <div className="mt-20">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-8">
-                            Recommended <span className="gradient-text">Posts</span>
-                        </h2>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <section className="mt-20 pt-10 border-t border-foreground/15">
+                        <div className="flex items-baseline justify-between gap-4 mb-8">
+                            <h2 className="font-serif text-3xl md:text-4xl tracking-tight">
+                                Keep reading
+                            </h2>
+                            <Link href="/blog" className="mono-label text-foreground/55 hover:text-vermillion">
+                                All entries →
+                            </Link>
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-6">
                             {relatedPosts.map((relatedPost) => (
                                 <Link
                                     key={relatedPost._id}
                                     href={`/blog/${relatedPost.slug.current}`}
-                                    className="group block"
+                                    className="group flex flex-col border border-foreground/15 hover:border-foreground/40 transition-colors bg-surface h-full"
                                 >
-                                    <article className="glass-card overflow-hidden hover-lift h-full flex flex-col">
-                                        {relatedPost.coverImage && (
-                                            <div className="relative h-40 w-full overflow-hidden">
-                                                <Image
-                                                    src={urlFor(relatedPost.coverImage).width(400).height(250).url()}
-                                                    alt={relatedPost.coverImage.alt || relatedPost.title}
-                                                    fill
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                                />
-                                            </div>
-                                        )}
-                                        <div className="p-5 flex flex-col flex-1">
-                                            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                                                <time dateTime={relatedPost.publishedAt}>
-                                                    {new Date(relatedPost.publishedAt).toLocaleDateString('en-US', {
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        year: 'numeric'
-                                                    })}
-                                                </time>
-                                                {relatedPost.readingTime && (
-                                                    <>
-                                                        <span>•</span>
-                                                        <span>{relatedPost.readingTime}</span>
-                                                    </>
-                                                )}
-                                            </div>
-                                            <h3 className="font-bold mb-2 group-hover:text-accent-400 transition-colors line-clamp-2">
-                                                {relatedPost.title}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground line-clamp-2 flex-1">
-                                                {relatedPost.excerpt}
-                                            </p>
+                                    {relatedPost.coverImage && (
+                                        <div className="relative h-36 w-full overflow-hidden border-b border-foreground/10">
+                                            <Image
+                                                src={urlFor(relatedPost.coverImage)
+                                                    .width(480)
+                                                    .height(288)
+                                                    .url()}
+                                                alt={relatedPost.coverImage.alt || relatedPost.title}
+                                                fill
+                                                sizes="(min-width: 768px) 33vw, 100vw"
+                                                className="object-cover img-mute"
+                                            />
                                         </div>
-                                    </article>
+                                    )}
+                                    <div className="p-5 flex flex-col flex-1">
+                                        <div className="mono-label text-foreground/45 mb-2">
+                                            {formatDate(relatedPost.publishedAt)}
+                                        </div>
+                                        <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-vermillion transition-colors text-pretty">
+                                            {relatedPost.title}
+                                        </h3>
+                                        <p className="text-foreground/60 text-sm leading-relaxed mt-2 line-clamp-2">
+                                            {relatedPost.excerpt}
+                                        </p>
+                                    </div>
                                 </Link>
                             ))}
                         </div>
-                    </div>
+                    </section>
                 )}
             </div>
 

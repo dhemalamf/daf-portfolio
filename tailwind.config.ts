@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import typography from '@tailwindcss/typography'
 
 const config: Config = {
     content: [
@@ -106,7 +107,38 @@ const config: Config = {
             },
         },
     },
-    plugins: [],
+    plugins: [typography],
+    // Blog article typography is driven by the editorial tokens so prose
+    // inherits light/dark theming automatically.
+    typography: (theme: (path: string) => string) => ({
+        DEFAULT: {
+            css: {
+                '--tw-prose-body': 'hsl(var(--foreground) / 0.82)',
+                '--tw-prose-headings': 'hsl(var(--foreground))',
+                '--tw-prose-lead': 'hsl(var(--foreground) / 0.75)',
+                '--tw-prose-links': 'hsl(var(--primary))',
+                '--tw-prose-bold': 'hsl(var(--foreground))',
+                '--tw-prose-counters': 'hsl(var(--foreground) / 0.55)',
+                '--tw-prose-bullets': 'hsl(var(--foreground) / 0.35)',
+                '--tw-prose-hr': 'hsl(var(--border))',
+                '--tw-prose-quotes': 'hsl(var(--foreground) / 0.8)',
+                '--tw-prose-quote-borders': 'hsl(var(--primary))',
+                '--tw-prose-captions': 'hsl(var(--foreground) / 0.55)',
+                '--tw-prose-code': 'hsl(var(--foreground))',
+                '--tw-prose-pre-code': 'hsl(var(--background))',
+                '--tw-prose-pre-bg': 'hsl(var(--foreground))',
+                '--tw-prose-th-borders': 'hsl(var(--border))',
+                '--tw-prose-td-borders': 'hsl(var(--border))',
+                maxWidth: 'none',
+            },
+        },
+        'lg': {
+            css: {
+                fontSize: '1.0625rem',
+                lineHeight: '1.85',
+            },
+        },
+    }),
 }
 
 export default config

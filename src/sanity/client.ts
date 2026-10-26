@@ -1,13 +1,15 @@
 import { createClient } from 'next-sanity'
+import { apiVersion, dataset, projectId } from './config'
 
-// Hardcoded as fallback since these are public values
-export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'js6xvhgj'
-export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-export const apiVersion = '2024-01-01'
+export { apiVersion, dataset, projectId }
 
 export const client = createClient({
     projectId,
     dataset,
     apiVersion,
-    useCdn: false, // Disable CDN for fresh content (unpublish works immediately)
+    // Read through the API (not the CDN) so unpublishing is immediate. Blog
+    // routes use ISR, so this costs one request per revalidation window.
+    useCdn: false,
+    // Never let a Sanity outage hang a request for the default timeout.
+    timeout: 8000,
 })
