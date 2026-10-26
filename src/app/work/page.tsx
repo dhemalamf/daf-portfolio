@@ -4,7 +4,8 @@ import { caseStudies } from '@/data/caseStudies'
 import { profile } from '@/data/profile'
 
 export const metadata: Metadata = {
-    title: "Work — Dhema'alam Fajrianto",
+    title: 'Work',
+    alternates: { canonical: '/work' },
     description: 'Case studies across fintech, edtech, government, and AI platforms.',
 }
 

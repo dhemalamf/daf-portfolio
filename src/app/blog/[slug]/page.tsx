@@ -12,6 +12,7 @@ import { urlFor } from '@/sanity/image'
 import ShareButtons from '@/components/ShareButtons'
 import BackToTop from '@/components/BackToTop'
 import JournalUnavailable from '@/components/JournalUnavailable'
+import JsonLd from '@/components/JsonLd'
 
 export const revalidate = 60
 
@@ -148,6 +149,41 @@ export default async function BlogPostPage({ params }: PageProps) {
 
     return (
         <div className="pt-32 md:pt-36 pb-20">
+            <JsonLd
+                data={[
+                    {
+                        '@context': 'https://schema.org',
+                        '@type': 'BlogPosting',
+                        headline: post.title,
+                        description: post.excerpt,
+                        datePublished: post.publishedAt,
+                        dateModified: post.publishedAt,
+                        author: {
+                            '@type': 'Person',
+                            name: "Dhema'alam Fajrianto",
+                            url: SITE_URL,
+                        },
+                        image: post.coverImage
+                            ? urlFor(post.coverImage).width(1200).height(630).url()
+                            : `${SITE_URL}/og-image.png`,
+                        mainEntityOfPage: `${SITE_URL}/blog/${post.slug.current}`,
+                        keywords: (post.tags ?? []).join(', '),
+                    },
+                    {
+                        '@context': 'https://schema.org',
+                        '@type': 'BreadcrumbList',
+                        itemListElement: [
+                            { '@type': 'ListItem', position: 1, name: 'Journal', item: `${SITE_URL}/blog` },
+                            {
+                                '@type': 'ListItem',
+                                position: 2,
+                                name: post.title,
+                                item: `${SITE_URL}/blog/${post.slug.current}`,
+                            },
+                        ],
+                    },
+                ]}
+            />
             <div className="section-container">
                 <article className="mx-auto max-w-3xl">
                     <Link

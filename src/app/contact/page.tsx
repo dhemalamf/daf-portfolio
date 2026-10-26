@@ -1,7 +1,13 @@
-'use client'
-
+import type { Metadata } from 'next'
 import { profile } from '@/data/profile'
-import { trackButtonClick } from '@/lib/analytics'
+import TrackedLink from '@/components/TrackedLink'
+
+export const metadata: Metadata = {
+    title: 'Contact',
+    description:
+        'Get in touch with Dhema: email, WhatsApp, LinkedIn, or download the resume.',
+    alternates: { canonical: '/contact' },
+}
 
 const channels = [
     {
@@ -10,6 +16,7 @@ const channels = [
         value: profile.email,
         href: `mailto:${profile.email}`,
         note: 'Best for considered conversations & briefs.',
+        event: 'contact_email',
     },
     {
         n: '02',
@@ -18,6 +25,7 @@ const channels = [
         href: profile.whatsapp,
         external: true,
         note: 'Quickest channel — usually a reply within a day.',
+        event: 'contact_whatsapp',
     },
     {
         n: '03',
@@ -26,6 +34,7 @@ const channels = [
         href: profile.linkedin,
         external: true,
         note: 'Connect, follow my updates, or reach out professionally.',
+        event: 'contact_linkedin',
     },
     {
         n: '04',
@@ -34,6 +43,7 @@ const channels = [
         href: profile.github,
         external: true,
         note: 'Where the side-projects live.',
+        event: 'contact_github',
     },
     {
         n: '05',
@@ -42,6 +52,7 @@ const channels = [
         href: profile.twitter,
         external: true,
         note: 'Occasional product & AI musings.',
+        event: 'contact_twitter',
     },
 ]
 
@@ -67,7 +78,7 @@ export default function ContactPage() {
                             </p>
                             <div className="mt-6 flex items-center gap-2 mono-label">
                                 <span className="relative flex h-2 w-2">
-                                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 motion-safe:animate-ping" />
                                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                                 </span>
                                 <span className="text-emerald-700 dark:text-emerald-400">Currently available</span>
@@ -77,66 +88,63 @@ export default function ContactPage() {
                 </div>
             </section>
 
-            {/* Channels */}
             <section className="py-16 md:py-24">
                 <div className="section-container">
                     <ul className="border-t border-foreground/20">
-                        {channels.map((c) => (
+                        {channels.map((channel) => (
                             <li
-                                key={c.label}
-                                data-testid={`contact-channel-${c.label.toLowerCase().replace(/[^a-z]/g, '-')}`}
+                                key={channel.label}
+                                data-testid={`contact-channel-${channel.label.toLowerCase().replace(/[^a-z]/g, '-')}`}
                             >
-                                <a
-                                    href={c.href}
-                                    target={c.external ? '_blank' : undefined}
-                                    rel={c.external ? 'noopener noreferrer' : undefined}
-                                    onClick={() => trackButtonClick(`contact_${c.label.toLowerCase()}`)}
+                                <TrackedLink
+                                    href={channel.href}
+                                    target={channel.external ? '_blank' : undefined}
+                                    rel={channel.external ? 'noopener noreferrer' : undefined}
+                                    event={channel.event}
                                     className="group grid grid-cols-12 gap-6 items-baseline py-8 md:py-10 border-b border-foreground/10 hover:bg-foreground/[0.02] transition-colors"
                                 >
                                     <div className="col-span-12 md:col-span-1 mono-label text-foreground/40 group-hover:text-vermillion transition-colors">
-                                        {c.n}
+                                        {channel.n}
                                     </div>
                                     <div className="col-span-12 md:col-span-3 mono-label text-foreground/60">
-                                        {c.label}
+                                        {channel.label}
                                     </div>
                                     <div className="col-span-12 md:col-span-5">
                                         <div className="font-serif text-3xl md:text-4xl leading-tight tracking-tight group-hover:text-vermillion transition-colors">
-                                            {c.value}
+                                            {channel.value}
                                         </div>
-                                        <div className="text-foreground/60 text-sm mt-1">{c.note}</div>
+                                        <div className="text-foreground/60 text-sm mt-1">{channel.note}</div>
                                     </div>
                                     <div className="col-span-12 md:col-span-3 md:text-right">
                                         <span className="mono-label text-foreground/55 group-hover:text-vermillion transition-colors">
-                                            {c.external ? 'Open ↗' : 'Compose →'}
+                                            {channel.external ? 'Open ↗' : 'Compose →'}
                                         </span>
                                     </div>
-                                </a>
+                                </TrackedLink>
                             </li>
                         ))}
                     </ul>
 
-                    {/* Resume CTA */}
                     <div className="mt-16 border border-foreground/15 p-8 md:p-12 grid grid-cols-12 gap-6 items-center">
                         <div className="col-span-12 md:col-span-8">
                             <div className="mono-label text-vermillion mb-3">CV</div>
-                            <h3 className="font-serif text-3xl tracking-tight leading-tight mb-2">
+                            <h2 className="font-serif text-3xl tracking-tight leading-tight mb-2">
                                 Or skim the résumé.
-                            </h3>
+                            </h2>
                             <p className="text-foreground/65 text-sm">
                                 One-page version, updated for Q1 2026.
                             </p>
                         </div>
                         <div className="col-span-12 md:col-span-4 md:text-right">
-                            <a
+                            <TrackedLink
                                 href={profile.resume}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackButtonClick('contact_resume')}
+                                event="contact_resume"
                                 className="btn-ink"
-                                data-testid="contact-resume-btn"
                             >
                                 Download CV <span aria-hidden>↗</span>
-                            </a>
+                            </TrackedLink>
                         </div>
                     </div>
                 </div>

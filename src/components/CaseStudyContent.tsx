@@ -1,9 +1,7 @@
-'use client'
-
 import Link from 'next/link'
 import { CaseStudy } from '@/data/caseStudies'
-import { motion } from 'framer-motion'
 import BackToTop from '@/components/BackToTop'
+import FadeIn from '@/components/animations/FadeIn'
 
 interface Props {
     caseStudy: CaseStudy
@@ -36,14 +34,11 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
                         <span>{caseStudy.period}</span>
                     </div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="heading-1 text-balance mb-5"
-                    >
-                        {caseStudy.title}
-                    </motion.h1>
+                    <FadeIn>
+                        <h1 className="heading-1 text-balance mb-5">
+                            {caseStudy.title}
+                        </h1>
+                    </FadeIn>
 
                     <p className="mono-label text-vermillion mb-5">{caseStudy.company}</p>
 

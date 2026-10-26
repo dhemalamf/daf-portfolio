@@ -7,6 +7,13 @@ import Marquee from '@/components/animations/Marquee'
 import { getFeaturedCaseStudies } from '@/data/caseStudies'
 import { experiences, profile, certifications } from '@/data/profile'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const revalidate = 86400
+
+export const metadata: Metadata = {
+    alternates: { canonical: '/' },
+}
 
 export default function Home() {
     const featured = getFeaturedCaseStudies().slice(0, 5)

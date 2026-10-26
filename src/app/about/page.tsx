@@ -6,7 +6,8 @@ import { profile, experiences } from '@/data/profile'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-    title: "About — Dhema'alam Fajrianto",
+    title: 'About',
+    alternates: { canonical: '/about' },
     description:
         'A product manager building measurable digital products across fintech, edtech, and AI.',
 }
