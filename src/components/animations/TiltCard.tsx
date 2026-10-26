@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { m as motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
 import { ReactNode, useRef } from 'react'
 
 interface TiltCardProps {
@@ -17,6 +17,7 @@ export default function TiltCard({
     scale = 1.02,
 }: TiltCardProps) {
     const ref = useRef<HTMLDivElement>(null)
+    const shouldReduceMotion = useReducedMotion()
 
     const x = useMotionValue(0)
     const y = useMotionValue(0)
@@ -43,6 +44,10 @@ export default function TiltCard({
     const handleMouseLeave = () => {
         x.set(0)
         y.set(0)
+    }
+
+    if (shouldReduceMotion) {
+        return <div className={className}>{children}</div>
     }
 
     return (

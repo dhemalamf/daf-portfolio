@@ -1,29 +1,32 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { urlFor } from '@/sanity/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import type { PostSummary } from '@/sanity/types'
 import FadeIn from '@/components/animations/FadeIn'
 
-interface BlogPost {
-    _id: string
-    title: string
-    slug: { current: string }
-    publishedAt: string
-    excerpt: string
-    coverImage: any
-    tags: string[]
-    readingTime: string
-}
-
 interface BlogListProps {
-    posts: BlogPost[]
+    posts: PostSummary[]
     allTags: string[]
 }
 
 const POSTS_PER_PAGE = 9
+
+const formatDate = (value: string) =>
+    new Date(value).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    })
+
+const readingMinutes = (value?: string | null) => {
+    if (!value) return 0
+    const match = value.match(/(\d+)/)
+    return match ? Number.parseInt(match[1], 10) : 0
+}
 
 export default function BlogList({ posts, allTags }: BlogListProps) {
     const [searchQuery, setSearchQuery] = useState('')
@@ -36,29 +39,49 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
     const [showFilters, setShowFilters] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
 
-    const parseReadingTime = (timeStr: string | undefined): number => {
-        if (!timeStr) return 0
-        const match = timeStr.match(/(\d+)/)
-        return match ? parseInt(match[1], 10) : 0
-    }
-
     const filteredPosts = useMemo(() => {
         return posts.filter((post) => {
-            if (searchQuery && !post.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+            if (
+                searchQuery &&
+                !post.title.toLowerCase().includes(searchQuery.toLowerCase())
+            ) {
                 return false
             }
-            if (selectedTags.length > 0 && (!post.tags || !post.tags.some(tag => selectedTags.includes(tag)))) {
+            if (
+                selectedTags.length > 0 &&
+                !post.tags?.some((tag) => selectedTags.includes(tag))
+            ) {
                 return false
             }
-            const postDate = new Date(post.publishedAt)
-            if (dateFrom && postDate < new Date(dateFrom)) return false
-            if (dateTo && postDate > new Date(dateTo)) return false
-            const readingTime = parseReadingTime(post.readingTime)
-            if (readingTimeMin && readingTime < parseInt(readingTimeMin, 10)) return false
-            if (readingTimeMax && readingTime > parseInt(readingTimeMax, 10)) return false
+            const publishedAt = new Date(post.publishedAt)
+            if (dateFrom && publishedAt < new Date(dateFrom)) return false
+            if (dateTo && publishedAt > new Date(dateTo)) return false
+            const minutes = readingMinutes(post.readingTime)
+            if (readingTimeMin && minutes < Number.parseInt(readingTimeMin, 10)) {
+                return false
+            }
+            if (readingTimeMax && minutes > Number.parseInt(readingTimeMax, 10)) {
+                return false
+            }
             return true
         })
-    }, [posts, searchQuery, selectedTags, dateFrom, dateTo, readingTimeMin, readingTimeMax])
+    }, [
+        posts,
+        searchQuery,
+        selectedTags,
+        dateFrom,
+        dateTo,
+        readingTimeMin,
+        readingTimeMax,
+    ])
+
+    const hasActiveFilters =
+        Boolean(searchQuery) ||
+        selectedTags.length > 0 ||
+        Boolean(dateFrom) ||
+        Boolean(dateTo) ||
+        Boolean(readingTimeMin) ||
+        Boolean(readingTimeMax)
 
     const clearFilters = () => {
         setSearchQuery('')
@@ -70,18 +93,16 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
         setCurrentPage(1)
     }
 
-    const handleFilterChange = (setter: (val: any) => void, value: any) => {
+    const updateFilter = <T,>(setter: (value: T) => void, value: T) => {
         setter(value)
         setCurrentPage(1)
     }
 
-    const hasActiveFilters = searchQuery || selectedTags.length > 0 || dateFrom || dateTo || readingTimeMin || readingTimeMax
-
     const toggleTag = (tag: string) => {
-        setSelectedTags(prev =>
-            prev.includes(tag)
-                ? prev.filter(t => t !== tag)
-                : [...prev, tag]
+        setSelectedTags((previous) =>
+            previous.includes(tag)
+                ? previous.filter((item) => item !== tag)
+                : [...previous, tag]
         )
         setCurrentPage(1)
     }
@@ -91,160 +112,199 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
     const endIndex = startIndex + POSTS_PER_PAGE
     const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
 
+    const fieldClass =
+        'w-full bg-transparent border border-foreground/20 px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/60 focus:border-vermillion focus-visible:outline-none transition-colors'
+
     return (
         <div>
-            {/* Unified Toolbar */}
-            <div className="flex flex-wrap items-center gap-2 mb-8">
-                {/* Search */}
+            <div className="flex flex-wrap items-center gap-2 mb-6">
                 <div className="relative">
-                    <svg
-                        className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <label htmlFor="journal-search" className="sr-only">
+                        Search journal
+                    </label>
                     <input
-                        type="text"
-                        placeholder="Search post"
+                        id="journal-search"
+                        type="search"
+                        placeholder="Search entries"
                         value={searchQuery}
-                        onChange={(e) => handleFilterChange(setSearchQuery, e.target.value)}
-                        className="w-64 sm:w-80 pl-9 pr-3 py-2.5 text-sm bg-muted/50 border border-border/50 rounded-xl focus:outline-none focus:ring-1 focus:ring-violet-500/30 focus:border-violet-500/30 transition-all"
+                        onChange={(event) =>
+                            updateFilter(setSearchQuery, event.target.value)
+                        }
+                        className={`${fieldClass} w-56 sm:w-72 pl-3`}
                     />
                 </div>
 
-                <div className="w-px h-6 bg-border hidden sm:block" />
-
-                {/* Filters Button */}
                 <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className={`px-3.5 py-2.5 text-sm rounded-xl border transition-all flex items-center gap-2 ${showFilters || hasActiveFilters
-                        ? 'bg-background text-foreground border-violet-500/30 shadow-sm'
-                        : 'bg-muted/50 border-border/50 text-muted-foreground hover:text-foreground'
-                        }`}
+                    type="button"
+                    onClick={() => setShowFilters((value) => !value)}
+                    aria-expanded={showFilters}
+                    aria-controls="journal-filters"
+                    className={`mono-label px-3 py-2.5 border transition-colors ${
+                        showFilters || hasActiveFilters
+                            ? 'border-foreground text-foreground'
+                            : 'border-foreground/20 text-foreground/60 hover:border-foreground/50'
+                    }`}
                 >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Filters
-                    {hasActiveFilters && (
-                        <span className="w-1.5 h-1.5 bg-violet-500 rounded-full" />
-                    )}
+                    Filters{hasActiveFilters ? ` (${selectedTags.length || '•'})` : ''}
                 </button>
 
-                {/* View Toggle */}
-                <div className="flex bg-muted/50 border border-border/50 rounded-xl p-0.5">
+                <div className="flex border border-foreground/20">
                     <button
+                        type="button"
                         onClick={() => setViewMode('grid')}
-                        className={`p-2.5 rounded-lg transition-all ${viewMode === 'grid'
-                            ? 'bg-background text-foreground shadow-sm'
-                            : 'text-muted-foreground hover:text-foreground'
-                            }`}
-                        title="Grid View"
+                        aria-pressed={viewMode === 'grid'}
+                        className={`mono-label px-3 py-2.5 transition-colors ${
+                            viewMode === 'grid'
+                                ? 'bg-foreground text-background'
+                                : 'text-foreground/60 hover:text-foreground'
+                        }`}
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                        </svg>
+                        Grid
                     </button>
                     <button
+                        type="button"
                         onClick={() => setViewMode('list')}
-                        className={`p-2.5 rounded-lg transition-all ${viewMode === 'list'
-                            ? 'bg-background text-foreground shadow-sm'
-                            : 'text-muted-foreground hover:text-foreground'
-                            }`}
-                        title="List View"
+                        aria-pressed={viewMode === 'list'}
+                        className={`mono-label px-3 py-2.5 border-l border-foreground/20 transition-colors ${
+                            viewMode === 'list'
+                                ? 'bg-foreground text-background'
+                                : 'text-foreground/60 hover:text-foreground'
+                        }`}
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                        List
                     </button>
                 </div>
+
+                <p className="mono-label text-foreground/60 sm:ml-auto">
+                    {filteredPosts.length === 0
+                        ? '0 entries'
+                        : `${startIndex + 1}–${Math.min(endIndex, filteredPosts.length)} of ${filteredPosts.length}`}
+                </p>
             </div>
 
-            {/* Expanded Filters */}
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
                 {showFilters && (
                     <motion.div
+                        id="journal-filters"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.25 }}
                         className="overflow-hidden"
                     >
-                        <div className="bg-muted/30 p-6 rounded-xl border border-border/50 space-y-4 mb-8">
+                        <div className="border border-foreground/15 p-5 md:p-6 mb-8 space-y-5">
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                                 <div>
-                                    <label className="block text-sm text-muted-foreground mb-2">Date From</label>
+                                    <label
+                                        htmlFor="journal-date-from"
+                                        className="mono-label block text-foreground/70 mb-2"
+                                    >
+                                        From
+                                    </label>
                                     <input
+                                        id="journal-date-from"
                                         type="date"
                                         value={dateFrom}
-                                        onChange={(e) => handleFilterChange(setDateFrom, e.target.value)}
-                                        className="w-full px-3 py-2.5 text-sm bg-background border border-border/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+                                        onChange={(event) =>
+                                            updateFilter(setDateFrom, event.target.value)
+                                        }
+                                        className={fieldClass}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-muted-foreground mb-2">Date To</label>
+                                    <label
+                                        htmlFor="journal-date-to"
+                                        className="mono-label block text-foreground/70 mb-2"
+                                    >
+                                        To
+                                    </label>
                                     <input
+                                        id="journal-date-to"
                                         type="date"
                                         value={dateTo}
-                                        onChange={(e) => handleFilterChange(setDateTo, e.target.value)}
-                                        className="w-full px-3 py-2.5 text-sm bg-background border border-border/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+                                        onChange={(event) =>
+                                            updateFilter(setDateTo, event.target.value)
+                                        }
+                                        className={fieldClass}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-muted-foreground mb-2">Min Read (min)</label>
+                                    <label
+                                        htmlFor="journal-read-min"
+                                        className="mono-label block text-foreground/70 mb-2"
+                                    >
+                                        Min read
+                                    </label>
                                     <input
+                                        id="journal-read-min"
                                         type="number"
                                         min="0"
                                         placeholder="0"
                                         value={readingTimeMin}
-                                        onChange={(e) => handleFilterChange(setReadingTimeMin, e.target.value)}
-                                        className="w-full px-3 py-2.5 text-sm bg-background border border-border/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+                                        onChange={(event) =>
+                                            updateFilter(setReadingTimeMin, event.target.value)
+                                        }
+                                        className={fieldClass}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-muted-foreground mb-2">Max Read (min)</label>
+                                    <label
+                                        htmlFor="journal-read-max"
+                                        className="mono-label block text-foreground/70 mb-2"
+                                    >
+                                        Max read
+                                    </label>
                                     <input
+                                        id="journal-read-max"
                                         type="number"
                                         min="0"
                                         placeholder="30"
                                         value={readingTimeMax}
-                                        onChange={(e) => handleFilterChange(setReadingTimeMax, e.target.value)}
-                                        className="w-full px-3 py-2.5 text-sm bg-background border border-border/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+                                        onChange={(event) =>
+                                            updateFilter(setReadingTimeMax, event.target.value)
+                                        }
+                                        className={fieldClass}
                                     />
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm text-muted-foreground mb-2">
-                                    Tags {selectedTags.length > 0 && <span className="text-foreground">({selectedTags.length} selected)</span>}
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                    {allTags.map((tag) => (
-                                        <button
-                                            key={tag}
-                                            onClick={() => toggleTag(tag)}
-                                            className={`px-3.5 py-1.5 text-sm rounded-lg transition-all ${selectedTags.includes(tag)
-                                                ? 'bg-violet-600 text-white shadow-sm'
-                                                : 'bg-muted text-muted-foreground hover:text-foreground border border-border/50'
-                                                }`}
-                                        >
-                                            {tag}
-                                        </button>
-                                    ))}
+                            {allTags.length > 0 && (
+                                <div>
+                                    <p className="mono-label text-foreground/70 mb-2">
+                                        Topics
+                                        {selectedTags.length > 0 &&
+                                            ` · ${selectedTags.length} selected`}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allTags.map((tag) => {
+                                            const active = selectedTags.includes(tag)
+                                            return (
+                                                <button
+                                                    key={tag}
+                                                    type="button"
+                                                    onClick={() => toggleTag(tag)}
+                                                    aria-pressed={active}
+                                                    className={
+                                                        active
+                                                            ? 'tag-pill-accent'
+                                                            : 'tag-pill hover:border-foreground/40'
+                                                    }
+                                                >
+                                                    {tag}
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             {hasActiveFilters && (
                                 <button
+                                    type="button"
                                     onClick={clearFilters}
-                                    className="px-4 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 bg-red-500/5 border border-red-500/20 rounded-lg hover:bg-red-500/10 transition-all flex items-center gap-2"
+                                    className="mono-label text-vermillion hover:underline"
                                 >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                    </svg>
-                                    Reset Filters
+                                    Reset all filters
                                 </button>
                             )}
                         </div>
@@ -252,97 +312,101 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                 )}
             </AnimatePresence>
 
-            {/* Results Count */}
-            <p className="text-sm text-muted-foreground mb-6">
-                Showing {startIndex + 1}-{Math.min(endIndex, filteredPosts.length)} of {filteredPosts.length} posts
-                {filteredPosts.length !== posts.length && ` (filtered from ${posts.length})`}
-            </p>
-
-            {/* Blog Posts */}
             {filteredPosts.length > 0 ? (
                 <>
                     {viewMode === 'grid' ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {paginatedPosts.map((post, index) => (
-                                <BlogCardGrid key={post._id} post={post} index={index} />
+                                <BlogCard
+                                    key={post._id}
+                                    post={post}
+                                    index={index}
+                                    layout="grid"
+                                />
                             ))}
                         </div>
                     ) : (
-                        <div className="space-y-6">
+                        <div className="border-t border-foreground/15">
                             {paginatedPosts.map((post, index) => (
-                                <BlogCardList key={post._id} post={post} index={index} />
+                                <BlogCard
+                                    key={post._id}
+                                    post={post}
+                                    index={index}
+                                    layout="list"
+                                />
                             ))}
                         </div>
                     )}
 
-                    {/* Pagination */}
                     {totalPages > 1 && (
-                        <div className="flex items-center justify-center gap-2 mt-12">
+                        <nav
+                            aria-label="Journal pagination"
+                            className="flex items-center justify-center gap-2 mt-12"
+                        >
                             <button
-                                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                type="button"
+                                onClick={() =>
+                                    setCurrentPage((page) => Math.max(1, page - 1))
+                                }
                                 disabled={currentPage === 1}
-                                className="p-2.5 rounded-lg border border-border/50 hover:border-violet-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                aria-label="Previous page"
+                                className="mono-label px-3 py-2 border border-foreground/20 hover:border-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                </svg>
+                                ←
                             </button>
 
-                            <div className="flex gap-1">
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                                    const showPage =
+                            {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                .filter(
+                                    (page) =>
                                         page === 1 ||
                                         page === totalPages ||
                                         Math.abs(page - currentPage) <= 1
-
-                                    if (!showPage) {
-                                        if (page === 2 || page === totalPages - 1) {
-                                            return (
-                                                <span key={page} className="px-2 py-1 text-muted-foreground">
-                                                    ...
-                                                </span>
-                                            )
+                                )
+                                .map((page) => (
+                                    <button
+                                        key={page}
+                                        type="button"
+                                        onClick={() => setCurrentPage(page)}
+                                        aria-current={
+                                            currentPage === page ? 'page' : undefined
                                         }
-                                        return null
-                                    }
-
-                                    return (
-                                        <button
-                                            key={page}
-                                            onClick={() => setCurrentPage(page)}
-                                            className={`px-4 py-2 rounded-lg transition-colors ${currentPage === page
-                                                ? 'bg-violet-600 text-white'
-                                                : 'border border-border/50 hover:border-violet-500/30'
-                                                }`}
-                                        >
-                                            {page}
-                                        </button>
-                                    )
-                                })}
-                            </div>
+                                        className={`mono-label px-3 py-2 border transition-colors ${
+                                            currentPage === page
+                                                ? 'bg-foreground text-background border-foreground'
+                                                : 'border-foreground/20 hover:border-foreground'
+                                        }`}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
 
                             <button
-                                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                type="button"
+                                onClick={() =>
+                                    setCurrentPage((page) =>
+                                        Math.min(totalPages, page + 1)
+                                    )
+                                }
                                 disabled={currentPage === totalPages}
-                                className="p-2.5 rounded-lg border border-border/50 hover:border-violet-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                aria-label="Next page"
+                                className="mono-label px-3 py-2 border border-foreground/20 hover:border-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
+                                →
                             </button>
-                        </div>
+                        </nav>
                     )}
                 </>
             ) : (
-                <div className="text-center py-20">
-                    <p className="text-muted-foreground text-lg mb-4">
-                        No posts match your filters
+                <div className="border border-foreground/15 p-8 md:p-12">
+                    <div className="mono-label text-vermillion mb-3">No results</div>
+                    <h2 className="font-serif text-3xl tracking-tight mb-2">
+                        No entries match those filters.
+                    </h2>
+                    <p className="text-foreground/70 mb-6">
+                        Try a broader search or reset the filters.
                     </p>
-                    <button
-                        onClick={clearFilters}
-                        className="inline-flex items-center gap-2 px-6 py-3 border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
-                    >
-                        Clear Filters
+                    <button type="button" onClick={clearFilters} className="btn-outline">
+                        Clear filters
                     </button>
                 </div>
             )}
@@ -350,132 +414,99 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
     )
 }
 
-function BlogCardGrid({ post, index }: { post: BlogPost; index: number }) {
-    return (
-        <FadeIn delay={index * 0.1}>
-            <Link href={`/blog/${post.slug.current}`} className="group block h-full">
-                <article className="glass-card overflow-hidden hover-lift h-full flex flex-col">
-                    {post.coverImage && (
-                        <div className="relative h-48 w-full overflow-hidden">
-                            <Image
-                                src={urlFor(post.coverImage).width(600).height(400).url()}
-                                alt={post.coverImage.alt || post.title}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-                        </div>
-                    )}
-                    <div className="p-6 flex flex-col flex-1">
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
-                            <time dateTime={post.publishedAt}>
-                                {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                })}
-                            </time>
-                            {post.readingTime && (
-                                <>
-                                    <span className="w-1 h-1 bg-muted-foreground/50 rounded-full" />
-                                    <span>{post.readingTime}</span>
-                                </>
-                            )}
-                        </div>
-                        <h2 className="text-xl font-display font-bold mb-3 line-clamp-2 group-hover:text-violet-400 transition-colors duration-300">
-                            {post.title}
-                        </h2>
-                        <p className="text-muted-foreground mb-4 line-clamp-3 flex-1">{post.excerpt}</p>
-                        <div className="flex items-end justify-between gap-4 mt-auto pt-4">
-                            {post.tags && post.tags.length > 0 ? (
-                                <div className="flex flex-wrap gap-2 items-center">
-                                    {post.tags.slice(0, 2).map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-3 py-1 bg-violet-500/10 text-violet-400 text-xs font-medium rounded-full"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                    {post.tags.length > 2 && (
-                                        <span className="text-xs text-muted-foreground">+{post.tags.length - 2} more</span>
-                                    )}
-                                </div>
-                            ) : <div />}
-                            <span className="inline-flex items-center gap-1 text-sm text-violet-400 shrink-0 group-hover:gap-2 transition-all">
-                                Read More
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                </article>
-            </Link>
-        </FadeIn>
-    )
+interface BlogCardProps {
+    post: PostSummary
+    index: number
+    layout: 'grid' | 'list'
 }
 
-function BlogCardList({ post, index }: { post: BlogPost; index: number }) {
-    return (
-        <FadeIn delay={index * 0.1}>
-            <Link href={`/blog/${post.slug.current}`} className="group block">
-                <article className="glass-card overflow-hidden hover-lift flex flex-col md:flex-row">
-                    {post.coverImage && (
-                        <div className="relative h-48 md:h-auto md:w-64 flex-shrink-0 overflow-hidden">
-                            <Image
-                                src={urlFor(post.coverImage).width(400).height(300).url()}
-                                alt={post.coverImage.alt || post.title}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                        </div>
-                    )}
-                    <div className="p-6 flex flex-col flex-1">
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
-                            <time dateTime={post.publishedAt}>
-                                {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                })}
-                            </time>
-                            {post.readingTime && (
-                                <>
-                                    <span className="w-1 h-1 bg-muted-foreground/50 rounded-full" />
-                                    <span>{post.readingTime}</span>
-                                </>
-                            )}
-                        </div>
-                        <h2 className="text-xl font-display font-bold mb-3 line-clamp-2 group-hover:text-violet-400 transition-colors duration-300">
+function BlogCard({ post, index, layout }: BlogCardProps) {
+    const meta = (
+        <div className="flex flex-wrap items-center gap-3 mono-label text-foreground/65">
+            <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+            {post.readingTime && (
+                <>
+                    <span aria-hidden>·</span>
+                    <span>{post.readingTime}</span>
+                </>
+            )}
+        </div>
+    )
+
+    const tags = post.tags && post.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+            {post.tags.slice(0, 2).map((tag) => (
+                <span key={tag} className="tag-pill">
+                    {tag}
+                </span>
+            ))}
+            {post.tags.length > 2 && (
+                <span className="mono-label text-foreground/60 self-center">
+                    +{post.tags.length - 2}
+                </span>
+            )}
+        </div>
+    )
+
+    if (layout === 'list') {
+        return (
+            <FadeIn delay={index * 0.05}>
+                <Link
+                    href={`/blog/${post.slug.current}`}
+                    className="group grid grid-cols-12 gap-4 md:gap-6 items-baseline py-7 border-b border-foreground/10 hover:bg-foreground/[0.02] transition-colors"
+                >
+                    <div className="col-span-12 md:col-span-2">{meta}</div>
+                    <div className="col-span-12 md:col-span-6">
+                        <h2 className="font-serif text-2xl md:text-3xl leading-tight tracking-tight group-hover:text-vermillion transition-colors">
                             {post.title}
                         </h2>
-                        <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
-                        <div className="flex items-end justify-between gap-4 mt-auto pt-4">
-                            {post.tags && post.tags.length > 0 ? (
-                                <div className="flex flex-wrap gap-2 items-center">
-                                    {post.tags.slice(0, 2).map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-3 py-1 bg-violet-500/10 text-violet-400 text-xs font-medium rounded-full"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                    {post.tags.length > 2 && (
-                                        <span className="text-xs text-muted-foreground">+{post.tags.length - 2} more</span>
-                                    )}
-                                </div>
-                            ) : <div />}
-                            <span className="inline-flex items-center gap-1 text-sm text-violet-400 shrink-0 group-hover:gap-2 transition-all">
-                                Read More
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </span>
-                        </div>
+                        <p className="text-foreground/60 text-sm leading-relaxed mt-2 text-pretty line-clamp-2">
+                            {post.excerpt}
+                        </p>
                     </div>
-                </article>
+                    <div className="col-span-8 md:col-span-2">{tags}</div>
+                    <div className="col-span-4 md:col-span-2 md:text-right">
+                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors">
+                            Read →
+                        </span>
+                    </div>
+                </Link>
+            </FadeIn>
+        )
+    }
+
+    return (
+        <FadeIn delay={index * 0.05}>
+            <Link
+                href={`/blog/${post.slug.current}`}
+                className="group flex h-full flex-col border border-foreground/15 hover:border-foreground/40 transition-colors bg-surface"
+            >
+                {post.coverImage && (
+                    <div className="relative h-48 w-full overflow-hidden border-b border-foreground/10">
+                        <Image
+                            src={urlFor(post.coverImage).width(600).height(400).url()}
+                            alt={post.coverImage.alt || post.title}
+                            fill
+                            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                            className="object-cover img-mute group-hover:scale-[1.03] transition-transform duration-700"
+                        />
+                    </div>
+                )}
+                <div className="flex flex-1 flex-col p-5 md:p-6">
+                    {meta}
+                    <h2 className="font-serif text-2xl leading-tight tracking-tight mt-3 mb-3 group-hover:text-vermillion transition-colors text-pretty">
+                        {post.title}
+                    </h2>
+                    <p className="text-foreground/65 text-sm leading-relaxed mb-5 flex-1 line-clamp-3 text-pretty">
+                        {post.excerpt}
+                    </p>
+                    <div className="flex items-end justify-between gap-4 mt-auto pt-4 border-t border-foreground/10">
+                        {tags || <span />}
+                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors shrink-0">
+                            Read →
+                        </span>
+                    </div>
+                </div>
             </Link>
         </FadeIn>
     )

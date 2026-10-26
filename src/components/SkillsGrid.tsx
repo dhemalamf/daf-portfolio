@@ -1,7 +1,7 @@
 'use client'
 
 import { skills } from '@/data/profile'
-import { motion, useInView } from 'framer-motion'
+import { m as motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 const categories: { title: string; items: string[]; numeral: string }[] = [
@@ -32,7 +32,7 @@ export default function SkillsGrid() {
                     <div className="flex items-baseline gap-3 mb-6">
                         <span className="mono-label text-vermillion">{cat.numeral}</span>
                         <span className="h-px flex-1 bg-foreground/15" />
-                        <span className="mono-label text-foreground/40">
+                        <span className="mono-label text-foreground/60">
                             {cat.items.length} skills
                         </span>
                     </div>

@@ -31,3 +31,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tooling / generated reports
+/.tmp/
+/test_reports/
+
+# env (local overrides are already covered above)
+.env

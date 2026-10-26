@@ -6,7 +6,8 @@ import { profile, experiences } from '@/data/profile'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-    title: "About — Dhema'alam Fajrianto",
+    title: 'About',
+    alternates: { canonical: '/about' },
     description:
         'A product manager building measurable digital products across fintech, edtech, and AI.',
 }
@@ -38,7 +39,7 @@ export default function AboutPage() {
             {/* Hero */}
             <section className="pt-36 md:pt-44 pb-20 border-b border-foreground/15">
                 <div className="section-container">
-                    <div className="mono-label text-foreground/50 mb-6">
+                    <div className="mono-label text-foreground/65 mb-6">
                         <span className="text-vermillion">●</span> 01 — About
                     </div>
                     <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">

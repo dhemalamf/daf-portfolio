@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { CaseStudy } from '@/data/caseStudies'
 import { trackCaseStudyView } from '@/lib/analytics'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 
 interface CaseStudyCardProps {
     caseStudy: CaseStudy
@@ -36,7 +36,7 @@ export default function CaseStudyCard({
                     className={`p-6 md:p-8 lg:p-10 flex flex-col h-full ${featured ? 'lg:w-1/2' : ''}`}
                 >
                     {/* Top meta */}
-                    <div className="flex items-center gap-3 mb-6 mono-label text-foreground/55">
+                    <div className="flex items-center gap-3 mb-6 mono-label text-foreground/70">
                         <span className="text-vermillion">●</span>
                         <span>{caseStudy.industry}</span>
                         <span className="text-foreground/25">/</span>
@@ -55,7 +55,7 @@ export default function CaseStudyCard({
                     </h3>
 
                     {/* Company */}
-                    <p className="text-sm text-foreground/55 mb-6">{caseStudy.company}</p>
+                    <p className="text-sm text-foreground/70 mb-6">{caseStudy.company}</p>
 
                     {/* Summary */}
                     <p
@@ -73,7 +73,7 @@ export default function CaseStudyCard({
                     <div className="border-t border-foreground/10 pt-5 mb-6 space-y-2">
                         {caseStudy.outcomes.slice(0, featured ? 3 : 2).map((o, i) => (
                             <div key={i} className="flex items-baseline gap-3">
-                                <span className="mono-label text-foreground/40 w-10 shrink-0">
+                                <span className="mono-label text-foreground/60 w-10 shrink-0">
                                     0{i + 1}
                                 </span>
                                 <span className="text-sm text-foreground/85">{o.metric}</span>

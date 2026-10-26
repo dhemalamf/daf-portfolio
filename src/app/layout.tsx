@@ -8,6 +8,10 @@ import { ThemeProvider } from '@/components/theme-provider'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import StudioShortcut from '@/components/StudioShortcut'
 import SmoothScroll from '@/components/SmoothScroll'
+import MotionProvider from '@/components/motion/MotionProvider'
+import JsonLd from '@/components/JsonLd'
+import { siteUrl } from '@/lib/config'
+import { profile } from '@/data/profile'
 
 const serif = Instrument_Serif({
     subsets: ['latin'],
@@ -30,8 +34,11 @@ const mono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://dhema.me'),
-    title: "Dhema'alam Fajrianto — Product Manager",
+    metadataBase: new URL(siteUrl),
+    title: {
+        default: "Dhema'alam Fajrianto — Product Manager",
+        template: "%s — Dhema'alam Fajrianto",
+    },
     description:
         'Product Manager with 4+ years of experience across fintech, edtech, government/BUMN, and AI-enabled web platforms.',
     keywords: ['Product Manager', 'Fintech', 'Edtech', 'AI', 'Indonesia', 'Dhema'],
@@ -40,7 +47,7 @@ export const metadata: Metadata = {
         title: "Dhema'alam Fajrianto — Product Manager",
         description:
             'Product Manager with 4+ years of experience delivering measurable business impact.',
-        url: 'https://dhema.me',
+        url: siteUrl,
         siteName: 'Dhema Portfolio',
         images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Dhema Portfolio' }],
         locale: 'en_US',
@@ -67,16 +74,47 @@ export default function RootLayout({
             suppressHydrationWarning
         >
             <body className="min-h-screen flex flex-col font-sans antialiased" suppressHydrationWarning>
+                <a href="#main-content" className="skip-link">
+                    Skip to content
+                </a>
+                <JsonLd
+                    data={[
+                        {
+                            '@context': 'https://schema.org',
+                            '@type': 'Person',
+                            name: profile.name,
+                            jobTitle: profile.title,
+                            url: siteUrl,
+                            email: `mailto:${profile.email}`,
+                            image: `${siteUrl}/og-image.png`,
+                            description: profile.shortBio,
+                            address: {
+                                '@type': 'PostalAddress',
+                                addressLocality: 'Jakarta',
+                                addressCountry: 'ID',
+                            },
+                            sameAs: [profile.linkedin, profile.github, profile.twitter],
+                        },
+                        {
+                            '@context': 'https://schema.org',
+                            '@type': 'WebSite',
+                            name: "Dhema'alam Fajrianto",
+                            url: siteUrl,
+                        },
+                    ]}
+                />
                 <Suspense fallback={null}>
                     <GoogleAnalytics />
                 </Suspense>
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-                    <SmoothScroll>
-                        <StudioShortcut />
-                        <Navigation />
-                        <main className="flex-grow">{children}</main>
-                        <Footer />
-                    </SmoothScroll>
+                    <MotionProvider>
+                        <SmoothScroll>
+                            <StudioShortcut />
+                            <Navigation />
+                            <main id="main-content" className="flex-grow">{children}</main>
+                            <Footer />
+                        </SmoothScroll>
+                    </MotionProvider>
                 </ThemeProvider>
             </body>
         </html>

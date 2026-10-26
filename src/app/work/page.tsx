@@ -4,7 +4,8 @@ import { caseStudies } from '@/data/caseStudies'
 import { profile } from '@/data/profile'
 
 export const metadata: Metadata = {
-    title: "Work — Dhema'alam Fajrianto",
+    title: 'Work',
+    alternates: { canonical: '/work' },
     description: 'Case studies across fintech, edtech, government, and AI platforms.',
 }
 
@@ -13,7 +14,7 @@ export default function WorkPage() {
         <>
             <section className="pt-36 md:pt-44 pb-12 border-b border-foreground/15">
                 <div className="section-container">
-                    <div className="mono-label text-foreground/50 mb-6">
+                    <div className="mono-label text-foreground/65 mb-6">
                         <span className="text-vermillion">●</span> 02 — Selected work
                     </div>
                     <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">

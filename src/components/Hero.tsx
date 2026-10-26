@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { profile, impactMetrics } from '@/data/profile'
 import { trackButtonClick } from '@/lib/analytics'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import AnimatedCounter from '@/components/animations/AnimatedCounter'
 
 export default function Hero() {
@@ -30,12 +30,12 @@ export default function Hero() {
                 >
                     <div className="flex items-center gap-3 mono-label text-foreground/70">
                         <span className="relative flex h-2 w-2">
-                            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
+                            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 motion-safe:animate-ping" />
                             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                         </span>
                         Open to collaboration · Jakarta, ID
                     </div>
-                    <div className="hidden sm:block mono-label text-foreground/40">
+                    <div className="hidden sm:block mono-label text-foreground/60">
                         Vol. 04 — Edition {new Date().getFullYear()}
                     </div>
                 </motion.div>
@@ -47,7 +47,7 @@ export default function Hero() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.1 }}
-                            className="mono-label text-foreground/50 mb-6"
+                            className="mono-label text-foreground/65 mb-6"
                         >
                             <span className="text-vermillion">●</span> Currently — Product Manager @ Doitpay
                         </motion.div>
@@ -60,7 +60,7 @@ export default function Hero() {
                         >
                             Dhema<span className="ital">&apos;</span>alam{' '}
                             <span className="ital text-vermillion">Fajrianto</span>
-                            <span className="block text-foreground/45 mt-4 sm:mt-5 text-[0.55em] leading-none tracking-tight">
+                            <span className="block text-foreground/60 mt-4 sm:mt-5 text-[0.55em] leading-none tracking-tight">
                                 — building products with measurable impact.
                             </span>
                         </motion.h1>
@@ -114,7 +114,7 @@ export default function Hero() {
                     className="border-t border-foreground/20"
                     data-testid="hero-impact-metrics"
                 >
-                    <div className="mono-label text-foreground/50 py-4 flex items-center justify-between border-b border-foreground/10">
+                    <div className="mono-label text-foreground/65 py-4 flex items-center justify-between border-b border-foreground/10">
                         <span>Selected impact · 2021 — 2026</span>
                         <span className="hidden sm:inline">{impactMetrics.length} metrics</span>
                     </div>
@@ -134,7 +134,7 @@ export default function Hero() {
                                 <div className="text-sm font-medium text-foreground mb-1">
                                     {m.label}
                                 </div>
-                                <div className="text-xs text-foreground/55 leading-snug">
+                                <div className="text-xs text-foreground/70 leading-snug">
                                     {m.description}
                                 </div>
                             </motion.div>

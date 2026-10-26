@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 
 interface SpotlightCardProps {
     children: ReactNode
@@ -37,7 +37,7 @@ export default function SpotlightCard({ children, className = '' }: SpotlightCar
                 className="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 transition-opacity duration-300"
                 style={{
                     opacity,
-                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(139, 92, 246, 0.1), transparent 40%)`,
+                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 62, 0, 0.08), transparent 40%)`,
                 }}
             />
             {children}

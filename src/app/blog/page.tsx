@@ -1,92 +1,77 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { client } from '@/sanity/client'
+import type { Metadata } from 'next'
 import BlogList from '@/components/BlogList'
 import FadeIn from '@/components/animations/FadeIn'
+import JournalUnavailable from '@/components/JournalUnavailable'
+import { getPosts } from '@/sanity/queries'
 
-export const revalidate = 0
+export const revalidate = 60
 
 export const metadata: Metadata = {
-    title: "Blog | Dhema'alam Fajrianto",
-    description: 'Insights on Product Management, AI, and building products that matter.',
-}
-
-interface BlogPost {
-    _id: string
-    title: string
-    slug: { current: string }
-    publishedAt: string
-    excerpt: string
-    coverImage: any
-    tags: string[]
-    readingTime: string
-}
-
-async function getBlogPosts(): Promise<BlogPost[]> {
-    const posts = await client.fetch(
-        `*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
-            _id,
-            title,
-            slug,
-            publishedAt,
-            excerpt,
-            coverImage,
-            tags,
-            readingTime
-        }`
-    )
-    return posts
+    title: 'Journal',
+    description:
+        'Essays on product management, AI, and building products that matter.',
+    alternates: { canonical: '/blog' },
 }
 
 export default async function BlogPage() {
-    const posts = await getBlogPosts()
+    const result = await getPosts()
 
+    if (!result.ok) {
+        return (
+            <div className="pt-32 md:pt-40 pb-20">
+                <div className="section-container max-w-3xl">
+                    <JournalUnavailable detail="The journal could not load." />
+                </div>
+            </div>
+        )
+    }
+
+    const posts = result.data
     const allTags = Array.from(
-        new Set(posts.flatMap((post) => post.tags || []))
+        new Set(posts.flatMap((post) => post.tags ?? []))
     ).sort()
 
     return (
-        <div className="pt-24 md:pt-36 pb-20">
+        <div className="pt-32 md:pt-40 pb-20">
             <div className="section-container">
-                {/* Header */}
-                <div className="max-w-3xl mb-14">
+                <header className="border-b border-foreground/15 pb-10 mb-12">
                     <FadeIn>
-                        <span className="inline-block text-violet-400 text-sm font-semibold uppercase tracking-widest mb-4">
-                            Blog
-                        </span>
+                        <div className="mono-label text-foreground/65 mb-6">
+                            <span className="text-vermillion">●</span> 03 — Journal
+                        </div>
+                        <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">
+                            <div className="col-span-12 lg:col-span-8">
+                                <h1 className="h-display text-balance">
+                                    Field notes on{' '}
+                                    <span className="ital text-vermillion">product</span>.
+                                </h1>
+                            </div>
+                            <div className="col-span-12 lg:col-span-4 lg:pl-6 lg:border-l lg:border-foreground/15">
+                                <p className="text-foreground/75 text-base md:text-lg leading-relaxed text-pretty">
+                                    Essays on product management, AI, and building things
+                                    that matter — written between shipping.
+                                </p>
+                                <p className="mono-label text-foreground/60 mt-4">
+                                    {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
+                                </p>
+                            </div>
+                        </div>
                     </FadeIn>
-                    <FadeIn delay={0.1}>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
-                            Insights & <span className="gradient-text">Perspectives</span>
-                        </h1>
-                    </FadeIn>
-                    <FadeIn delay={0.2}>
-                        <p className="text-muted-foreground text-lg leading-relaxed">
-                            Thoughts on Product Management, AI, and building products that create real value.
-                        </p>
-                    </FadeIn>
-                </div>
+                </header>
 
-                {/* Blog List with Search/Filters */}
                 {posts.length > 0 ? (
                     <BlogList posts={posts} allTags={allTags} />
                 ) : (
-                    <FadeIn>
-                        <div className="text-center py-20">
-                            <p className="text-muted-foreground text-lg mb-6">
-                                No blog posts yet. Check back soon!
-                            </p>
-                            <Link
-                                href="/"
-                                className="inline-flex items-center gap-2 px-6 py-3 border border-border hover:border-violet-500/50 text-foreground font-medium rounded-xl transition-all hover:bg-violet-500/5"
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                                Back to Home
-                            </Link>
-                        </div>
-                    </FadeIn>
+                    <div className="border border-foreground/15 p-8 md:p-12">
+                        <div className="mono-label text-vermillion mb-3">Empty</div>
+                        <h2 className="font-serif text-3xl tracking-tight mb-2">
+                            Nothing published yet.
+                        </h2>
+                        <p className="text-foreground/70">
+                            The first entry is being written. Case studies are available in
+                            the meantime.
+                        </p>
+                    </div>
                 )}
             </div>
         </div>

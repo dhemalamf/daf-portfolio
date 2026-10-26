@@ -71,6 +71,24 @@
     font-feature-settings: 'ss01', 'cv11', 'calt' 1;
   }
 
+  /* Keyboard focus is always visible (mouse users are unaffected). */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Respect the OS "reduce motion" setting for CSS animations and transitions. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   ::selection {
     @apply bg-vermillion text-white;
   }
@@ -170,6 +188,10 @@
   .tag-pill {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 mono-label text-foreground/70 border border-foreground/15 rounded-none bg-transparent;
   }
+  .skip-link {
+    @apply fixed left-4 top-4 z-[100] -translate-y-24 bg-foreground px-4 py-2 mono-label text-background transition-transform focus:translate-y-0;
+  }
+
   .tag-pill-accent {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 mono-label text-vermillion border border-vermillion/40 rounded-none bg-vermillion/[0.04];
   }

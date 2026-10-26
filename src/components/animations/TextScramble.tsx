@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 const chars = '!<>-_\\/[]{}—=+*^?#________'
 
@@ -14,6 +15,7 @@ interface TextScrambleProps {
 export default function TextScramble({ text, className = '', delay = 0, duration = 1200 }: TextScrambleProps) {
     const [displayText, setDisplayText] = useState(text)
     const [started, setStarted] = useState(false)
+    const shouldReduceMotion = useReducedMotion()
 
     const scramble = useCallback(() => {
         const length = text.length
@@ -72,12 +74,17 @@ export default function TextScramble({ text, className = '', delay = 0, duration
     }, [text, duration])
 
     useEffect(() => {
+        if (shouldReduceMotion) {
+            setStarted(true)
+            setDisplayText(text)
+            return
+        }
         const timer = setTimeout(() => {
             setStarted(true)
             scramble()
         }, delay)
         return () => clearTimeout(timer)
-    }, [delay, scramble])
+    }, [delay, scramble, shouldReduceMotion, text])
 
     if (!started) {
         return <span className={className}>{text}</span>

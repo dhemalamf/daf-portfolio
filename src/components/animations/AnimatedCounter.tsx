@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useInView, motion, useSpring, useTransform } from 'framer-motion'
+import { useInView, useReducedMotion, m as motion, useSpring, useTransform } from 'framer-motion'
 
 interface AnimatedCounterProps {
     value: string
@@ -22,7 +22,9 @@ function parseValue(val: string): { numeric: number; prefix: string; suffix: str
 export default function AnimatedCounter({ value, className = '', duration = 2 }: AnimatedCounterProps) {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, amount: 0.5 })
+    const shouldReduceMotion = useReducedMotion()
     const { prefix, numeric, suffix } = parseValue(value)
+    const isInteger = Number.isInteger(numeric)
 
     const springValue = useSpring(0, {
         duration: duration * 1000,
@@ -30,6 +32,10 @@ export default function AnimatedCounter({ value, className = '', duration = 2 }:
     })
 
     const display = useTransform(springValue, (latest) => {
+        // Integer metrics (5+, 3, 55%) must never tween through decimals.
+        if (isInteger) {
+            return prefix + Math.round(latest).toString() + suffix
+        }
         if (suffix.includes('T') || suffix.includes('B') || suffix.includes('M')) {
             return prefix + latest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffix
         }
@@ -42,10 +48,13 @@ export default function AnimatedCounter({ value, className = '', duration = 2 }:
     const [displayValue, setDisplayValue] = useState(prefix + '0' + suffix)
 
     useEffect(() => {
-        if (isInView) {
-            springValue.set(numeric)
+        if (!isInView) return
+        if (shouldReduceMotion) {
+            setDisplayValue(prefix + numeric.toLocaleString('en-US') + suffix)
+            return
         }
-    }, [isInView, numeric, springValue])
+        springValue.set(numeric)
+    }, [isInView, numeric, prefix, suffix, springValue, shouldReduceMotion])
 
     useEffect(() => {
         const unsubscribe = display.on('change', (latest) => {
