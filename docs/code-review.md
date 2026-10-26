@@ -342,13 +342,47 @@ Branch `feat/hardening`, built on `feat/superpowers-integration`.
 | P2-5 bundle | `LazyMotion` + `domAnimation` with `m` aliased; layout animations removed; unused deps removed | First-load JS: `/` 164 → 141 kB, `/work` 154 → 126 kB, case study 152 → 123 kB |
 | P2-6 misc | Hero "Edition" refreshes via daily ISR; rAF loop cancelled on unmount; Sanity client timeout | Build + code review |
 
+### Post-move baseline (2026-10-26)
+
+The repository moved from `~/Documents/self-projects/daf-portfolio` (inside the
+iCloud Drive sync root) to `~/Developer/daf-portfolio`; the synced copy and its
+1.0 GB `.next` were removed. Re-verified from a clean `.next` on the new path:
+
+| Check | Result |
+|---|---|
+| `npm run lint` | 0 problems |
+| `npm run typecheck` | clean |
+| `npm run build` | green, 19 routes |
+| Production routes (`/`, `/about`, `/work`, `/work/[slug]`, `/blog`, `/contact`, `/studio`, `/robots.txt`, `/sitemap.xml`) | all 200; `/nonexistent` 404 |
+| `app/layout` chunk | 200 (8.7 kB) — the request that used to time out |
+| Sitemap | 14 URLs; JSON-LD `Person` + `WebSite`; `primary-navigation` present in raw HTML |
+| Dev server | ready in 1.3 s, no iCloud conflict copies in `.next` |
+
+### Publish latency — signed revalidation webhook
+
+New: `src/app/api/revalidate/route.ts`. Post queries now share the `posts` cache
+tag (`src/sanity/queries.ts`), so a Studio publish purges the journal
+immediately instead of waiting out the 60 s ISR window.
+
+| Behaviour | Verification |
+|---|---|
+| No `SANITY_REVALIDATE_SECRET` → 503 (fails closed) | dev request returned 503 |
+| Wrong or missing secret → 401 | wrong header and header-less POST both 401 |
+| `x-sanity-webhook-secret`, `Authorization: Bearer`, `?secret=` accepted | all three returned 200 |
+| Draft documents (`drafts.*`) skipped | 200 `{revalidated:false,reason:"draft"}` |
+| Purges tag `posts` and revalidates `/blog`, `/blog/<slug>`, `/sitemap.xml` | production `/blog`: `x-nextjs-cache` HIT → **MISS** → HIT after the webhook |
+| `GET /api/revalidate` | 405 |
+
 Still intentionally open:
 
 - **No unit/e2e tests.** The CI gate is lint + typecheck + build; adding
   Playwright would be the next step.
-- **Studio dev-host registration.** Sanity still asks to add `localhost:3005`
-  as a CORS origin on first local Studio use — that is a project setting in
-  sanity.io/manage, not code.
+- **Webhook registration.** The route is built and tested, but publishing is
+  only instant once `SANITY_REVALIDATE_SECRET` is set in the hosting environment
+  and the matching webhook is created in sanity.io/manage → API → Webhooks
+  (steps in `README.md`).
+- **Studio CORS origins.** `localhost:3000`, `127.0.0.1:3000`, `dhema.me` and
+  `www.dhema.me` are registered; each new preview host still needs adding.
 - **Sanity schema breadth.** Only `post` exists; author/category documents are
   a content-model decision, not a defect.
 - **`~/.npm` ownership.** `npm outdated`/`audit` fail on this machine until the
