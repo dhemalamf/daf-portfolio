@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useInView, Variants } from 'framer-motion'
+import { m as motion, useInView, useReducedMotion, Variants } from 'framer-motion'
 import { useRef, ReactNode } from 'react'
 
 interface FadeInProps {
@@ -26,6 +26,7 @@ export default function FadeIn({
 }: FadeInProps) {
     const ref = useRef(null)
     const isInView = useInView(ref, { once, amount })
+    const shouldReduceMotion = useReducedMotion()
 
     const directions = {
         up: { y: distance, x: 0 },
@@ -50,6 +51,10 @@ export default function FadeIn({
                 ease: [0.25, 0.46, 0.45, 0.94],
             },
         },
+    }
+
+    if (shouldReduceMotion) {
+        return <div className={className}>{children}</div>
     }
 
     return (

@@ -61,7 +61,7 @@ export default function ContactPage() {
         <>
             <section className="pt-36 md:pt-44 pb-12 border-b border-foreground/15">
                 <div className="section-container">
-                    <div className="mono-label text-foreground/50 mb-6">
+                    <div className="mono-label text-foreground/65 mb-6">
                         <span className="text-vermillion">●</span> 04 — Contact
                     </div>
                     <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">
@@ -103,7 +103,7 @@ export default function ContactPage() {
                                     event={channel.event}
                                     className="group grid grid-cols-12 gap-6 items-baseline py-8 md:py-10 border-b border-foreground/10 hover:bg-foreground/[0.02] transition-colors"
                                 >
-                                    <div className="col-span-12 md:col-span-1 mono-label text-foreground/40 group-hover:text-vermillion transition-colors">
+                                    <div className="col-span-12 md:col-span-1 mono-label text-foreground/60 group-hover:text-vermillion transition-colors">
                                         {channel.n}
                                     </div>
                                     <div className="col-span-12 md:col-span-3 mono-label text-foreground/60">
@@ -116,7 +116,7 @@ export default function ContactPage() {
                                         <div className="text-foreground/60 text-sm mt-1">{channel.note}</div>
                                     </div>
                                     <div className="col-span-12 md:col-span-3 md:text-right">
-                                        <span className="mono-label text-foreground/55 group-hover:text-vermillion transition-colors">
+                                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors">
                                             {channel.external ? 'Open ↗' : 'Compose →'}
                                         </span>
                                     </div>

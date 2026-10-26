@@ -36,7 +36,7 @@ export default async function BlogPage() {
             <div className="section-container">
                 <header className="border-b border-foreground/15 pb-10 mb-12">
                     <FadeIn>
-                        <div className="mono-label text-foreground/50 mb-6">
+                        <div className="mono-label text-foreground/65 mb-6">
                             <span className="text-vermillion">●</span> 03 — Journal
                         </div>
                         <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">
@@ -51,7 +51,7 @@ export default async function BlogPage() {
                                     Essays on product management, AI, and building things
                                     that matter — written between shipping.
                                 </p>
-                                <p className="mono-label text-foreground/45 mt-4">
+                                <p className="mono-label text-foreground/60 mt-4">
                                     {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
                                 </p>
                             </div>

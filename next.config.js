@@ -40,6 +40,8 @@ const securityHeaders = [
 const nextConfig = {
     reactStrictMode: true,
     poweredByHeader: false,
+    // Linting runs as its own CI step (npm run lint) with the ESLint CLI.
+    eslint: { ignoreDuringBuilds: true },
     outputFileTracingRoot: path.join(__dirname),
     images: {
         remotePatterns: [

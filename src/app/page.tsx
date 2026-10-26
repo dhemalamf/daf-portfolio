@@ -82,7 +82,7 @@ export default function Home() {
                     </div>
 
                     <div className="mt-12 flex items-center justify-between gap-4 border-t border-foreground/15 pt-8">
-                        <span className="mono-label text-foreground/50">
+                        <span className="mono-label text-foreground/65">
                             Showing 5 of {featured.length}+ case studies
                         </span>
                         <Link href="/work" data-testid="home-view-all-work" className="btn-outline">
@@ -123,7 +123,7 @@ export default function Home() {
                     </div>
 
                     <div className="mt-10 flex items-center justify-between">
-                        <span className="mono-label text-foreground/50">
+                        <span className="mono-label text-foreground/65">
                             +{experiences.length - 4} more roles in archive
                         </span>
                         <Link href="/about" data-testid="home-full-history" className="btn-outline">
@@ -168,7 +168,7 @@ export default function Home() {
                                 data-testid={`cert-row-${cert.id}`}
                                 className="group grid grid-cols-12 gap-6 items-baseline py-6 md:py-8 border-b border-foreground/10 hover:bg-foreground/[0.02] transition-colors"
                             >
-                                <div className="col-span-12 md:col-span-1 mono-label text-foreground/40">
+                                <div className="col-span-12 md:col-span-1 mono-label text-foreground/60">
                                     0{i + 1}
                                 </div>
                                 <div className="col-span-12 md:col-span-3 mono-label text-vermillion">
@@ -204,7 +204,7 @@ export default function Home() {
             <section className="relative border-t border-foreground/15 py-24 md:py-32 overflow-hidden grain">
                 <div className="section-container relative z-10 grid grid-cols-12 gap-6 items-end">
                     <div className="col-span-12 lg:col-span-9">
-                        <div className="mono-label text-foreground/50 mb-6">
+                        <div className="mono-label text-foreground/65 mb-6">
                             <span className="text-vermillion">●</span> Currently accepting Q1 2026
                         </div>
                         <h2 className="h-display text-balance">

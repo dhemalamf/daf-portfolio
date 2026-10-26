@@ -77,7 +77,7 @@ export default function ShareButtons({ title, url, compact = false }: ShareButto
     if (compact) {
         return (
             <div className="flex items-center gap-2">
-                <span className="mono-label text-foreground/45">Share</span>
+                <span className="mono-label text-foreground/60">Share</span>
                 <div className="flex items-center gap-1">
                     {copyButton}
                     {targets(title, url).map((target) => (
@@ -106,7 +106,7 @@ export default function ShareButtons({ title, url, compact = false }: ShareButto
 
     return (
         <div className="flex flex-col gap-3">
-            <p className="mono-label text-foreground/45">Share this entry</p>
+            <p className="mono-label text-foreground/60">Share this entry</p>
             <div className="flex flex-wrap items-center gap-2">
                 {copyButton}
                 {targets(title, url).map((target) => (

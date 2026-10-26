@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import StudioShortcut from '@/components/StudioShortcut'
 import SmoothScroll from '@/components/SmoothScroll'
+import MotionProvider from '@/components/motion/MotionProvider'
 import JsonLd from '@/components/JsonLd'
 import { siteUrl } from '@/lib/config'
 import { profile } from '@/data/profile'
@@ -106,12 +107,14 @@ export default function RootLayout({
                     <GoogleAnalytics />
                 </Suspense>
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-                    <SmoothScroll>
-                        <StudioShortcut />
-                        <Navigation />
-                        <main id="main-content" className="flex-grow">{children}</main>
-                        <Footer />
-                    </SmoothScroll>
+                    <MotionProvider>
+                        <SmoothScroll>
+                            <StudioShortcut />
+                            <Navigation />
+                            <main id="main-content" className="flex-grow">{children}</main>
+                            <Footer />
+                        </SmoothScroll>
+                    </MotionProvider>
                 </ThemeProvider>
             </body>
         </html>

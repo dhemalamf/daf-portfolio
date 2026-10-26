@@ -86,7 +86,7 @@ const portableTextComponents: PortableTextComponents = {
                     />
                 </div>
                 {value.caption && (
-                    <figcaption className="mono-label text-foreground/50 mt-3">
+                    <figcaption className="mono-label text-foreground/65 mt-3">
                         {value.caption}
                     </figcaption>
                 )}
@@ -100,7 +100,7 @@ const portableTextComponents: PortableTextComponents = {
         divider: ({ value }: { value: DividerValue }) => {
             if (value?.style === 'dots') {
                 return (
-                    <div className="my-10 text-center font-serif text-2xl text-foreground/40 tracking-[0.8em]">
+                    <div className="my-10 text-center font-serif text-2xl text-foreground/60 tracking-[0.8em]">
                         •••
                     </div>
                 )
@@ -188,7 +188,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <article className="mx-auto max-w-3xl">
                     <Link
                         href="/blog"
-                        className="group inline-flex items-center gap-2 mono-label text-foreground/55 hover:text-vermillion transition-colors mb-10"
+                        className="group inline-flex items-center gap-2 mono-label text-foreground/70 hover:text-vermillion transition-colors mb-10"
                     >
                         <span aria-hidden className="transition-transform group-hover:-translate-x-1">
                             ←
@@ -197,7 +197,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </Link>
 
                     <header className="border-b border-foreground/15 pb-10 mb-10">
-                        <div className="flex flex-wrap items-center gap-3 mono-label text-foreground/50 mb-5">
+                        <div className="flex flex-wrap items-center gap-3 mono-label text-foreground/65 mb-5">
                             <time dateTime={post.publishedAt}>
                                 {formatDate(post.publishedAt)}
                             </time>
@@ -264,7 +264,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                             <h2 className="font-serif text-3xl md:text-4xl tracking-tight">
                                 Keep reading
                             </h2>
-                            <Link href="/blog" className="mono-label text-foreground/55 hover:text-vermillion">
+                            <Link href="/blog" className="mono-label text-foreground/70 hover:text-vermillion">
                                 All entries →
                             </Link>
                         </div>
@@ -290,7 +290,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                                         </div>
                                     )}
                                     <div className="p-5 flex flex-col flex-1">
-                                        <div className="mono-label text-foreground/45 mb-2">
+                                        <div className="mono-label text-foreground/60 mb-2">
                                             {formatDate(relatedPost.publishedAt)}
                                         </div>
                                         <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-vermillion transition-colors text-pretty">

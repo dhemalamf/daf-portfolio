@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 
 export default function ScrollIndicator({ targetId = 'featured-work' }: { targetId?: string }) {
     const handleClick = () => {

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { urlFor } from '@/sanity/image'
 import type { PostSummary } from '@/sanity/types'
 import FadeIn from '@/components/animations/FadeIn'
@@ -113,7 +113,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
     const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
 
     const fieldClass =
-        'w-full bg-transparent border border-foreground/20 px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-vermillion focus-visible:outline-none transition-colors'
+        'w-full bg-transparent border border-foreground/20 px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/60 focus:border-vermillion focus-visible:outline-none transition-colors'
 
     return (
         <div>
@@ -175,7 +175,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                     </button>
                 </div>
 
-                <p className="mono-label text-foreground/45 sm:ml-auto">
+                <p className="mono-label text-foreground/60 sm:ml-auto">
                     {filteredPosts.length === 0
                         ? '0 entries'
                         : `${startIndex + 1}–${Math.min(endIndex, filteredPosts.length)} of ${filteredPosts.length}`}
@@ -197,7 +197,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                                 <div>
                                     <label
                                         htmlFor="journal-date-from"
-                                        className="mono-label block text-foreground/55 mb-2"
+                                        className="mono-label block text-foreground/70 mb-2"
                                     >
                                         From
                                     </label>
@@ -214,7 +214,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                                 <div>
                                     <label
                                         htmlFor="journal-date-to"
-                                        className="mono-label block text-foreground/55 mb-2"
+                                        className="mono-label block text-foreground/70 mb-2"
                                     >
                                         To
                                     </label>
@@ -231,7 +231,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                                 <div>
                                     <label
                                         htmlFor="journal-read-min"
-                                        className="mono-label block text-foreground/55 mb-2"
+                                        className="mono-label block text-foreground/70 mb-2"
                                     >
                                         Min read
                                     </label>
@@ -250,7 +250,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                                 <div>
                                     <label
                                         htmlFor="journal-read-max"
-                                        className="mono-label block text-foreground/55 mb-2"
+                                        className="mono-label block text-foreground/70 mb-2"
                                     >
                                         Max read
                                     </label>
@@ -270,7 +270,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
 
                             {allTags.length > 0 && (
                                 <div>
-                                    <p className="mono-label text-foreground/55 mb-2">
+                                    <p className="mono-label text-foreground/70 mb-2">
                                         Topics
                                         {selectedTags.length > 0 &&
                                             ` · ${selectedTags.length} selected`}
@@ -422,7 +422,7 @@ interface BlogCardProps {
 
 function BlogCard({ post, index, layout }: BlogCardProps) {
     const meta = (
-        <div className="flex flex-wrap items-center gap-3 mono-label text-foreground/50">
+        <div className="flex flex-wrap items-center gap-3 mono-label text-foreground/65">
             <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             {post.readingTime && (
                 <>
@@ -441,7 +441,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                 </span>
             ))}
             {post.tags.length > 2 && (
-                <span className="mono-label text-foreground/45 self-center">
+                <span className="mono-label text-foreground/60 self-center">
                     +{post.tags.length - 2}
                 </span>
             )}
@@ -466,7 +466,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                     </div>
                     <div className="col-span-8 md:col-span-2">{tags}</div>
                     <div className="col-span-4 md:col-span-2 md:text-right">
-                        <span className="mono-label text-foreground/55 group-hover:text-vermillion transition-colors">
+                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors">
                             Read →
                         </span>
                     </div>
@@ -502,7 +502,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                     </p>
                     <div className="flex items-end justify-between gap-4 mt-auto pt-4 border-t border-foreground/10">
                         {tags || <span />}
-                        <span className="mono-label text-foreground/55 group-hover:text-vermillion transition-colors shrink-0">
+                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors shrink-0">
                             Read →
                         </span>
                     </div>

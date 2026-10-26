@@ -25,7 +25,7 @@ export default function Marquee({
     return (
         <div className={`flex overflow-hidden ${pauseOnHover ? 'group' : ''} ${className}`}>
             <div
-                className={`flex shrink-0 items-center gap-4 ${anim} ${
+                className={`flex shrink-0 items-center gap-4 motion-reduce:animate-none ${anim} ${
                     pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''
                 }`}
                 style={{ animationDuration: duration }}
@@ -34,7 +34,7 @@ export default function Marquee({
             </div>
             <div
                 aria-hidden
-                className={`flex shrink-0 items-center gap-4 ${anim} ${
+                className={`flex shrink-0 items-center gap-4 motion-reduce:animate-none ${anim} ${
                     pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''
                 }`}
                 style={{ animationDuration: duration }}

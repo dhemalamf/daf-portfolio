@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { trackButtonClick } from '@/lib/analytics'
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 
 const navItems = [
     { label: 'Index', href: '/', short: '00' },
@@ -55,7 +55,7 @@ export default function Navigation() {
                         <span className="font-serif text-2xl md:text-3xl leading-none tracking-tightest">
                             Dhema<span className="text-vermillion">.</span>
                         </span>
-                        <span className="hidden sm:inline mono-label text-foreground/40 group-hover:text-foreground transition-colors">
+                        <span className="hidden sm:inline mono-label text-foreground/60 group-hover:text-foreground transition-colors">
                             Product Manager
                         </span>
                     </Link>
@@ -158,6 +158,8 @@ export default function Navigation() {
                         </button>
                         <button
                             onClick={() => setIsMobileMenuOpen((v) => !v)}
+                            aria-expanded={isMobileMenuOpen}
+                            aria-controls="mobile-menu-panel"
                             data-testid="mobile-menu-toggle"
                             className="w-9 h-9 flex items-center justify-center text-foreground border border-foreground/15"
                             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -174,6 +176,7 @@ export default function Navigation() {
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.25 }}
+                            id="mobile-menu-panel"
                             className="md:hidden overflow-hidden"
                             data-testid="mobile-menu"
                         >

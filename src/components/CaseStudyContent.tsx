@@ -16,7 +16,7 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
                 <div className="max-w-4xl mx-auto mb-12">
                     <Link
                         href="/work"
-                        className="group inline-flex items-center gap-2 mono-label text-foreground/55 hover:text-vermillion transition-colors"
+                        className="group inline-flex items-center gap-2 mono-label text-foreground/70 hover:text-vermillion transition-colors"
                     >
                         <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -27,7 +27,7 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
 
                 {/* Header */}
                 <header className="max-w-4xl mx-auto mb-20 border-b border-foreground/15 pb-14">
-                    <div className="flex items-center gap-3 mb-6 mono-label text-foreground/55">
+                    <div className="flex items-center gap-3 mb-6 mono-label text-foreground/70">
                         <span className="text-vermillion">●</span>
                         <span>{caseStudy.industry}</span>
                         <span className="text-foreground/25">/</span>
@@ -94,7 +94,7 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
                         <div className="border-t border-foreground/20 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-foreground/10">
                             {caseStudy.outcomes.map((o, i) => (
                                 <div key={i} className="p-6 md:p-8">
-                                    <div className="mono-label text-foreground/40 mb-3">0{i + 1}</div>
+                                    <div className="mono-label text-foreground/60 mb-3">0{i + 1}</div>
                                     <div className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-vermillion mb-3">
                                         {o.metric}
                                     </div>
@@ -108,7 +108,7 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
 
                     {/* Tags */}
                     <div className="pt-10 border-t border-foreground/15">
-                        <div className="mono-label text-foreground/40 mb-5">Skills & methods</div>
+                        <div className="mono-label text-foreground/60 mb-5">Skills & methods</div>
                         <div className="flex flex-wrap gap-2">
                             {caseStudy.tags.map((tag, i) => (
                                 <span key={i} className="tag-pill">{tag}</span>
@@ -141,7 +141,7 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
                             <h2 className="font-serif text-2xl md:text-3xl tracking-tight">
                                 More <span className="ital text-vermillion">case studies</span>
                             </h2>
-                            <Link href="/work" className="mono-label text-foreground/55 hover:text-vermillion link-underline">
+                            <Link href="/work" className="mono-label text-foreground/70 hover:text-vermillion link-underline">
                                 View all ↗
                             </Link>
                         </div>
@@ -152,19 +152,19 @@ export default function CaseStudyContent({ caseStudy, relatedStudies }: Props) {
                                         href={`/work/${s.slug}`}
                                         className="group grid grid-cols-12 gap-6 items-baseline py-6 border-b border-foreground/10 hover:bg-foreground/[0.02] transition-colors"
                                     >
-                                        <div className="col-span-1 mono-label text-foreground/40 group-hover:text-vermillion transition-colors">
+                                        <div className="col-span-1 mono-label text-foreground/60 group-hover:text-vermillion transition-colors">
                                             {String(i + 1).padStart(2, '0')}
                                         </div>
                                         <div className="col-span-11 md:col-span-7">
                                             <div className="font-serif text-xl md:text-2xl leading-tight tracking-tight group-hover:text-vermillion transition-colors">
                                                 {s.title}
                                             </div>
-                                            <div className="mono-label text-foreground/55 mt-1">{s.company}</div>
+                                            <div className="mono-label text-foreground/70 mt-1">{s.company}</div>
                                         </div>
-                                        <div className="hidden md:block md:col-span-3 mono-label text-foreground/55">
+                                        <div className="hidden md:block md:col-span-3 mono-label text-foreground/70">
                                             {s.industry}
                                         </div>
-                                        <div className="hidden md:block md:col-span-1 mono-label text-foreground/55 text-right">
+                                        <div className="hidden md:block md:col-span-1 mono-label text-foreground/70 text-right">
                                             {s.period}
                                         </div>
                                     </Link>
@@ -194,7 +194,7 @@ function Section({
             <div className="flex items-baseline gap-3 mb-8">
                 <span className="mono-label text-vermillion">{numeral}</span>
                 <span className="h-px w-8 bg-foreground/30" />
-                <span className="mono-label text-foreground/55">{label}</span>
+                <span className="mono-label text-foreground/70">{label}</span>
             </div>
             {children}
         </section>

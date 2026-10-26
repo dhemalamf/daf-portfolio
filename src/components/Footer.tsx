@@ -11,7 +11,7 @@ export default function Footer() {
                 <div className="border-b border-foreground/15 pb-16 mb-12">
                     <div className="grid grid-cols-12 gap-6 items-end">
                         <div className="col-span-12 lg:col-span-8">
-                            <div className="mono-label text-foreground/50 mb-6">
+                            <div className="mono-label text-foreground/65 mb-6">
                                 <span className="text-vermillion">●</span> 05 — Get in touch
                             </div>
                             <h2 className="h-display text-balance">
@@ -66,7 +66,7 @@ export default function Footer() {
                     </div>
 
                     <div className="col-span-6 md:col-span-3">
-                        <div className="mono-label text-foreground/40 mb-4">Navigate</div>
+                        <div className="mono-label text-foreground/60 mb-4">Navigate</div>
                         <ul className="space-y-2 text-sm">
                             {[
                                 ['Index', '/'],
@@ -88,7 +88,7 @@ export default function Footer() {
                     </div>
 
                     <div className="col-span-6 md:col-span-3">
-                        <div className="mono-label text-foreground/40 mb-4">Elsewhere</div>
+                        <div className="mono-label text-foreground/60 mb-4">Elsewhere</div>
                         <ul className="space-y-2 text-sm">
                             {[
                                 ['LinkedIn', profile.linkedin],
@@ -113,7 +113,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="grid grid-cols-12 border-t border-foreground/15 pt-6 mono-label text-foreground/45 gap-y-2">
+                <div className="grid grid-cols-12 border-t border-foreground/15 pt-6 mono-label text-foreground/60 gap-y-2">
                     <div className="col-span-12 md:col-span-4">© {year} Dhema. All rights reserved.</div>
                     <div className="col-span-12 md:col-span-4 md:text-center">
                         Jakarta · Indonesia · UTC+7

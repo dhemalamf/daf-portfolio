@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { m as motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion'
 import { ReactNode, useRef } from 'react'
 
 interface MagneticButtonProps {
@@ -11,6 +11,7 @@ interface MagneticButtonProps {
 
 export default function MagneticButton({ children, className = '', strength = 0.3 }: MagneticButtonProps) {
     const ref = useRef<HTMLDivElement>(null)
+    const shouldReduceMotion = useReducedMotion()
 
     const x = useMotionValue(0)
     const y = useMotionValue(0)
@@ -33,6 +34,10 @@ export default function MagneticButton({ children, className = '', strength = 0.
     const handleMouseLeave = () => {
         x.set(0)
         y.set(0)
+    }
+
+    if (shouldReduceMotion) {
+        return <div className={className}>{children}</div>
     }
 
     return (

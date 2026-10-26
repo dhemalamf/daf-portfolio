@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { CaseStudy } from '@/data/caseStudies'
 import CaseStudyCard from '@/components/CaseStudyCard'
 
@@ -33,7 +33,7 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
         <div>
             {/* Controls */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 border-b border-foreground/15 pb-5">
-                <div className="mono-label text-foreground/50">
+                <div className="mono-label text-foreground/65">
                     {sorted.length} case studies · ordered by{' '}
                     <span className="text-foreground">
                         {sortKey === 'title' ? 'name' : 'date'}
@@ -47,7 +47,7 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                         className={`mono-label px-3 py-2 border ${
                             sortKey === 'publishDate'
                                 ? 'border-foreground text-foreground bg-foreground/[0.04]'
-                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                                : 'border-foreground/15 text-foreground/70 hover:border-foreground/40'
                         }`}
                     >
                         Date
@@ -58,7 +58,7 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                         className={`mono-label px-3 py-2 border ${
                             sortKey === 'title'
                                 ? 'border-foreground text-foreground bg-foreground/[0.04]'
-                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                                : 'border-foreground/15 text-foreground/70 hover:border-foreground/40'
                         }`}
                     >
                         Name
@@ -70,7 +70,7 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                         className={`mono-label px-3 py-2 border ${
                             sortDirection === 'desc'
                                 ? 'border-foreground text-foreground bg-foreground/[0.04]'
-                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                                : 'border-foreground/15 text-foreground/70 hover:border-foreground/40'
                         }`}
                         aria-label="Sort descending"
                     >
@@ -82,7 +82,7 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                         className={`mono-label px-3 py-2 border ${
                             sortDirection === 'asc'
                                 ? 'border-foreground text-foreground bg-foreground/[0.04]'
-                                : 'border-foreground/15 text-foreground/55 hover:border-foreground/40'
+                                : 'border-foreground/15 text-foreground/70 hover:border-foreground/40'
                         }`}
                         aria-label="Sort ascending"
                     >
@@ -92,12 +92,11 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
             </div>
 
             {/* Grid */}
-            <motion.div layout className="grid md:grid-cols-2 gap-6">
-                <AnimatePresence mode="popLayout">
+            <motion.div className="grid md:grid-cols-2 gap-6">
+                <AnimatePresence mode="sync">
                     {sorted.map((cs, i) => (
                         <motion.div
                             key={cs.id}
-                            layout
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -8 }}

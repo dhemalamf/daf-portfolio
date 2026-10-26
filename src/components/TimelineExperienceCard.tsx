@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { motion, useInView } from 'framer-motion'
+import { m as motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 interface Props {
@@ -48,7 +48,7 @@ export default function TimelineExperienceCard({
                     {isPresent && <span className="text-vermillion">●</span>}
                     {period}
                 </div>
-                <div className="mono-label text-foreground/40 mt-2">{type}</div>
+                <div className="mono-label text-foreground/60 mt-2">{type}</div>
             </div>
 
             {/* Center: timeline indicator */}

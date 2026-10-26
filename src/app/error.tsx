@@ -34,7 +34,7 @@ export default function GlobalRouteError({
                     </Link>
                 </div>
                 {error.digest && (
-                    <p className="mono-label text-foreground/40 mt-8">
+                    <p className="mono-label text-foreground/60 mt-8">
                         Reference: {error.digest}
                     </p>
                 )}
