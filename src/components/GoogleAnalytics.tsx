@@ -2,39 +2,41 @@
 
 import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-
-// Measurement ID - using hardcoded fallback to ensure it works in production
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-CN20Z12C8C'
+import { useEffect, useRef } from 'react'
+import { gaMeasurementId } from '@/lib/config'
 
 export default function GoogleAnalytics() {
     const pathname = usePathname()
     const searchParams = useSearchParams()
+    const isInitialRoute = useRef(true)
 
-    // Track page views on route change
+    // The inline config below sends the first page view (send_page_view: true).
+    // This effect reports only client-side navigations, so the landing page is
+    // never counted twice.
     useEffect(() => {
-        if (!GA_MEASUREMENT_ID) return
-
-        const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '')
-
-        // Send pageview to GA
-        if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-            window.gtag('config', GA_MEASUREMENT_ID, {
-                page_path: url,
-            })
+        if (isInitialRoute.current) {
+            isInitialRoute.current = false
+            return
         }
+
+        if (typeof window.gtag !== 'function') return
+
+        const query = searchParams?.toString()
+        const pagePath = pathname + (query ? `?${query}` : '')
+
+        window.gtag('event', 'page_view', {
+            page_path: pagePath,
+            page_location: window.location.href,
+            page_title: document.title,
+        })
     }, [pathname, searchParams])
 
-    // Don't render if no measurement ID (but with fallback, this shouldn't happen)
-    if (!GA_MEASUREMENT_ID) {
-        return null
-    }
+    if (!gaMeasurementId) return null
 
     return (
         <>
-            {/* Google Analytics Script */}
             <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
                 strategy="afterInteractive"
             />
             <Script
@@ -45,8 +47,7 @@ export default function GoogleAnalytics() {
                         window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
-                        gtag('config', '${GA_MEASUREMENT_ID}', {
-                            page_path: window.location.pathname,
+                        gtag('config', ${JSON.stringify(gaMeasurementId)}, {
                             send_page_view: true
                         });
                     `,
@@ -54,12 +55,4 @@ export default function GoogleAnalytics() {
             />
         </>
     )
-}
-
-// Declare gtag on window for TypeScript
-declare global {
-    interface Window {
-        gtag: (...args: any[]) => void
-        dataLayer: any[]
-    }
 }

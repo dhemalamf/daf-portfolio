@@ -1,46 +1,30 @@
-// Google Analytics event tracking utilities
+// Google Analytics event helpers. They no-op when gtag is unavailable (blocked
+// scripts, SSR, or no measurement ID configured).
 
-export const trackEvent = (
-    eventName: string,
-    eventParams?: Record<string, any>
-) => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', eventName, eventParams)
+type EventParams = Record<string, string | number | boolean | undefined>
+
+export const trackEvent = (eventName: string, eventParams?: EventParams) => {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', eventName, eventParams)
     }
 }
 
-// Track button clicks
 export const trackButtonClick = (buttonName: string) => {
-    trackEvent('button_click', {
-        button_name: buttonName,
-    })
+    trackEvent('button_click', { button_name: buttonName })
 }
 
-// Track page views
 export const trackPageView = (url: string) => {
-    trackEvent('page_view', {
-        page_path: url,
-    })
+    trackEvent('page_view', { page_path: url })
 }
 
-// Track case study views
 export const trackCaseStudyView = (caseStudyTitle: string) => {
-    trackEvent('case_study_view', {
-        case_study: caseStudyTitle,
-    })
+    trackEvent('case_study_view', { case_study: caseStudyTitle })
 }
 
-// Track contact form submissions
 export const trackContactSubmit = (method: string) => {
-    trackEvent('contact_submit', {
-        method: method, // e.g., 'email', 'linkedin', 'whatsapp'
-    })
+    trackEvent('contact_submit', { method })
 }
 
-// Track external link clicks
 export const trackExternalLink = (url: string, linkName: string) => {
-    trackEvent('external_link_click', {
-        url: url,
-        link_name: linkName,
-    })
+    trackEvent('external_link_click', { url, link_name: linkName })
 }

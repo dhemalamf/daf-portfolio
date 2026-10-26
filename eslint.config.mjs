@@ -12,6 +12,7 @@ export default [
       'node_modules/**',
       '.tmp/**',
       '.claude/**',
+      'eslint.config.mjs',
       'next-env.d.ts',
       '**/*.config.js',
       '**/*.config.ts',

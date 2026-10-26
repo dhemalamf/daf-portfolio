@@ -17,7 +17,7 @@ const navItems = [
 
 export default function Navigation() {
     const pathname = usePathname()
-    const { theme, setTheme, resolvedTheme } = useTheme()
+    const { setTheme, resolvedTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -30,15 +30,13 @@ export default function Navigation() {
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
-    if (!mounted) return null
-
-    const isDark = (resolvedTheme || theme) === 'dark'
+    // The header renders on the server; only the theme-dependent icon waits for
+    // hydration so the default theme (dark) matches the server markup.
+    const isDark = mounted ? resolvedTheme === 'dark' : true
 
     return (
         <motion.nav
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            initial={false}
             className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
                 isScrolled || isMobileMenuOpen
                     ? 'bg-background/85 backdrop-blur-xl border-b border-foreground/10'
@@ -100,7 +98,7 @@ export default function Navigation() {
                             onClick={() => setTheme(isDark ? 'light' : 'dark')}
                             data-testid="theme-toggle-desktop"
                             className="w-9 h-9 flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors border border-foreground/15 hover:border-foreground/40"
-                            aria-label="Toggle theme"
+                            aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
                         >
                             <AnimatePresence mode="wait" initial={false}>
                                 {isDark ? (
@@ -154,7 +152,7 @@ export default function Navigation() {
                             onClick={() => setTheme(isDark ? 'light' : 'dark')}
                             data-testid="theme-toggle-mobile"
                             className="w-9 h-9 flex items-center justify-center text-foreground/60 border border-foreground/15"
-                            aria-label="Toggle theme"
+                            aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
                         >
                             {isDark ? '☀' : '☾'}
                         </button>
@@ -162,7 +160,7 @@ export default function Navigation() {
                             onClick={() => setIsMobileMenuOpen((v) => !v)}
                             data-testid="mobile-menu-toggle"
                             className="w-9 h-9 flex items-center justify-center text-foreground border border-foreground/15"
-                            aria-label="Toggle menu"
+                            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                         >
                             <span className="font-mono text-xs">{isMobileMenuOpen ? '×' : '≡'}</span>
                         </button>
