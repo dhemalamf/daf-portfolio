@@ -1,3 +1,5 @@
+import type { Certification, Experience, ImpactMetric } from './types'
+
 export const profile = {
     name: "Dhema'alam Fajrianto",
     title: "Product Manager",
@@ -15,7 +17,7 @@ I thrive in both startup and consulting environments, leading cross-functional t
     location: "Indonesia",
 }
 
-export const impactMetrics = [
+export const impactMetrics: ImpactMetric[] = [
     {
         value: "Rp 2T+",
         label: "Overseas Transfers",
@@ -38,30 +40,30 @@ export const impactMetrics = [
     },
 ]
 
-export const certifications = [
+export const certifications: Certification[] = [
     {
-        id: 1,
+        id: "apiary-bootcamp",
         name: "Product Manager Bootcamp - Intermediate Level",
         issuer: "Apiary Academy",
         issuedDate: "Dec 2022",
         credentialUrl: "https://credential.certifyme.online/verify/d6acc9db4324",
     },
     {
-        id: 2,
+        id: "binar-bootcamp",
         name: "Binar Academy Bootcamp - Product Manager Wave 8",
         issuer: "Binar Academy",
         issuedDate: "Dec 2021",
         credentialUrl: "https://drive.google.com/file/d/1vLp-BjRlnO9Gl7_rnl2wS6za7a6oy19C/view",
     },
     {
-        id: 3,
+        id: "dti-scrum",
         name: "Scrum Master Talent - Digital Talent Incubator (DTI) 2020",
         issuer: "Digital Talent Incubator (DTI)",
         issuedDate: "Jan 2021",
         credentialUrl: "https://drive.google.com/file/d/1UroT8oPReY-vmYqFWhILxBk0MqgE-Y5z/view?usp=sharing",
     },
     {
-        id: 4,
+        id: "linkedin-pm",
         name: "Product Management First Steps",
         issuer: "LinkedIn Learning",
         issuedDate: "Nov 2021",
@@ -69,9 +71,9 @@ export const certifications = [
     }
 ]
 
-export const experiences = [
+export const experiences: Experience[] = [
     {
-        id: 0,
+        id: "doitpay",
         company: "Doitpay",
         logo: "/logos/doitpay.png",
         role: "Product Manager",
@@ -86,7 +88,7 @@ export const experiences = [
         industries: ["Fintech", "Payments", "SaaS"]
     },
     {
-        id: 1,
+        id: "zero-one-group",
         company: "Zero One Group",
         logo: "/logos/zero-one-group.png",
         role: "Product Manager (Product Consultant & Client Service)",
@@ -102,7 +104,7 @@ export const experiences = [
         industries: ["AI", "Government/BUMN", "Consulting"],
     },
     {
-        id: 2,
+        id: "transfez",
         company: "Transfez",
         logo: "/logos/transfez.png",
         role: "Associate Product Manager",
@@ -118,7 +120,7 @@ export const experiences = [
         industries: ["Fintech", "Payments", "Remittance"],
     },
     {
-        id: 3,
+        id: "learnext",
         company: "Learnext (prev: goKampus)",
         logo: "/logos/learnext.png",
         role: "Associate Product Manager",
@@ -134,7 +136,7 @@ export const experiences = [
         industries: ["Edtech", "LMS", "Mobile"],
     },
     {
-        id: 4,
+        id: "asa-ren",
         company: "Asa Ren",
         logo: "/logos/asa-ren.png",
         role: "Associate Product Manager",
@@ -150,7 +152,7 @@ export const experiences = [
         industries: ["Health Tech", "Mobile", "Mental Health"],
     },
     {
-        id: 5,
+        id: "mcf",
         company: "Mega Central Finance (MCF)",
         logo: "/logos/mcf.png",
         role: "Junior IT Quality Assurance",

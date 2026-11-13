@@ -1,23 +1,6 @@
-export interface CaseStudy {
-    id: string
-    slug: string
-    title: string
-    company: string
-    industry: string
-    period: string
-    summary: string
-    challenge: string
-    process: string[]
-    solution: string
-    outcomes: {
-        metric: string
-        description: string
-    }[]
-    tags: string[]
-    featured: boolean
-    articleUrl?: string
-    publishDate: string // YYYY-MM-DD
-}
+import type { CaseStudy } from './types'
+
+export type { CaseStudy, CaseStudyVisual } from './types'
 
 export const caseStudies: CaseStudy[] = [
     {
@@ -30,7 +13,7 @@ export const caseStudies: CaseStudy[] = [
         summary:
             "Delivered a web-based AI-powered Learning Management System for a public-sector client, enabling intelligent content exploration, AI-assisted assessments, and conversational learning experiences.",
         challenge:
-            "The client required a modern LMS capable of supporting administrators, teachers, and students while leveraging AI to enhance learning engagement, automate assessment workflows, and enable conversational learning—capabilities not supported by traditional LMS platforms.",
+            "The client required a modern LMS capable of supporting administrators, teachers, and students while leveraging AI to enhance learning engagement, automate assessment workflows, and enable conversational learning, capabilities not supported by traditional LMS platforms.",
         process: [
             "Defined system roles and access models for administrators, teachers, and students",
             "Designed end-to-end learning flows including content consumption, AI-assisted Q&A, and assessment",
@@ -40,6 +23,13 @@ export const caseStudies: CaseStudy[] = [
         ],
         solution:
             "Built a web-based AI-powered LMS featuring chat-based learning, voice-enabled conversational study, AI-generated quizzes, and automated quiz scoring. The platform supports structured learning from existing materials while enabling interactive, AI-assisted study experiences for students and teachers.",
+        tradeOffs:
+            "The client wanted a broad AI learning platform on a public-sector timeline. We traded breadth for a smaller set of AI capabilities that could ship safely: conversational Q&A, generated quizzes, and automated scoring, while keeping the LMS structure familiar to administrators. The voice experience stayed a focused pilot rather than a full replacement for text-based study.",
+        technicalHurdles:
+            "The hard part was not calling a model; it was making model output usable inside a school workflow. Role-based access had to separate admin, teacher, and student capabilities while the model worked across shared content. Quiz generation and scoring needed guardrails for malformed output, and the audio experience added latency and state-management problems that a chat-only prototype hides.",
+        retrospective:
+            "I would define evaluation criteria for AI output before the build, not after. We could describe what good looked like, but we had no shared rubric for wrong answers, hallucinated citations, or scoring drift. A small evaluation set per role would have made the trade-offs easier to defend and the pilot easier to extend.",
+        visual: "flow",
         outcomes: [
             {
                 metric: "AI-Enabled Learning",
@@ -60,6 +50,7 @@ export const caseStudies: CaseStudy[] = [
             "Web Application"
         ],
         featured: true,
+        order: 1,
         publishDate: "2025-06-01"
     },
     {
@@ -83,6 +74,13 @@ export const caseStudies: CaseStudy[] = [
         ],
         solution:
             "Delivered continuous improvements to the Transfez consumer remittance experience, including a redesigned verification flow, voucher engine for growth campaigns, and optimizations across onboarding and transaction journeys to support scalable user and transaction growth.",
+        tradeOffs:
+            "Growth and compliance pulled in opposite directions. We wanted a shorter KYC flow, but every removed field carried a regulatory or fraud-risk cost. We kept the compliance-critical steps, moved the friction into progressive disclosure, and tested the rest as experiments instead of shipping a blanket redesign.",
+        technicalHurdles:
+            "KYC touches identity data, third-party verification, and the transaction flow, so a small UI change can ripple into compliance and support. We had to coordinate frontend, backend, QA, and design on a shared flow while keeping the old path available for users mid-verification. The voucher engine also had to fit existing transaction states without creating double-spend edge cases.",
+        retrospective:
+            "I would instrument the verification funnel earlier and at a finer grain. We could see the aggregate lift in verified users and NPU, but not always which step caused it. Better event coverage would have shortened the experiment loop and made it easier to separate onboarding friction from campaign-driven growth.",
+        visual: "state-machine",
         outcomes: [
             {
                 metric: "Revenue & Transaction Impact",
@@ -106,6 +104,7 @@ export const caseStudies: CaseStudy[] = [
             "Cross-Border Payments"
         ],
         featured: true,
+        order: 4,
         publishDate: "2024-09-01"
     },
     {
@@ -128,6 +127,13 @@ export const caseStudies: CaseStudy[] = [
         ],
         solution:
             "Delivered structured specifications, current-state C4 diagrams, and a pre-analysis outlining feasible decoupling strategies for the My Hero module, providing HM Sampoerna with a clearer architectural baseline prior to execution.",
+        tradeOffs:
+            "The safest decoupling path was not the fastest one. We could have proposed a clean-slate rebuild, but the field iPad app and two backoffice systems carried live operational dependencies. We chose a pre-decoupling analysis that mapped boundaries first, accepting a slower start in exchange for a plan the client could execute without breaking daily operations.",
+        technicalHurdles:
+            "The complexity was in the seams: shared services, duplicate data ownership, and a field application serving both domains. C4 modeling forced those dependencies into view, but the real difficulty was deciding which couplings were accidental and which encoded business rules. That distinction could not be settled from diagrams alone.",
+        retrospective:
+            "I would have pushed for access to the engineering teams earlier and validated the container diagram against the running system before presenting recommendations. A short working session with the maintainers would have caught assumptions that took longer to surface through documentation.",
+        visual: "c4",
         outcomes: [
             {
                 metric: "Architecture Clarity",
@@ -144,6 +150,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         tags: ["Enterprise Architecture", "Decoupling", "Consulting"],
         featured: true,
+        order: 0,
         publishDate: "2025-12-01"
     },
     {
@@ -180,6 +187,7 @@ export const caseStudies: CaseStudy[] = [
         tags: ["Fintech", "Product Design", "UX Research", "DANA", "Digital Wallet"],
         featured: true,
         articleUrl: "https://dhemalamf.medium.com/product-journey-revamping-dana-indonesia-4ae1ba26428c",
+        order: 6,
         publishDate: "2021-12-01"
     },
     {
@@ -227,6 +235,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         featured: true,
         articleUrl: "https://www.linkedin.com/feed/update/urn:li:activity:7043913213268160514/",
+        order: 5,
         publishDate: "2023-03-01"
     },
     {
@@ -246,6 +255,13 @@ export const caseStudies: CaseStudy[] = [
             "Integrated predictive modeling for future sales forecasting"
         ],
         solution: "Delivered a Generative AI-powered dashboard where users can ask broad questions about their business conditions (e.g., 'Top 5 outlets'). The system provides instant answers, generates relevant interactive charts, and offers AI-driven recommendations for improving sales performance.",
+        tradeOffs:
+            "Natural-language analytics is impressive in a demo and fragile in production. We traded open-ended querying for a constrained set of business questions that mapped to reliable data paths, keeping free-form exploration as a secondary path. That narrowed the promise but made the answers trustworthy.",
+        technicalHurdles:
+            "The model had to translate intent into SQL against a schema it did not control, then choose a visualization that matched the result. We needed to handle ambiguous questions, empty result sets, and charts that looked plausible but told the wrong story. Forecasts added a second layer: a confident-looking line can hide weak historical data.",
+        retrospective:
+            "I would define a failure taxonomy for the assistant on day one: ambiguous question, missing data, wrong aggregation, unsupported chart. We tested happy paths more thoroughly than failure states, and that is where user trust is won or lost.",
+        visual: "dashboard",
         outcomes: [
             {
                 metric: "Conversational Analytics",
@@ -262,6 +278,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         tags: ["AI/ML", "Dashboard", "Data Visualization", "Conversational UI", "B2B"],
         featured: true,
+        order: 3,
         publishDate: "2025-04-01"
     },
     {
@@ -297,6 +314,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         tags: ["AI/ML", "HR Tech", "Talent Matching", "Conversational UI", "B2B"],
         featured: true,
+        order: 2,
         publishDate: "2025-06-01"
     }
 ]
@@ -304,7 +322,7 @@ export const caseStudies: CaseStudy[] = [
 export const getFeaturedCaseStudies = () => {
     return caseStudies
         .filter(cs => cs.featured)
-        .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+        .sort((a, b) => a.order - b.order)
 }
 
 export const getCaseStudyBySlug = (slug: string) => caseStudies.find(cs => cs.slug === slug)
