@@ -33,6 +33,12 @@ const TYPES = [
 
 const RULES = [EM_DASH_RULE, FILLER_RULE, CTA_RULE]
 
+/**
+ * Drafts are excluded by default so CI never fails on work in progress.
+ * Pass --include-drafts to review what an agent has staged but not published.
+ */
+const INCLUDE_DRAFTS = process.argv.includes('--include-drafts')
+
 /** Fields that are identifiers, URLs, or image objects, not prose. */
 const SKIP_KEYS = new Set([
     '_id',
@@ -46,12 +52,18 @@ const SKIP_KEYS = new Set([
     'logo',
 ])
 
+// Drafts are not readable anonymously, so --include-drafts needs the write
+// token. Without it the guard still checks published content.
+const token = process.env.SANITY_API_WRITE_TOKEN
+const canReadDrafts = INCLUDE_DRAFTS && Boolean(token)
+
 const client = createClient({
     projectId,
     dataset,
     apiVersion: '2024-01-01',
     useCdn: false,
     timeout: 8000,
+    ...(canReadDrafts ? { token } : {}),
 })
 
 function* walkStrings(value, path = []) {
@@ -75,9 +87,13 @@ function* walkStrings(value, path = []) {
 async function main() {
     let docs
     try {
+        const draftFilter = INCLUDE_DRAFTS ? '' : ' && !(_id in path("drafts.**"))'
         docs = await client.fetch(
-            `*[_type in $types && !(_id in path("drafts.**"))]{ _id, _type, ... }`,
-            { types: TYPES }
+            `*[_type in $types${draftFilter}]{ _id, _type, ... }`,
+            { types: TYPES },
+            // The client defaults to the `published` perspective, which hides
+            // drafts before the GROQ filter is even applied.
+            { perspective: INCLUDE_DRAFTS ? 'raw' : 'published' }
         )
     } catch (error) {
         console.log(
@@ -100,6 +116,7 @@ async function main() {
                 if (!match) continue
                 hits.push({
                     id: doc._id,
+                    draft: doc._id.startsWith('drafts.'),
                     type: doc._type,
                     field: path.join('.') || '(root)',
                     rule: rule.id,
@@ -110,7 +127,15 @@ async function main() {
         }
     }
 
-    console.log(`content copy guard · ${projectId}/${dataset}`)
+    console.log(
+        `content copy guard · ${projectId}/${dataset}` +
+            (canReadDrafts ? ' (including drafts)' : '')
+    )
+    if (INCLUDE_DRAFTS && !canReadDrafts) {
+        console.log(
+            '  … no SANITY_API_WRITE_TOKEN, so drafts are unreadable; checking published only.'
+        )
+    }
     console.log('')
     for (const [type, count] of Object.entries(counts)) {
         console.log(`  ${type.padEnd(16)} ${count}`)
@@ -124,7 +149,9 @@ async function main() {
     }
 
     for (const hit of hits) {
-        console.log(`${hit.type} · ${hit.field}  [${hit.rule}]`)
+        console.log(
+            `${hit.type}${hit.draft ? ' (draft)' : ''} · ${hit.field}  [${hit.rule}]`
+        )
         console.log(`  ${hit.message}`)
         console.log(`  matched: ${JSON.stringify(hit.matched)}  (document ${hit.id})`)
         console.log('')

@@ -84,6 +84,7 @@ post-only webhook keeps working.
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run check:ui` | UI design guard (fails on AI-slop patterns) |
 | `npm run check:content` | copy guard for Studio-authored content |
+| `npm run check:content -- --include-drafts` | same, including unpublished drafts (needs the write token) |
 | `npm run migrate:content` | seed Sanity from the static Work/About content |
 | `npm run migrate:content -- --dry-run` | preview that migration without writing |
 
