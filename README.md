@@ -111,11 +111,23 @@ src/
 
 ## Editing content
 
-- **Profile, experience, skills, certifications** — `src/data/profile.ts`
-- **Case studies** — `src/data/caseStudies.ts` (`problem → process → outcome`
-  structure; `featured` controls the home page selection)
-- **Blog posts** — Sanity Studio at `/studio`, schema in
-  `src/sanity/schemas/post.ts`
+Everything except your identity comes from Sanity Studio at `/studio`.
+
+| Content | Where |
+|---|---|
+| Case studies | Studio → Work → Case studies |
+| Experience, certifications, skills, impact metrics, principles, operating stances | Studio → About |
+| Journal posts | Studio → Journal |
+| Name, title, bio, email and links | `src/data/profile.ts` (code) |
+
+`order` is the display order: lower renders first, and it drives `/work`, the
+home page and related studies. `featured` controls the large home-page card.
+
+`src/data/` still holds a frozen copy of that content. It is a fallback for
+Sanity outages only, not an editing path: a successful read from Sanity,
+including an empty one, always wins. The migration script
+(`npm run migrate:content`) seeded it once; re-running it is safe but will not
+reflect edits made in Studio.
 
 Design direction (palette, type, spacing, component behaviour) is captured in
 `design_guidelines.json`: Geist Sans headings and body, JetBrains Mono for
