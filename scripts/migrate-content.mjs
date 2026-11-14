@@ -4,6 +4,10 @@
  *
  * Every document gets a deterministic `_id`, so the script is idempotent:
  * running it again replaces the same documents instead of duplicating them.
+ *
+ * IDs use hyphens, never dots: Sanity reserves dotted IDs (`drafts.`,
+ * `versions.`) and a dotted `_id` is denied to anonymous readers, so the
+ * public site cannot see it. `caseStudy-foo`, not `caseStudy.foo`.
  * Logos are uploaded once and reused by filename on later runs.
  *
  * Run:
@@ -91,7 +95,7 @@ const documents = []
 function addCaseStudies() {
     for (const study of caseStudies) {
         documents.push({
-            _id: `caseStudy.${study.slug}`,
+            _id: `caseStudy-${study.slug}`,
             _type: 'caseStudy',
             title: study.title,
             slug: { _type: 'slug', current: study.slug },
@@ -119,7 +123,7 @@ function addCaseStudies() {
 async function addExperiences() {
     for (const [index, job] of experiences.entries()) {
         documents.push({
-            _id: `experience.${job.id}`,
+            _id: `experience-${job.id}`,
             _type: 'experience',
             company: job.company,
             ...(job.logo ? { logo: await resolveLogo(job.logo) } : {}),
@@ -137,7 +141,7 @@ async function addExperiences() {
 function addCertifications() {
     for (const [index, cert] of certifications.entries()) {
         documents.push({
-            _id: `certification.${cert.id}`,
+            _id: `certification-${cert.id}`,
             _type: 'certification',
             name: cert.name,
             issuer: cert.issuer,
@@ -157,7 +161,7 @@ function addSkillGroups() {
     ]
     for (const [index, group] of groups.entries()) {
         documents.push({
-            _id: `skillGroup.${slugify(group.title)}`,
+            _id: `skillGroup-${slugify(group.title)}`,
             _type: 'skillGroup',
             title: group.title,
             items: group.items,
@@ -169,7 +173,7 @@ function addSkillGroups() {
 function addImpactMetrics() {
     for (const [index, metric] of impactMetrics.entries()) {
         documents.push({
-            _id: `impactMetric.${index}`,
+            _id: `impactMetric-${index}`,
             _type: 'impactMetric',
             value: metric.value,
             label: metric.label,
@@ -182,7 +186,7 @@ function addImpactMetrics() {
 function addOperatingStances() {
     for (const [index, stance] of operatingStances.entries()) {
         documents.push({
-            _id: `operatingStance.${index}`,
+            _id: `operatingStance-${index}`,
             _type: 'operatingStance',
             title: stance.title,
             stance: stance.stance,
@@ -195,7 +199,7 @@ function addOperatingStances() {
 function addPrinciples() {
     for (const [index, principle] of principles.entries()) {
         documents.push({
-            _id: `principle.${index}`,
+            _id: `principle-${index}`,
             _type: 'principle',
             title: principle.title,
             text: principle.text,
