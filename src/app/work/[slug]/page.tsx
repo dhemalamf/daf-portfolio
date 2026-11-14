@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { caseStudies, getCaseStudyBySlug } from '@/data/caseStudies'
+import { getCaseStudies, getCaseStudyBySlug } from '@/content/caseStudies'
 import CaseStudyContent from '@/components/CaseStudyContent'
+import ContentUnavailable from '@/components/ContentUnavailable'
 import JsonLd from '@/components/JsonLd'
 import { siteUrl } from '@/lib/config'
 
@@ -9,13 +10,18 @@ interface PageProps {
     params: Promise<{ slug: string }>
 }
 
+// The webhook is the fast path; this is the floor if it is not configured.
+export const revalidate = 3600
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params
-    const caseStudy = getCaseStudyBySlug(slug)
+    const lookup = await getCaseStudyBySlug(slug)
 
-    if (!caseStudy) {
+    if (lookup.status !== 'ok') {
         return { title: 'Not Found' }
     }
+
+    const caseStudy = lookup.caseStudy
 
     return {
         title: caseStudy.title,
@@ -31,21 +37,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-    return caseStudies.map((cs) => ({
-        slug: cs.slug,
+    const studies = await getCaseStudies()
+    return studies.map((caseStudy) => ({
+        slug: caseStudy.slug,
     }))
 }
 
 export default async function CaseStudyPage({ params }: PageProps) {
     const { slug } = await params
-    const caseStudy = getCaseStudyBySlug(slug)
+    const lookup = await getCaseStudyBySlug(slug)
 
-    if (!caseStudy) {
+    // The slug is confirmed absent: a real 404.
+    if (lookup.status === 'not-found') {
         notFound()
     }
 
-    const relatedStudies = caseStudies
-        .filter(cs => cs.slug !== caseStudy.slug)
+    // The CMS failed and the study is not in the static fallback. The page may
+    // exist, so say so instead of pretending it does not.
+    if (lookup.status === 'unavailable') {
+        return <ContentUnavailable />
+    }
+
+    const caseStudy = lookup.caseStudy
+    const allStudies = await getCaseStudies()
+    const relatedStudies = allStudies
+        .filter((study) => study.slug !== caseStudy.slug)
         .slice(0, 3)
 
     const url = `${siteUrl}/work/${caseStudy.slug}`

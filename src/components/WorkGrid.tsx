@@ -9,15 +9,18 @@ interface WorkGridProps {
     initialCaseStudies: CaseStudy[]
 }
 
-type SortKey = 'title' | 'publishDate'
+type SortKey = 'order' | 'title' | 'publishDate'
 type SortDirection = 'asc' | 'desc'
 
 export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
-    const [sortKey, setSortKey] = useState<SortKey>('publishDate')
-    const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+    const [sortKey, setSortKey] = useState<SortKey>('order')
+    const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
 
     const sorted = useMemo(() => {
         return [...initialCaseStudies].sort((a, b) => {
+            if (sortKey === 'order') {
+                return sortDirection === 'asc' ? a.order - b.order : b.order - a.order
+            }
             if (sortKey === 'title') {
                 return sortDirection === 'asc'
                     ? a.title.localeCompare(b.title)
@@ -36,11 +39,22 @@ export default function WorkGrid({ initialCaseStudies }: WorkGridProps) {
                 <div className="mono-label text-foreground/65">
                     {sorted.length} case studies · ordered by{' '}
                     <span className="text-foreground">
-                        {sortKey === 'title' ? 'name' : 'date'}
+                        {sortKey === 'order' ? 'manual order' : sortKey === 'title' ? 'name' : 'date'}
                     </span>{' '}
                     ({sortDirection})
                 </div>
                 <div className="flex items-center gap-1">
+                    <button
+                        onClick={() => setSortKey('order')}
+                        data-testid="sort-by-order"
+                        className={`mono-label px-3 py-2 border ${
+                            sortKey === 'order'
+                                ? 'border-foreground text-foreground bg-foreground/[0.04]'
+                                : 'border-foreground/15 text-foreground/70 hover:border-foreground/40'
+                        }`}
+                    >
+                        Order
+                    </button>
                     <button
                         onClick={() => setSortKey('publishDate')}
                         data-testid="sort-by-date"

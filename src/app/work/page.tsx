@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import WorkGrid from '@/components/WorkGrid'
-import { caseStudies } from '@/data/caseStudies'
+import { getCaseStudies } from '@/content/caseStudies'
 import { profile } from '@/data/profile'
 
 export const metadata: Metadata = {
@@ -9,24 +9,26 @@ export const metadata: Metadata = {
     description: 'Case studies across fintech, edtech, government, and AI platforms.',
 }
 
-export default function WorkPage() {
+export const revalidate = 3600
+
+export default async function WorkPage() {
+    const caseStudies = await getCaseStudies()
     return (
         <>
             <section className="pt-36 md:pt-44 pb-12 border-b border-foreground/15">
                 <div className="section-container">
                     <div className="mono-label text-foreground/65 mb-6">
-                        <span className="text-vermillion">●</span> 02 — Selected work
+                        Selected work
                     </div>
                     <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">
                         <div className="col-span-12 lg:col-span-8">
                             <h1 className="h-display text-balance">
-                                Case
-                                <span className="ital text-vermillion"> studies</span>.
+                                Case studies.
                             </h1>
                         </div>
                         <div className="col-span-12 lg:col-span-4 lg:pl-6 lg:border-l lg:border-foreground/15">
                             <p className="text-foreground/75 text-base md:text-lg leading-relaxed text-pretty">
-                                Products I&apos;ve helped shape — each told as{' '}
+                                Products I&apos;ve helped shape, each told as{' '}
                                 <span className="text-foreground">problem</span> →{' '}
                                 <span className="text-foreground">approach</span> →{' '}
                                 <span className="text-foreground">outcome</span>. Some details are NDA-redacted.
@@ -43,8 +45,8 @@ export default function WorkPage() {
                     {/* NDA / outreach panel */}
                     <div className="mt-20 border border-foreground/15 p-8 md:p-12 grid grid-cols-12 gap-6 items-center">
                         <div className="col-span-12 md:col-span-8">
-                            <div className="mono-label text-vermillion mb-3">Note</div>
-                            <h3 className="font-serif text-2xl md:text-3xl tracking-tight leading-tight mb-3">
+                            <div className="mono-label text-foreground/60 mb-3">Note</div>
+                            <h3 className="font-sans font-semibold text-2xl md:text-3xl tracking-tight leading-tight mb-3">
                                 Looking for deeper insights?
                             </h3>
                             <p className="text-foreground/70 leading-relaxed">
