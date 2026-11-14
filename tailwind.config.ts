@@ -47,24 +47,22 @@ const config: Config = {
                 surface: 'hsl(var(--surface))',
                 ink: 'hsl(var(--ink))',
                 paper: 'hsl(var(--paper))',
-                vermillion: {
-                    DEFAULT: '#FF3E00',
-                    50: '#FFE8DF',
-                    100: '#FFD0BC',
-                    200: '#FFA078',
-                    300: '#FF7035',
-                    400: '#FF5418',
-                    500: '#FF3E00',
-                    600: '#CC3200',
-                    700: '#992500',
-                    800: '#661900',
-                    900: '#330C00',
+                cobalt: {
+                    DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
+                    50: '#EFF6FF',
+                    100: '#DBEAFE',
+                    200: '#BFDBFE',
+                    300: '#93C5FD',
+                    400: '#60A5FA',
+                    500: '#3B82F6',
+                    600: '#2563EB',
+                    700: '#1D4ED8',
+                    800: '#1E40AF',
+                    900: '#1E3A8A',
                 },
             },
             fontFamily: {
                 sans: ['var(--font-sans)', 'system-ui', '-apple-system', 'sans-serif'],
-                serif: ['var(--font-serif)', 'ui-serif', 'Georgia', 'serif'],
-                display: ['var(--font-serif)', 'ui-serif', 'Georgia', 'serif'],
                 mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
             },
             letterSpacing: {
@@ -73,10 +71,7 @@ const config: Config = {
             animation: {
                 'fade-in': 'fadeIn 0.6s ease-out forwards',
                 'slide-up': 'slideUp 0.6s ease-out forwards',
-                'marquee': 'marquee 40s linear infinite',
-                'marquee-reverse': 'marquee-reverse 40s linear infinite',
                 'blink': 'blink 1.2s steps(2, end) infinite',
-                'ticker': 'marquee 60s linear infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -86,14 +81,6 @@ const config: Config = {
                 slideUp: {
                     '0%': { opacity: '0', transform: 'translateY(30px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
-                },
-                marquee: {
-                    '0%': { transform: 'translateX(0%)' },
-                    '100%': { transform: 'translateX(-100%)' },
-                },
-                'marquee-reverse': {
-                    '0%': { transform: 'translateX(-100%)' },
-                    '100%': { transform: 'translateX(0%)' },
                 },
                 blink: {
                     '0%, 100%': { opacity: '1' },

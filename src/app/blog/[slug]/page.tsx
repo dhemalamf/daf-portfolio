@@ -100,7 +100,7 @@ const portableTextComponents: PortableTextComponents = {
         divider: ({ value }: { value: DividerValue }) => {
             if (value?.style === 'dots') {
                 return (
-                    <div className="my-10 text-center font-serif text-2xl text-foreground/60 tracking-[0.8em]">
+                    <div className="my-10 text-center font-sans font-semibold text-2xl text-foreground/60 tracking-[0.8em]">
                         •••
                     </div>
                 )
@@ -117,7 +117,7 @@ const portableTextComponents: PortableTextComponents = {
                 href={value?.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-vermillion underline underline-offset-4 decoration-vermillion/40 hover:decoration-vermillion"
+                className="text-cobalt underline underline-offset-4 decoration-cobalt/40 hover:decoration-cobalt"
             >
                 {children}
             </a>
@@ -188,7 +188,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <article className="mx-auto max-w-3xl">
                     <Link
                         href="/blog"
-                        className="group inline-flex items-center gap-2 mono-label text-foreground/70 hover:text-vermillion transition-colors mb-10"
+                        className="group inline-flex items-center gap-2 mono-label text-foreground/70 hover:text-cobalt transition-colors mb-10"
                     >
                         <span aria-hidden className="transition-transform group-hover:-translate-x-1">
                             ←
@@ -261,10 +261,10 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {relatedPosts.length > 0 && (
                     <section className="mt-20 pt-10 border-t border-foreground/15">
                         <div className="flex items-baseline justify-between gap-4 mb-8">
-                            <h2 className="font-serif text-3xl md:text-4xl tracking-tight">
+                            <h2 className="font-sans font-semibold text-3xl md:text-4xl tracking-tight">
                                 Keep reading
                             </h2>
-                            <Link href="/blog" className="mono-label text-foreground/70 hover:text-vermillion">
+                            <Link href="/blog" className="mono-label text-foreground/70 hover:text-cobalt">
                                 All entries →
                             </Link>
                         </div>
@@ -293,7 +293,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                                         <div className="mono-label text-foreground/60 mb-2">
                                             {formatDate(relatedPost.publishedAt)}
                                         </div>
-                                        <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-vermillion transition-colors text-pretty">
+                                        <h3 className="font-sans font-semibold text-xl leading-snug tracking-tight group-hover:text-cobalt transition-colors text-pretty">
                                             {relatedPost.title}
                                         </h3>
                                         <p className="text-foreground/60 text-sm leading-relaxed mt-2 line-clamp-2">

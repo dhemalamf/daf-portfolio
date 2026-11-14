@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Instrument_Serif, Geist, JetBrains_Mono } from 'next/font/google'
+import { Geist, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Suspense } from 'react'
 import Navigation from '@/components/Navigation'
@@ -12,14 +12,6 @@ import MotionProvider from '@/components/motion/MotionProvider'
 import JsonLd from '@/components/JsonLd'
 import { siteUrl } from '@/lib/config'
 import { profile } from '@/data/profile'
-
-const serif = Instrument_Serif({
-    subsets: ['latin'],
-    weight: ['400'],
-    style: ['normal', 'italic'],
-    variable: '--font-serif',
-    display: 'swap',
-})
 
 const sans = Geist({
     subsets: ['latin'],
@@ -36,15 +28,15 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
     title: {
-        default: "Dhema'alam Fajrianto — Product Manager",
-        template: "%s — Dhema'alam Fajrianto",
+        default: "Dhema'alam Fajrianto · Product Manager",
+        template: "%s · Dhema'alam Fajrianto",
     },
     description:
-        'Product Manager with 4+ years of experience across fintech, edtech, government/BUMN, and AI-enabled web platforms.',
+        'Product Manager leading core payments and disbursement infrastructure at Doitpay, previously at Transfez and Zero One Group.',
     keywords: ['Product Manager', 'Fintech', 'Edtech', 'AI', 'Indonesia', 'Dhema'],
     authors: [{ name: "Dhema'alam Fajrianto" }],
     openGraph: {
-        title: "Dhema'alam Fajrianto — Product Manager",
+        title: "Dhema'alam Fajrianto · Product Manager",
         description:
             'Product Manager with 4+ years of experience delivering measurable business impact.',
         url: siteUrl,
@@ -55,7 +47,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: "Dhema'alam Fajrianto — Product Manager",
+        title: "Dhema'alam Fajrianto · Product Manager",
         description:
             'Product Manager with 4+ years of experience delivering measurable business impact.',
         images: ['/og-image.png'],
@@ -70,7 +62,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+            className={`${sans.variable} ${mono.variable}`}
             suppressHydrationWarning
         >
             <body className="min-h-screen flex flex-col font-sans antialiased" suppressHydrationWarning>

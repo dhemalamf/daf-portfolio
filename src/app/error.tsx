@@ -17,13 +17,12 @@ export default function GlobalRouteError({
     return (
         <div className="pt-32 md:pt-40 pb-24">
             <div className="section-container max-w-2xl">
-                <div className="mono-label text-vermillion mb-4">Error</div>
+                <div className="mono-label text-foreground/60 mb-4">Error</div>
                 <h1 className="heading-2 text-balance mb-4">
-                    Something went <span className="ital text-vermillion">wrong</span>.
+                    Something went wrong.
                 </h1>
                 <p className="text-foreground/70 leading-relaxed mb-8">
-                    This page could not be rendered. It may be a temporary problem —
-                    retrying usually helps.
+                    This page could not be rendered. It may be a temporary problem. Retrying usually helps.
                 </p>
                 <div className="flex flex-wrap gap-3">
                     <button type="button" onClick={reset} className="btn-ink">

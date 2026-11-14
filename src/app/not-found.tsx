@@ -4,12 +4,12 @@ export default function NotFound() {
     return (
         <div className="pt-32 md:pt-40 pb-24">
             <div className="section-container max-w-3xl">
-                <div className="mono-label text-vermillion mb-4">404</div>
+                <div className="mono-label text-foreground/60 mb-4">404</div>
                 <h1 className="h-display text-balance mb-6">
-                    Page <span className="ital text-vermillion">not found</span>.
+                    Page not found.
                 </h1>
                 <p className="text-foreground/70 text-lg leading-relaxed max-w-xl mb-10">
-                    This URL does not exist — it may have moved, or never did. The work
+                    This URL does not exist. It may have moved, or never did. The work
                     and the journal are still where you left them.
                 </p>
                 <div className="flex flex-wrap gap-3">

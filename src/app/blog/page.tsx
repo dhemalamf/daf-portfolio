@@ -37,19 +37,18 @@ export default async function BlogPage() {
                 <header className="border-b border-foreground/15 pb-10 mb-12">
                     <FadeIn>
                         <div className="mono-label text-foreground/65 mb-6">
-                            <span className="text-vermillion">●</span> 03 — Journal
+                            Journal
                         </div>
                         <div className="grid grid-cols-12 gap-x-6 gap-y-8 items-end">
                             <div className="col-span-12 lg:col-span-8">
                                 <h1 className="h-display text-balance">
-                                    Field notes on{' '}
-                                    <span className="ital text-vermillion">product</span>.
+                                    Field notes on product.
                                 </h1>
                             </div>
                             <div className="col-span-12 lg:col-span-4 lg:pl-6 lg:border-l lg:border-foreground/15">
                                 <p className="text-foreground/75 text-base md:text-lg leading-relaxed text-pretty">
                                     Essays on product management, AI, and building things
-                                    that matter — written between shipping.
+                                    that matter, written between shipping.
                                 </p>
                                 <p className="mono-label text-foreground/60 mt-4">
                                     {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
@@ -63,8 +62,8 @@ export default async function BlogPage() {
                     <BlogList posts={posts} allTags={allTags} />
                 ) : (
                     <div className="border border-foreground/15 p-8 md:p-12">
-                        <div className="mono-label text-vermillion mb-3">Empty</div>
-                        <h2 className="font-serif text-3xl tracking-tight mb-2">
+                        <div className="mono-label text-foreground/60 mb-3">Empty</div>
+                        <h2 className="font-sans font-semibold text-3xl tracking-tight mb-2">
                             Nothing published yet.
                         </h2>
                         <p className="text-foreground/70">
