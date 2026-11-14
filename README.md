@@ -48,21 +48,30 @@ is unreachable the route degrades to a "journal unavailable" panel instead of a
 
 ### Instant revalidation
 
-Posts are cached with ISR (`revalidate = 60`) under the `posts` cache tag. To
-publish without waiting up to a minute, register a Sanity webhook
-(sanity.io/manage → API → Webhooks):
+Pages are cached with ISR under three tags: `posts` (journal), `work` (case
+studies) and `about` (experience, certifications, skills, metrics, stances,
+principles). To publish without waiting for the ISR window, register a Sanity
+webhook (sanity.io/manage → API → Webhooks):
 
 | Field | Value |
 |---|---|
 | URL | `https://<site>/api/revalidate` |
 | Trigger | Create, Update, Delete |
-| Filter | `_type == "post"` |
+| Filter | `_type in ["post","caseStudy","experience","certification","skillGroup","impactMetric","operatingStance","principle"]` |
 | HTTP header | `x-sanity-webhook-secret: <SANITY_REVALIDATE_SECRET>` |
 
 The route also accepts `Authorization: Bearer <secret>` or `?secret=`. It fails
 closed: with no `SANITY_REVALIDATE_SECRET` set it returns 503, and a wrong secret
-returns 401. On a valid call it purges the `posts` tag and revalidates `/blog`,
-`/blog/<slug>` and `/sitemap.xml`.
+returns 401. On a valid call it branches on `_type`:
+
+| Type | Tag purged | Paths revalidated |
+|---|---|---|
+| `post` (or no `_type`) | `posts` | `/blog`, `/blog/<slug>`, `/sitemap.xml` |
+| `caseStudy` | `work` | `/`, `/work`, `/work/<slug>`, `/sitemap.xml` |
+| About types | `about` | `/`, `/about` |
+
+A body with no `_type` is treated as a journal change, so an existing
+post-only webhook keeps working.
 
 ## Scripts
 
@@ -73,8 +82,11 @@ returns 401. On a valid call it purges the `posts` tag and revalidates `/blog`,
 | `npm run start` | serve the production build |
 | `npm run lint` | ESLint (flat config) |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm run check:ui` | UI design guard (fails on AI-slop patterns) |
+| `npm run migrate:content` | seed Sanity from the static Work/About content |
+| `npm run migrate:content -- --dry-run` | preview that migration without writing |
 
-CI runs all three on every pull request (`.github/workflows/ci.yml`).
+CI runs all four on every pull request (`.github/workflows/ci.yml`).
 
 ## Project structure
 
@@ -104,9 +116,11 @@ src/
 - **Blog posts** — Sanity Studio at `/studio`, schema in
   `src/sanity/schemas/post.ts`
 
-Design direction (palette, type scale, spacing, component behaviour) is captured
-in `design_guidelines.json`. Use the tokens in `src/app/globals.css` rather than
-raw values.
+Design direction (palette, type, spacing, component behaviour) is captured in
+`design_guidelines.json`: Geist Sans headings and body, JetBrains Mono for
+metadata and metrics, cobalt accents on interaction only, neutral surfaces. Use
+the tokens in `src/app/globals.css` rather than raw values. The contract is
+[`docs/dhema-me-unslop-guide.md`](docs/dhema-me-unslop-guide.md).
 
 ## Working with coding agents
 
@@ -115,16 +129,24 @@ v7.0.1 — a development workflow packaged as agent skills (brainstorm → plan 
 TDD → review → finish) — in `.claude/skills/`.
 
 - `CLAUDE.md` — Claude Code entry point; a `SessionStart` hook injects the
-  `using-superpowers` bootstrap automatically.
+  `using-superpowers` bootstrap and the UI design digest automatically.
 - `AGENTS.md` — same guidance for Codex, Cursor, Copilot, Gemini CLI, DSH.
+- `.claude/skills/no-ai-slop/` — the anti-slop UI contract, adapted from
+  [unslop-ui-skill](https://github.com/claudiusararu/unslop-ui-skill) to this
+  site's [revamp spec](docs/dhema-me-unslop-guide.md).
 - `docs/superpowers.md` — provenance, layout, verification, update procedure.
-- `THIRD_PARTY_NOTICES.md` — upstream MIT license.
+- `docs/unslop-ui.md` — anti-slop install, current debt, update procedure.
+- `THIRD_PARTY_NOTICES.md` — upstream MIT licenses.
 
 ## Documentation
 
 - [`docs/code-review.md`](docs/code-review.md) — current defects, priorities, and
   the improvement roadmap
 - [`docs/superpowers.md`](docs/superpowers.md) — agent workflow installation
+- [`docs/unslop-ui.md`](docs/unslop-ui.md) — anti-slop UI contract, guard, and
+  remaining debt
+- [`docs/dhema-me-unslop-guide.md`](docs/dhema-me-unslop-guide.md) — the revamp
+  specification the contract enforces
 
 ## Deployment
 
@@ -136,8 +158,8 @@ build time; blog routes render on demand and need Sanity reachable at runtime.
 
 ## License
 
-Personal portfolio — all rights reserved. Vendored Superpowers skills remain
-MIT-licensed (see `THIRD_PARTY_NOTICES.md`).
+Personal portfolio — all rights reserved. Vendored Superpowers skills and the
+adapted unslop-ui-skill remain MIT-licensed (see `THIRD_PARTY_NOTICES.md`).
 
 ## Troubleshooting
 

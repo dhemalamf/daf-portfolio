@@ -5,19 +5,35 @@ import type { NextRequest } from 'next/server'
 /**
  * Sanity → Next.js revalidation webhook.
  *
- * Publishing or unpublishing a post in the Studio calls this route so the
- * journal updates on the next request instead of waiting for the 60 s ISR
- * window. The route fails closed: without SANITY_REVALIDATE_SECRET it returns
- * 503 rather than acting as an open cache-buster.
+ * Publishing or unpublishing in the Studio calls this route so the affected
+ * pages update on the next request instead of waiting for the ISR window. The
+ * route fails closed: without SANITY_REVALIDATE_SECRET it returns 503 rather
+ * than acting as an open cache-buster.
  *
  * Sanity setup (sanity.io/manage → API → Webhooks):
  *   URL     https://<site>/api/revalidate
  *   Trigger Create, Update, Delete
- *   Filter  _type == "post"
+ *   Filter  _type in ["post","caseStudy","experience","certification",
+ *                     "skillGroup","impactMetric","operatingStance","principle"]
  *   Header  x-sanity-webhook-secret: <the same secret>
+ *
+ * A body with no `_type` is treated as a journal change, so the original
+ * post-only webhook keeps working.
  */
 
 const POSTS_TAG = 'posts'
+const WORK_TAG = 'work'
+const ABOUT_TAG = 'about'
+
+const WORK_TYPES = new Set(['caseStudy'])
+const ABOUT_TYPES = new Set([
+    'experience',
+    'certification',
+    'skillGroup',
+    'impactMetric',
+    'operatingStance',
+    'principle',
+])
 
 function secretsMatch(received: string, expected: string): boolean {
     const a = Buffer.from(received)
@@ -70,23 +86,41 @@ export async function POST(request: NextRequest) {
         return Response.json({ revalidated: false, reason: 'draft' })
     }
 
+    const type = payload._type
     const slug = payload.slug?.current
-    const paths = [
-        '/blog',
-        '/sitemap.xml',
-        ...(slug ? [`/blog/${slug}`] : []),
-    ]
 
-    revalidateTag(POSTS_TAG)
+    let tag: string
+    let paths: string[]
+
+    if (!type || type === 'post') {
+        tag = POSTS_TAG
+        paths = ['/blog', '/sitemap.xml', ...(slug ? [`/blog/${slug}`] : [])]
+    } else if (WORK_TYPES.has(type)) {
+        tag = WORK_TAG
+        paths = [
+            '/',
+            '/work',
+            '/sitemap.xml',
+            ...(slug ? [`/work/${slug}`] : []),
+        ]
+    } else if (ABOUT_TYPES.has(type)) {
+        tag = ABOUT_TAG
+        paths = ['/', '/about']
+    } else {
+        return Response.json(
+            { revalidated: false, reason: `unhandled type: ${type}` },
+            { status: 200 }
+        )
+    }
+
+    revalidateTag(tag)
     for (const path of paths) revalidatePath(path)
 
-    console.log(
-        `[revalidate] ${payload._type ?? 'unknown document'} → ${paths.join(', ')}`
-    )
+    console.log(`[revalidate] ${type ?? 'unknown document'} → ${paths.join(', ')}`)
 
     return Response.json({
         revalidated: true,
-        tag: POSTS_TAG,
+        tag,
         paths,
         now: Date.now(),
     })
