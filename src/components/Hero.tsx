@@ -1,25 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import { profile, impactMetrics } from '@/data/profile'
+import { profile } from '@/data/profile'
+import type { ImpactMetric } from '@/data/types'
 import { trackButtonClick } from '@/lib/analytics'
 import { m as motion } from 'framer-motion'
-import AnimatedCounter from '@/components/animations/AnimatedCounter'
 
-export default function Hero() {
+export default function Hero({ metrics }: { metrics: ImpactMetric[] }) {
+    if (metrics.length === 0) return null
     return (
-        <section className="relative pt-32 md:pt-40 pb-12 overflow-hidden grain">
-            {/* Hairline grid lines (decorative) */}
-            <div
-                aria-hidden
-                className="absolute inset-0 pointer-events-none opacity-[0.06]"
-                style={{
-                    backgroundImage:
-                        'linear-gradient(to right, currentColor 1px, transparent 1px)',
-                    backgroundSize: 'calc(100%/12) 100%',
-                }}
-            />
-
+        <section className="relative pt-32 md:pt-40 pb-12 overflow-hidden">
             <div className="section-container relative z-10">
                 {/* Status row */}
                 <motion.div
@@ -29,14 +19,8 @@ export default function Hero() {
                     className="flex items-center justify-between mb-10 md:mb-16 border-t border-foreground/15 pt-4"
                 >
                     <div className="flex items-center gap-3 mono-label text-foreground/70">
-                        <span className="relative flex h-2 w-2">
-                            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 motion-safe:animate-ping" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                        </span>
+                        <span aria-hidden className="inline-flex h-2 w-2 rounded-full bg-foreground/40" />
                         Open to collaboration · Jakarta, ID
-                    </div>
-                    <div className="hidden sm:block mono-label text-foreground/60">
-                        Vol. 04 — Edition {new Date().getFullYear()}
                     </div>
                 </motion.div>
 
@@ -49,7 +33,7 @@ export default function Hero() {
                             transition={{ duration: 0.8, delay: 0.1 }}
                             className="mono-label text-foreground/65 mb-6"
                         >
-                            <span className="text-vermillion">●</span> Currently — Product Manager @ Doitpay
+                            Payments &amp; disbursement · Doitpay
                         </motion.div>
 
                         <motion.h1
@@ -58,11 +42,7 @@ export default function Hero() {
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="h-display text-balance text-foreground"
                         >
-                            Dhema<span className="ital">&apos;</span>alam{' '}
-                            <span className="ital text-vermillion">Fajrianto</span>
-                            <span className="block text-foreground/60 mt-4 sm:mt-5 text-[0.55em] leading-none tracking-tight">
-                                — building products with measurable impact.
-                            </span>
+                            Dhema&apos;alam Fajrianto
                         </motion.h1>
                     </div>
 
@@ -73,12 +53,10 @@ export default function Hero() {
                         className="col-span-12 lg:col-span-4 mt-10 lg:mt-0 lg:pl-6 lg:border-l lg:border-foreground/15"
                     >
                         <p className="text-foreground/75 text-base md:text-lg leading-relaxed text-pretty">
-                            Product Manager with{' '}
-                            <span className="ital text-foreground">four+ years</span> turning
-                            complex challenges into impactful digital products across{' '}
-                            <span className="text-foreground">fintech</span>,{' '}
-                            <span className="text-foreground">public sector</span>, and{' '}
-                            <span className="text-foreground">AI-enabled</span> platforms.
+                            Leading core payments and disbursement infrastructure at
+                            Doitpay. Previously built consumer remittance products at
+                            Transfez, scaling to Rp 2T+ GTV, and delivered enterprise AI
+                            platforms at Zero One Group.
                         </p>
 
                         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -115,12 +93,12 @@ export default function Hero() {
                     data-testid="hero-impact-metrics"
                 >
                     <div className="mono-label text-foreground/65 py-4 flex items-center justify-between border-b border-foreground/10">
-                        <span>Selected impact · 2021 — 2026</span>
-                        <span className="hidden sm:inline">{impactMetrics.length} metrics</span>
+                        <span>Selected impact · 2021 – 2026</span>
+                        <span className="hidden sm:inline">{metrics.length} metrics</span>
                     </div>
 
                     <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-foreground/10 border-b border-foreground/20">
-                        {impactMetrics.map((m, i) => (
+                        {metrics.map((m, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 16 }}
@@ -128,8 +106,8 @@ export default function Hero() {
                                 transition={{ duration: 0.5, delay: 0.9 + i * 0.08 }}
                                 className="p-5 md:p-7 group hover:bg-foreground/[0.03] transition-colors"
                             >
-                                <div className="font-serif text-5xl md:text-6xl leading-none tracking-tighter text-foreground mb-3">
-                                    <AnimatedCounter value={m.value} />
+                                <div className="metric text-4xl md:text-5xl leading-none text-foreground mb-3">
+                                    {m.value}
                                 </div>
                                 <div className="text-sm font-medium text-foreground mb-1">
                                     {m.label}

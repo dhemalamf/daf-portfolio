@@ -8,11 +8,11 @@ import { useTheme } from 'next-themes'
 import { m as motion, AnimatePresence } from 'framer-motion'
 
 const navItems = [
-    { label: 'Index', href: '/', short: '00' },
-    { label: 'About', href: '/about', short: '01' },
-    { label: 'Work', href: '/work', short: '02' },
-    { label: 'Journal', href: '/blog', short: '03' },
-    { label: 'Contact', href: '/contact', short: '04' },
+    { label: 'Index', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Work', href: '/work' },
+    { label: 'Journal', href: '/blog' },
+    { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navigation() {
@@ -52,8 +52,8 @@ export default function Navigation() {
                         data-testid="nav-logo"
                         className="group flex items-baseline gap-2"
                     >
-                        <span className="font-serif text-2xl md:text-3xl leading-none tracking-tightest">
-                            Dhema<span className="text-vermillion">.</span>
+                        <span className="font-sans font-semibold text-2xl md:text-3xl leading-none tracking-tight">
+                            Dhema.
                         </span>
                         <span className="hidden sm:inline mono-label text-foreground/60 group-hover:text-foreground transition-colors">
                             Product Manager
@@ -76,12 +76,11 @@ export default function Navigation() {
                                         onClick={() => trackButtonClick(`nav_${item.label.toLowerCase()}`)}
                                         className="group flex items-baseline gap-1.5"
                                     >
-                                        <span className="mono-label text-foreground/35">{item.short}</span>
                                         <span
                                             className={`text-sm tracking-tight link-underline transition-colors ${
                                                 isActive
-                                                    ? 'text-foreground link-underline-active'
-                                                    : 'text-foreground/70 group-hover:text-foreground'
+                                                    ? 'text-cobalt link-underline-active'
+                                                    : 'text-foreground/70 group-hover:text-cobalt'
                                             }`}
                                         >
                                             {item.label}
@@ -151,7 +150,7 @@ export default function Navigation() {
                         <button
                             onClick={() => setTheme(isDark ? 'light' : 'dark')}
                             data-testid="theme-toggle-mobile"
-                            className="w-9 h-9 flex items-center justify-center text-foreground/60 border border-foreground/15"
+                            className="w-11 h-11 flex items-center justify-center text-foreground/60 border border-foreground/15"
                             aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
                         >
                             {isDark ? '☀' : '☾'}
@@ -161,7 +160,7 @@ export default function Navigation() {
                             aria-expanded={isMobileMenuOpen}
                             aria-controls="mobile-menu-panel"
                             data-testid="mobile-menu-toggle"
-                            className="w-9 h-9 flex items-center justify-center text-foreground border border-foreground/15"
+                            className="w-11 h-11 flex items-center justify-center text-foreground border border-foreground/15"
                             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                         >
                             <span className="font-mono text-xs">{isMobileMenuOpen ? '×' : '≡'}</span>
@@ -193,11 +192,10 @@ export default function Navigation() {
                                             data-testid={`nav-mobile-link-${item.label.toLowerCase()}`}
                                             onClick={() => setIsMobileMenuOpen(false)}
                                             className={`flex items-baseline gap-3 py-3 border-b border-foreground/5 ${
-                                                isActive ? 'text-foreground' : 'text-foreground/70'
+                                                isActive ? 'text-cobalt' : 'text-foreground/70'
                                             }`}
                                         >
-                                            <span className="mono-label text-foreground/30">{item.short}</span>
-                                            <span className="font-serif text-2xl tracking-tight">{item.label}</span>
+                                            <span className="font-sans font-semibold text-2xl tracking-tight">{item.label}</span>
                                         </Link>
                                     )
                                 })}

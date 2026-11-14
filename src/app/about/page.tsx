@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import SectionHeading from '@/components/SectionHeading'
 import TimelineExperienceCard from '@/components/TimelineExperienceCard'
 import SkillsGrid from '@/components/SkillsGrid'
-import { profile, experiences } from '@/data/profile'
-import { principles } from '@/data/principles'
+import { profile } from '@/data/profile'
+import { getExperiences, getPrinciples, getSkillGroups } from '@/content/about'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -14,7 +14,15 @@ export const metadata: Metadata = {
 }
 
 
-export default function AboutPage() {
+export const revalidate = 3600
+
+export default async function AboutPage() {
+    const [experiences, principles, skillGroups] = await Promise.all([
+        getExperiences(),
+        getPrinciples(),
+        getSkillGroups(),
+    ])
+
     return (
         <>
             {/* Hero */}
@@ -78,9 +86,10 @@ export default function AboutPage() {
                     <SectionHeading
                         eyebrow="Career journey"
                         title={<>The full archive.</>}
-                        description="Six chapters across fintech, edtech, healthtech, public sector and AI consulting, each with its own lessons in shipping product."
+                        description={`${experiences.length} chapters across fintech, edtech, healthtech, public sector and AI consulting, each with its own lessons in shipping product.`}
                     />
 
+                    {experiences.length > 0 && (
                     <div className="border-b border-foreground/20">
                         {experiences.map((exp, i) => (
                             <TimelineExperienceCard
@@ -98,6 +107,7 @@ export default function AboutPage() {
                             />
                         ))}
                     </div>
+                    )}
                 </div>
             </section>
 
@@ -108,7 +118,7 @@ export default function AboutPage() {
                         eyebrow="Capabilities"
                         title={<>Skills & expertise.</>}
                     />
-                    <SkillsGrid />
+                    {skillGroups.length > 0 && <SkillsGrid groups={skillGroups} />}
                 </div>
             </section>
 

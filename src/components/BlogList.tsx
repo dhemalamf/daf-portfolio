@@ -113,7 +113,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
     const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
 
     const fieldClass =
-        'w-full bg-transparent border border-foreground/20 px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/60 focus:border-vermillion focus-visible:outline-none transition-colors'
+        'w-full bg-transparent border border-foreground/20 px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/60 focus:border-cobalt focus-visible:outline-none transition-colors'
 
     return (
         <div>
@@ -302,7 +302,7 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                                 <button
                                     type="button"
                                     onClick={clearFilters}
-                                    className="mono-label text-vermillion hover:underline"
+                                    className="mono-label text-cobalt hover:underline"
                                 >
                                     Reset all filters
                                 </button>
@@ -398,8 +398,8 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
                 </>
             ) : (
                 <div className="border border-foreground/15 p-8 md:p-12">
-                    <div className="mono-label text-vermillion mb-3">No results</div>
-                    <h2 className="font-serif text-3xl tracking-tight mb-2">
+                    <div className="mono-label text-foreground/60 mb-3">No results</div>
+                    <h2 className="font-sans font-semibold text-3xl tracking-tight mb-2">
                         No entries match those filters.
                     </h2>
                     <p className="text-foreground/70 mb-6">
@@ -457,7 +457,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                 >
                     <div className="col-span-12 md:col-span-2">{meta}</div>
                     <div className="col-span-12 md:col-span-6">
-                        <h2 className="font-serif text-2xl md:text-3xl leading-tight tracking-tight group-hover:text-vermillion transition-colors">
+                        <h2 className="font-sans font-semibold text-2xl md:text-3xl leading-tight tracking-tight group-hover:text-cobalt transition-colors">
                             {post.title}
                         </h2>
                         <p className="text-foreground/60 text-sm leading-relaxed mt-2 text-pretty line-clamp-2">
@@ -466,7 +466,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                     </div>
                     <div className="col-span-8 md:col-span-2">{tags}</div>
                     <div className="col-span-4 md:col-span-2 md:text-right">
-                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors">
+                        <span className="mono-label text-foreground/70 group-hover:text-cobalt transition-colors">
                             Read →
                         </span>
                     </div>
@@ -494,7 +494,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                 )}
                 <div className="flex flex-1 flex-col p-5 md:p-6">
                     {meta}
-                    <h2 className="font-serif text-2xl leading-tight tracking-tight mt-3 mb-3 group-hover:text-vermillion transition-colors text-pretty">
+                    <h2 className="font-sans font-semibold text-2xl leading-tight tracking-tight mt-3 mb-3 group-hover:text-cobalt transition-colors text-pretty">
                         {post.title}
                     </h2>
                     <p className="text-foreground/65 text-sm leading-relaxed mb-5 flex-1 line-clamp-3 text-pretty">
@@ -502,7 +502,7 @@ function BlogCard({ post, index, layout }: BlogCardProps) {
                     </p>
                     <div className="flex items-end justify-between gap-4 mt-auto pt-4 border-t border-foreground/10">
                         {tags || <span />}
-                        <span className="mono-label text-foreground/70 group-hover:text-vermillion transition-colors shrink-0">
+                        <span className="mono-label text-foreground/70 group-hover:text-cobalt transition-colors shrink-0">
                             Read →
                         </span>
                     </div>

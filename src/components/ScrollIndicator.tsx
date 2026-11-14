@@ -15,7 +15,7 @@ export default function ScrollIndicator({ targetId = 'featured-work' }: { target
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 0.6 }}
             data-testid="scroll-indicator"
-            className="group inline-flex items-center gap-3 mono-label text-foreground/60 hover:text-vermillion transition-colors"
+            className="group inline-flex items-center gap-3 mono-label text-foreground/60 hover:text-cobalt transition-colors"
             aria-label="Scroll to explore"
         >
             <span>Scroll to explore</span>

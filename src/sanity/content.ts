@@ -1,6 +1,17 @@
 import { client } from './client'
 import type { FetchResult } from './types'
-import type { CaseStudy, CaseStudyVisual } from '@/data/types'
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import type {
+    CaseStudy,
+    CaseStudyVisual,
+    Certification,
+    Experience,
+    ImpactMetric,
+    OperatingStance,
+    Principle,
+    SkillGroup,
+} from '@/data/types'
+import { urlFor } from './image'
 
 /** Cache tags purged by /api/revalidate on publish. */
 export const WORK_TAG = 'work'
@@ -135,3 +146,74 @@ export async function fetchCaseStudyBySlug(
         return { ok: false }
     }
 }
+
+const ABOUT_QUERIES = {
+    experiences: `*[_type == "experience" && !(_id in path("drafts.**"))] | order(order asc) {
+        "id": _id, company, logo, role, period, type, description, highlights, industries
+    }`,
+    certifications: `*[_type == "certification" && !(_id in path("drafts.**"))] | order(order asc) {
+        "id": _id, name, issuer, issuedDate, credentialUrl
+    }`,
+    skillGroups: `*[_type == "skillGroup" && !(_id in path("drafts.**"))] | order(order asc) {
+        title, items
+    }`,
+    impactMetrics: `*[_type == "impactMetric" && !(_id in path("drafts.**"))] | order(order asc) {
+        value, label, description
+    }`,
+    operatingStances: `*[_type == "operatingStance" && !(_id in path("drafts.**"))] | order(order asc) {
+        title, stance, example
+    }`,
+    principles: `*[_type == "principle" && !(_id in path("drafts.**"))] | order(order asc) {
+        title, text
+    }`,
+}
+
+async function fetchAboutCollection<T>(
+    operation: string,
+    query: string
+): Promise<FetchResult<T[]>> {
+    try {
+        const data = await client.fetch<T[]>(query, {}, cache(ABOUT_TAG))
+        return { ok: true, data }
+    } catch (error) {
+        reportFailure(operation, error)
+        return { ok: false }
+    }
+}
+
+export async function fetchExperiences(): Promise<FetchResult<Experience[]>> {
+    try {
+        const docs = await client.fetch<
+            (Omit<Experience, 'logo'> & { logo: SanityImageSource | null })[]
+        >(ABOUT_QUERIES.experiences, {}, cache(ABOUT_TAG))
+
+        return {
+            ok: true,
+            data: docs.map(({ logo, ...rest }) => ({
+                ...rest,
+                logo: logo ? urlFor(logo).width(72).height(72).url() : undefined,
+            })),
+        }
+    } catch (error) {
+        reportFailure('fetchExperiences', error)
+        return { ok: false }
+    }
+}
+
+export const fetchCertifications = () =>
+    fetchAboutCollection<Certification>('fetchCertifications', ABOUT_QUERIES.certifications)
+
+export const fetchSkillGroups = () =>
+    fetchAboutCollection<SkillGroup>('fetchSkillGroups', ABOUT_QUERIES.skillGroups)
+
+export const fetchImpactMetrics = () =>
+    fetchAboutCollection<ImpactMetric>('fetchImpactMetrics', ABOUT_QUERIES.impactMetrics)
+
+export const fetchOperatingStances = () =>
+    fetchAboutCollection<OperatingStance>(
+        'fetchOperatingStances',
+        ABOUT_QUERIES.operatingStances
+    )
+
+export const fetchPrinciples = () =>
+    fetchAboutCollection<Principle>('fetchPrinciples', ABOUT_QUERIES.principles)

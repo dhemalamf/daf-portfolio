@@ -45,7 +45,6 @@ export default function TimelineExperienceCard({
             {/* Period column */}
             <div className="col-span-12 md:col-span-3 lg:col-span-2">
                 <div className="flex items-baseline gap-2 mono-label text-foreground/70">
-                    {isPresent && <span className="text-vermillion">●</span>}
                     {period}
                 </div>
                 <div className="mono-label text-foreground/60 mt-2">{type}</div>
@@ -56,7 +55,7 @@ export default function TimelineExperienceCard({
                 <div className="relative flex flex-col items-center">
                     <div
                         className={`w-2.5 h-2.5 ${
-                            isPresent ? 'bg-vermillion' : 'bg-foreground'
+                            isPresent ? 'bg-foreground' : 'bg-foreground/40'
                         } shrink-0`}
                     />
                     {!isLast && (
@@ -69,7 +68,7 @@ export default function TimelineExperienceCard({
             <div className="col-span-12 md:col-span-8 lg:col-span-9">
                 <div className="flex items-center gap-3 mb-3">
                     {logo && (
-                        <div className="w-9 h-9 bg-surface border border-foreground/10 p-1.5 shrink-0">
+                        <div className="w-9 h-9 bg-white border border-foreground/10 p-1.5 shrink-0">
                             <Image
                                 src={logo}
                                 alt={`${company} logo`}
@@ -80,10 +79,10 @@ export default function TimelineExperienceCard({
                         </div>
                     )}
                     <div>
-                        <h3 className="font-serif text-2xl md:text-3xl leading-tight tracking-tight">
+                        <h3 className="font-sans font-semibold text-2xl md:text-3xl leading-tight tracking-tight">
                             {role}
                         </h3>
-                        <div className="mono-label text-vermillion">{company}</div>
+                        <div className="mono-label text-foreground/60">{company}</div>
                     </div>
                 </div>
 
@@ -91,16 +90,10 @@ export default function TimelineExperienceCard({
                     {description}
                 </p>
 
-                <ul className="space-y-2.5 mb-5">
+                <ul className="space-y-2.5 mb-5 list-disc pl-4 marker:text-foreground/30">
                     {highlights.map((h, i) => (
-                        <li
-                            key={i}
-                            className="flex items-baseline gap-3 text-foreground/75 text-sm leading-relaxed"
-                        >
-                            <span className="mono-label text-foreground/35 w-8 shrink-0">
-                                .{String(i + 1).padStart(2, '0')}
-                            </span>
-                            <span className="flex-1">{h}</span>
+                        <li key={i} className="text-foreground/75 text-sm leading-relaxed">
+                            {h}
                         </li>
                     ))}
                 </ul>

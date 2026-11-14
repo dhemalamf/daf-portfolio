@@ -5,20 +5,17 @@ export default function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="relative border-t border-foreground/15 mt-24 grain">
+        <footer className="relative border-t border-foreground/15 mt-24">
             <div className="section-container py-16 md:py-24 relative z-10">
                 {/* Top: huge editorial CTA */}
                 <div className="border-b border-foreground/15 pb-16 mb-12">
                     <div className="grid grid-cols-12 gap-6 items-end">
                         <div className="col-span-12 lg:col-span-8">
                             <div className="mono-label text-foreground/65 mb-6">
-                                <span className="text-vermillion">●</span> 05 — Get in touch
+                                Get in touch
                             </div>
                             <h2 className="h-display text-balance">
-                                Let&apos;s ship
-                                <span className="ital text-vermillion"> something</span>
-                                <br className="hidden md:block" /> meaningful
-                                <span className="text-vermillion">.</span>
+                                Let&apos;s ship something meaningful.
                             </h2>
                         </div>
                         <div className="col-span-12 lg:col-span-4 flex flex-col gap-3">
@@ -57,8 +54,8 @@ export default function Footer() {
                 {/* Mid columns */}
                 <div className="grid grid-cols-12 gap-6 mb-16">
                     <div className="col-span-12 md:col-span-6">
-                        <div className="font-serif text-3xl leading-tight tracking-tight mb-3">
-                            Dhema<span className="text-vermillion">.</span>
+                        <div className="font-sans font-semibold text-3xl leading-tight tracking-tight mb-3">
+                            Dhema.
                         </div>
                         <p className="text-sm text-foreground/65 max-w-md">
                             {profile.shortBio}
@@ -78,7 +75,7 @@ export default function Footer() {
                                 <li key={href}>
                                     <Link
                                         href={href}
-                                        className="text-foreground/75 hover:text-vermillion link-underline transition-colors"
+                                        className="text-foreground/75 hover:text-cobalt link-underline transition-colors"
                                     >
                                         {label}
                                     </Link>
@@ -102,7 +99,7 @@ export default function Footer() {
                                         href={href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-foreground/75 hover:text-vermillion link-underline transition-colors"
+                                        className="text-foreground/75 hover:text-cobalt link-underline transition-colors"
                                     >
                                         {label} ↗
                                     </a>
@@ -119,15 +116,20 @@ export default function Footer() {
                         Jakarta · Indonesia · UTC+7
                     </div>
                     <div className="col-span-12 md:col-span-4 md:text-right">
-                        Set in Instrument Serif · Geist · JetBrains Mono
+                        <a
+                            href={`mailto:${profile.email}`}
+                            className="hover:text-cobalt transition-colors"
+                        >
+                            {profile.email}
+                        </a>
                     </div>
                 </div>
             </div>
 
             {/* Giant background wordmark */}
             <div className="select-none pointer-events-none overflow-hidden border-t border-foreground/15">
-                <div className="font-serif text-[28vw] leading-[0.78] tracking-tightest text-foreground/[0.05] text-center">
-                    Dhema<span className="ital text-vermillion/20">.</span>
+                <div className="font-sans font-semibold text-[28vw] leading-[0.78] tracking-[-0.03em] text-foreground/[0.05] text-center">
+                    Dhema.
                 </div>
             </div>
         </footer>

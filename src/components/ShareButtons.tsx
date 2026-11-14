@@ -30,7 +30,7 @@ const targets = (title: string, url: string) => [
 ]
 
 const box =
-    'inline-flex h-9 min-w-9 items-center justify-center gap-2 border border-foreground/20 px-2 text-foreground/60 hover:text-vermillion hover:border-vermillion/50 transition-colors'
+    'inline-flex h-9 min-w-9 items-center justify-center gap-2 border border-foreground/20 px-2 text-foreground/60 hover:text-cobalt hover:border-cobalt/50 transition-colors'
 
 export default function ShareButtons({ title, url, compact = false }: ShareButtonsProps) {
     const [copied, setCopied] = useState(false)

@@ -14,8 +14,8 @@ export default function JournalUnavailable({
 }: JournalUnavailableProps) {
     return (
         <div className="border border-foreground/15 p-8 md:p-12">
-            <div className="mono-label text-vermillion mb-3">Notice</div>
-            <h2 className="font-serif text-3xl md:text-4xl tracking-tight leading-tight mb-3">
+            <div className="mono-label text-foreground/60 mb-3">Notice</div>
+            <h2 className="font-sans font-semibold text-3xl md:text-4xl tracking-tight leading-tight mb-3">
                 {detail}
             </h2>
             <p className="text-foreground/70 leading-relaxed max-w-xl mb-6">
