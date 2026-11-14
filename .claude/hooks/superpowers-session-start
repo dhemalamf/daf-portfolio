@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # SessionStart hook that injects the Superpowers bootstrap skill
-# (using-superpowers) into the agent's context at the start of every session.
+# (using-superpowers) and the always-on UI design digest into the agent's
+# context at the start of every session.
 #
 # Adapted from obra/superpowers v7.0.1 hooks/session-start (MIT).
 # Upstream resolves the skill from a plugin root; this copy resolves it from
@@ -38,6 +39,22 @@ escape_for_json() {
 
 using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
 session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'using-superpowers' skill - your introduction to using skills. For all other skills, read their SKILL.md under .claude/skills/ before acting:**\n\n${using_superpowers_escaped}\n</EXTREMELY_IMPORTANT>"
+
+# Always-on UI design rules. The no-ai-slop skill carries the detail and the
+# project overlay; this digest keeps the hard bans in context even before the
+# skill is read.
+ui_rules_content='<EXTREMELY_IMPORTANT>
+UI work is governed by .claude/skills/no-ai-slop/SKILL.md and the Strict Design Constraints in CLAUDE.md. Read them before changing anything under src/app/ or src/components/.
+
+Forbidden: serif fonts or Instrument Serif, word-level italic or accent-coloured words inside headings, decorative 01/02 numbering, faux-magazine metadata (Vol./Edition, ping badges), client-side count-ups or metrics that start at 0, grain/dot matrices/decorative grid lines, marquees, vermillion/orange or violet/indigo accents, gradient text or surfaces, bg-clip-text, rounded-xl/2xl, glass-card, shadow-* utilities, gray-400/500 body text, icon-card feature grids, Get Started CTAs, and filler copy.
+
+Type is Geist Sans; JetBrains Mono only for metadata and metrics. Cobalt (#1D4ED8 light, #3B82F6 dark) only on interactive elements. Phase 2 drafts in caseStudies.ts and operating.ts await the owner fact-check: do not invent metrics or proof.
+
+Before claiming done run: npm run check:ui && npm run lint && npm run typecheck && npm run build.
+</EXTREMELY_IMPORTANT>'
+ui_rules_escaped=$(escape_for_json "$ui_rules_content")
+session_context="${session_context}\n\n${ui_rules_escaped}"
+
 
 # Claude Code expects hookSpecificOutput.additionalContext for SessionStart.
 printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"

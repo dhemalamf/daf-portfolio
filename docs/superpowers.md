@@ -28,7 +28,7 @@ skill files.
 .claude/
 ├── settings.json                     # SessionStart hook registration
 ├── hooks/
-│   └── superpowers-session-start     # injects using-superpowers at session start
+│   └── superpowers-session-start     # injects using-superpowers + UI digest
 └── skills/                           # 15 skills, 84 files (upstream copy)
     ├── using-superpowers/            # bootstrap: how and when to use skills
     ├── brainstorming/                # spec before code
@@ -51,12 +51,15 @@ Skills are siblings on purpose: several skills reference each other with
 relative paths such as `../subagent-driven-development/scripts/…`. Do not
 flatten or rename the directories.
 
+`.claude/skills/no-ai-slop/` is a separate, project-adapted UI contract, not a
+Superpowers skill. See `docs/unslop-ui.md`.
+
 ## How it runs
 
 1. Claude Code starts a session and fires the `SessionStart` hook
    (`startup|clear|compact`), which pipes the full text of
-   `using-superpowers` into the model context via
-   `hookSpecificOutput.additionalContext`.
+   `using-superpowers`, plus a compact anti-slop UI digest, into the model
+   context via `hookSpecificOutput.additionalContext`.
 2. `using-superpowers` tells the model to invoke a matching skill before any
    response or action.
 3. The model reads `.claude/skills/<skill>/SKILL.md` and follows its checklist.
@@ -126,6 +129,9 @@ when working in DSH.
 
 ## Scope
 
-Upstream rejects project-specific content in core. Anything this project needs
-that is not general-purpose (e.g. "always run `npm run build` before claiming
-success") lives in `CLAUDE.md` / `AGENTS.md`, not in `.claude/skills/`.
+Upstream rejects project-specific content in core. The Superpowers copy under
+`.claude/skills/` therefore stays general-purpose; project rules (e.g. "always
+run `npm run build` before claiming success") live in `CLAUDE.md` /
+`AGENTS.md`. The one exception is the separate
+`.claude/skills/no-ai-slop/`, which is intentionally project-adapted and is
+documented in `docs/unslop-ui.md`.

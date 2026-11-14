@@ -13,6 +13,12 @@ command noted in the appendix.
 > was run. Sections 1–6 are kept as the original assessment so the reasoning
 > and evidence stay reviewable.
 
+> **Revamp note (2026-11-13):** the anti-slop revamp replaced the serif /
+> vermillion system with Geist Sans and cobalt, removed the marquee, counter,
+> grain and decorative textures, and added the "How I Operate" and case-study
+> draft sections. UI references below that describe the old typography or
+> palette are historical. Current state: `docs/unslop-ui.md`.
+
 ---
 
 ## 1. Version comparison with the remote
