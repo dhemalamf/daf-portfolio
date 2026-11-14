@@ -33,6 +33,15 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: UI design guard
+        run: npm run check:ui
+
+      - name: Content copy guard
+        run: npm run check:content
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+
       - name: Build
         run: npm run build
         env:

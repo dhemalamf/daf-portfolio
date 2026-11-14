@@ -83,10 +83,11 @@ post-only webhook keeps working.
 | `npm run lint` | ESLint (flat config) |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run check:ui` | UI design guard (fails on AI-slop patterns) |
+| `npm run check:content` | copy guard for Studio-authored content |
 | `npm run migrate:content` | seed Sanity from the static Work/About content |
 | `npm run migrate:content -- --dry-run` | preview that migration without writing |
 
-CI runs all four on every pull request (`.github/workflows/ci.yml`).
+CI runs lint, typecheck, both design guards and the build on every pull request (`.github/workflows/ci.yml`).
 
 ## Project structure
 
