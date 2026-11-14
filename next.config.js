@@ -6,11 +6,15 @@ const isDev = process.env.NODE_ENV !== 'production'
 // Sanity Studio both rely on them. The policy still pins network origins.
 const contentSecurityPolicy = [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://*.sanity.io`,
+    // core.sanity-cdn.com serves the Studio bridge script; *.sanity.io does not
+    // cover it because that is a different registrable domain.
+    `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://*.sanity.io https://core.sanity-cdn.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https://cdn.sanity.io https://*.sanity.io",
     "font-src 'self' data:",
-    "connect-src 'self' https://*.api.sanity.io wss://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+    // The apex api.sanity.io serves authentication and user endpoints; the
+    // *.api.sanity.io wildcard only matches subdomains, not the apex itself.
+    "connect-src 'self' https://*.api.sanity.io https://api.sanity.io wss://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
     "worker-src 'self' blob:",
     "frame-src 'self' https://*.sanity.io",
     "frame-ancestors 'none'",
