@@ -19,11 +19,13 @@ export const operatingStance = defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: 'example',
-            title: 'Concrete example',
-            type: 'text',
-            rows: 3,
-            validation: (Rule) => Rule.required(),
+            name: 'examples',
+            title: 'Concrete proofs',
+            description:
+                'Two checkable examples, each tied to a named piece of work. No invented numbers.',
+            type: 'array',
+            of: [{ type: 'text', rows: 3 }],
+            validation: (Rule) => Rule.required().min(1),
         }),
         defineField({
             name: 'order',

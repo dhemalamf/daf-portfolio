@@ -3,29 +3,36 @@ import type { OperatingStance } from './types'
 export type { OperatingStance } from './types'
 
 /**
- * "How I operate" replaces the old toolkit pill grid. Drafted from the
- * experience data in profile.ts; keep claims checkable and specific.
+ * "How I operate" replaces the old toolkit pill grid. Three transferable
+ * stances, each backed by two pieces of named work; keep claims checkable and
+ * specific rather than aspirational.
  */
 export const operatingStances: OperatingStance[] = [
     {
-        title: 'Specs that survive engineering review',
+        title: 'Systems architecture and dependency framing',
         stance:
-            'I write specs as decision records, not feature lists: current behavior, constraints, state transitions, failure modes, explicit non-goals, and acceptance criteria. Engineering should be able to build from the document without a follow-up meeting.',
-        example:
-            'For the Doitpay core disbursement engine, I mapped fund-transfer states, reconciliation hooks, and back-office exceptions before the first build ticket.',
+            'Software fails when boundary lines are blurry. I clarify data dependencies, state transitions, and integration contracts before engineering builds, so the expensive decisions are settled while they are still cheap to change.',
+        examples: [
+            'Led the technical assessment and C4 architectural modeling for HM Sampoerna, establishing pre-decoupling boundaries between the AYO backoffice, the My Hero backoffice, and the shared field iPad app.',
+            'Architected multi-provider payout routing and a weighted balancer that traded partner rate limits against float depletion.',
+        ],
     },
     {
-        title: 'Due diligence before commitment',
+        title: 'Operational backbone and risk governance',
         stance:
-            'I treat technical due diligence as product risk work: read the architecture, trace the data, test the failure path, and price the maintenance. If a system cannot explain its failure modes, that is a scope risk, not an engineering detail.',
-        example:
-            'On the HM Sampoerna decoupling, I used C4 models to separate real business coupling from accidental coupling before recommending a path.',
+            'Consumer applications only work when back-office operations and risk controls are watertight. I build internal tooling that cuts manual triage and stops financial or compliance leakage before it reaches a ledger.',
+        examples: [
+            'Designed automated liquidity circuit breakers that removed the 15 to 30 minute manual triage delay when an upstream bank ran out of float.',
+            'Instituted dual-control maker-checker authorization for high-value manual adjustments and dispute handling, with an immutable audit trail on every action.',
+        ],
     },
     {
-        title: 'Compliance as a design input',
+        title: 'Pragmatic zero to one under constraint',
         stance:
-            'KYC, AML, and reconciliation are product requirements, not launch blockers. I bring them into the flow early so the happy path and the review path are designed together, and so growth experiments do not create new compliance debt.',
-        example:
-            'At Transfez, the verification-flow revamp kept compliance-critical steps while removing friction elsewhere, supporting a 55% increase in verified users.',
+            'Discovery under constraint means testing hypotheses quickly and keeping unit economics honest, balancing user friction against real operational cost. A smaller shipped scope beats an elegant plan that misses the regulatory or budget window.',
+        examples: [
+            'Scaled remittance corridors and rebuilt the KYC verification funnel at Transfez, growing verified users by 55% while holding the compliance line.',
+            'Shipped conversational AI for talent mobility and predictive sales analytics inside public-sector and enterprise consulting timelines.',
+        ],
     },
 ]

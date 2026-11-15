@@ -3,40 +3,46 @@ import type { Certification, Experience, ImpactMetric } from './types'
 export const profile = {
     name: "Dhema'alam Fajrianto",
     title: "Product Manager",
-    tagline: "Building products with measurable business and user impact",
-    bio: `Product Manager with 4+ years of experience across fintech, edtech, government/BUMN, and AI-enabled web platforms. 
-  
-I thrive in both startup and consulting environments, leading cross-functional teams to deliver products that drive real business outcomes. My approach combines strategic thinking with hands-on execution, always focused on quantifiable results.`,
-    shortBio: "Seasoned Product Manager driving impact across fintech, edtech, and AI platforms. 4+ years of cross-functional leadership delivering measurable business outcomes.",
+    tagline: "Turning complex domain logic into high-reliability digital products",
+    bio: `Product Manager with four-plus years designing and scaling software across fintech payment rails, enterprise architecture consulting, and AI-enabled platforms.
+
+Most of my work sits where failure is expensive: payout engines, verification flows, and the back-office tooling that finance and risk teams depend on. I take problems from framing through architecture decisions, delivery, and the operational detail that decides whether a launch holds.`,
+    shortBio:
+        "Product Manager working where system failure is expensive: fintech payment rails, enterprise architecture, and AI-enabled platforms.",
     email: "hello@dhema.me",
     linkedin: "https://www.linkedin.com/in/dhemalamf/",
     whatsapp: "https://wa.me/6281313095302",
     resume: "https://drive.google.com/file/d/1Q26ZrHd4_368xNdhslPehsPk_c3D7tZQ/view?usp=drive_link",
     github: "https://github.com/dhemalamf",
     twitter: "https://x.com/alam_dhema",
-    location: "Indonesia",
+    location: "Jakarta, Indonesia",
 }
 
 export const impactMetrics: ImpactMetric[] = [
     {
-        value: "Rp 2T+",
-        label: "Overseas Transfers",
-        description: "Volume processed through Transfez platform",
+        value: "IDR 1B+",
+        label: "Daily payout volume",
+        description:
+            "Monitored thousands of live disbursements a day across automated multi-bank rails at Doitpay.",
     },
     {
-        value: "55%",
-        label: "User Growth",
-        description: "Increase in verified users at Transfez",
+        value: "4",
+        label: "Sectors delivered",
+        description:
+            "Products shaped and shipped across fintech, enterprise FMCG, public-sector AI, and edtech.",
     },
     {
-        value: "5+",
-        label: "Projects Delivered",
-        description: "Successful product launches at Zero One Group",
+        value: "+55%",
+        label: "Verification lift",
+        description:
+            "Verified users up 55% and paying users up 20% in three months after the KYC revamp at Transfez.",
     },
     {
-        value: "3",
-        label: "AI Products",
-        description: "AI-powered solutions built at Zero One Group",
+        value: "0 to 1",
+        label: "Niama Padel",
+        description:
+            "Built an independent padel community and tournament operation from scratch in Jakarta.",
+        href: "https://www.niama.id/",
     },
 ]
 

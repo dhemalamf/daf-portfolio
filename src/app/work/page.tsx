@@ -1,6 +1,9 @@
 import { Metadata } from 'next'
 import WorkGrid from '@/components/WorkGrid'
+import SectionHeading from '@/components/SectionHeading'
+import DomainArchive from '@/components/DomainArchive'
 import { getCaseStudies } from '@/content/caseStudies'
+import { domainGroups } from '@/data/domains'
 import { profile } from '@/data/profile'
 
 export const metadata: Metadata = {
@@ -66,6 +69,18 @@ export default async function WorkPage() {
                             </a>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* Domain specialization archive */}
+            <section className="py-16 md:py-24 border-t border-foreground/15">
+                <div className="section-container">
+                    <SectionHeading
+                        eyebrow="Domain depth"
+                        title={<>Four practice areas.</>}
+                        description="Scan by the industry you need rather than by the product name. Each area lists the work behind it."
+                    />
+                    <DomainArchive domains={domainGroups} />
                 </div>
             </section>
         </>

@@ -24,6 +24,14 @@ export const impactMetric = defineType({
             type: 'string',
         }),
         defineField({
+            name: 'href',
+            title: 'Link',
+            type: 'url',
+            description:
+                'Optional. Set when the label should link somewhere, e.g. an independent project.',
+            validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
+        }),
+        defineField({
             name: 'order',
             title: 'Order',
             type: 'number',

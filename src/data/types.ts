@@ -58,16 +58,25 @@ export interface SkillGroup {
     items: string[]
 }
 
+/** A practice area, used by the domain archive on About and Work. */
+export interface DomainGroup {
+    title: string
+    items: string[]
+}
+
 export interface ImpactMetric {
     value: string
     label: string
     description: string
+    /** Optional external link, e.g. an independent project the metric refers to. */
+    href?: string
 }
 
 export interface OperatingStance {
     title: string
     stance: string
-    example: string
+    /** Two checkable proofs, each tied to a named piece of work. */
+    examples: string[]
 }
 
 export interface Principle {

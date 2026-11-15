@@ -10,7 +10,6 @@ import {
     getImpactMetrics,
     getOperatingStances,
 } from '@/content/about'
-import { profile } from '@/data/profile'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-    const [featuredStudies, experiences, certifications, metrics, stances] =
+    const [featured, experiences, certifications, metrics, stances] =
         await Promise.all([
             getFeaturedCaseStudies(),
             getExperiences(),
@@ -29,46 +28,39 @@ export default async function Home() {
             getImpactMetrics(),
             getOperatingStances(),
         ])
-    const featured = featuredStudies.slice(0, 5)
 
     return (
         <>
             <Hero metrics={metrics} />
 
             {/* ===========================================
-                Selected case studies
+                Four flagships, one per archetype
                 =========================================== */}
             <section id="featured-work" className="py-24 md:py-36 relative">
                 <div className="section-container">
                     <SectionHeading
                         eyebrow="Selected work"
-                        title={<>Case studies, deeply told.</>}
+                        title={<>Four flagships across four domains.</>}
                         description={
                             <>
-                                {featured.length} products I&apos;ve shaped from problem
-                                framing through measurable outcome, spanning fintech,
-                                edtech, public sector and AI-native experiences.
+                                Enterprise architecture, payout infrastructure, consumer
+                                growth, and applied AI, each told as problem, approach and
+                                outcome.
                             </>
                         }
                     />
 
-                    {/* Featured (large) */}
                     {featured.length > 0 && (
-                        <div className="mb-6">
-                            <CaseStudyCard caseStudy={featured[0]} featured />
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {featured.map((cs, i) => (
+                                <CaseStudyCard key={cs.id} caseStudy={cs} index={i} />
+                            ))}
                         </div>
                     )}
 
-                    {/* 2x2 standard cards */}
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {featured.slice(1).map((cs, i) => (
-                            <CaseStudyCard key={cs.id} caseStudy={cs} index={i} />
-                        ))}
-                    </div>
-
                     <div className="mt-12 flex items-center justify-between gap-4 border-t border-foreground/15 pt-8">
                         <span className="mono-label text-foreground/65">
-                            {featured.length} selected case studies
+                            {featured.length} flagships · full archive on the work page
                         </span>
                         <Link href="/work" data-testid="home-view-all-work" className="btn-outline">
                             View all work
@@ -86,7 +78,7 @@ export default async function Home() {
                     <SectionHeading
                         eyebrow="Experience · 2021 – present"
                         title={<>A trajectory across scaling products.</>}
-                        description="From quality assurance at MCF to leading AI integrations at Zero One Group and Doitpay: six chapters of cross-functional product work."
+                        description="From quality assurance at MCF to payout infrastructure at Doitpay: six roles, each with its own lesson in shipping product."
                     />
 
                     {experiences.length > 0 && (
@@ -129,8 +121,8 @@ export default async function Home() {
                 <div className="section-container">
                     <SectionHeading
                         eyebrow="How I operate"
-                        title={<>{stances.length} working stances.</>}
-                        description="How I write specs, run technical due diligence, and bring compliance into the product flow."
+                        title={<>Stances, with evidence.</>}
+                        description="Systems architecture, operational risk, and zero-to-one discovery, each with the work behind it."
                     />
                     <HowIOperate stances={stances} />
                 </div>
@@ -180,40 +172,6 @@ export default async function Home() {
                         ))}
                     </ul>
                     )}
-                </div>
-            </section>
-
-            {/* ===========================================
-                Closing CTA
-                =========================================== */}
-            <section className="relative border-t border-foreground/15 py-24 md:py-32 overflow-hidden">
-                <div className="section-container relative z-10 grid grid-cols-12 gap-6 items-end">
-                    <div className="col-span-12 lg:col-span-9">
-                        <div className="mono-label text-foreground/65 mb-6">
-                            Open to new work
-                        </div>
-                        <h2 className="h-display text-balance">
-                            Have an idea? Let&apos;s build it.
-                        </h2>
-                    </div>
-                    <div className="col-span-12 lg:col-span-3 flex flex-col gap-3">
-                        <Link
-                            href="/contact"
-                            data-testid="home-cta-contact"
-                            className="btn-ink justify-between"
-                        >
-                            Get in touch <span aria-hidden>→</span>
-                        </Link>
-                        <a
-                            href={profile.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            data-testid="home-cta-linkedin"
-                            className="btn-outline justify-between"
-                        >
-                            Connect on LinkedIn <span aria-hidden>↗</span>
-                        </a>
-                    </div>
                 </div>
             </section>
         </>

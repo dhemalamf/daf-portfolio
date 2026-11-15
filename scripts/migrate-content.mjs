@@ -178,6 +178,7 @@ function addImpactMetrics() {
             value: metric.value,
             label: metric.label,
             description: metric.description,
+            ...(metric.href ? { href: metric.href } : {}),
             order: index,
         })
     }
@@ -190,7 +191,7 @@ function addOperatingStances() {
             _type: 'operatingStance',
             title: stance.title,
             stance: stance.stance,
-            example: stance.example,
+            examples: stance.examples,
             order: index,
         })
     }

@@ -1,21 +1,41 @@
 import type { OperatingStance } from '@/data/types'
 
+/**
+ * The three operating stances, each carried by two named proofs. Stacked rows
+ * rather than a three-column grid: the stance text and the evidence need room
+ * to be read, and three equal columns turn the copy into a wall.
+ */
 export default function HowIOperate({ stances }: { stances: OperatingStance[] }) {
     if (stances.length === 0) return null
     return (
-        <div className="border-t border-foreground/20 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-foreground/10">
+        <div className="border-t border-foreground/20">
             {stances.map((stance) => (
-                <article key={stance.title} className="p-6 md:p-8">
-                    <h3 className="font-sans font-semibold text-xl md:text-2xl leading-tight tracking-tight mb-4">
-                        {stance.title}
-                    </h3>
-                    <p className="text-foreground/70 text-sm md:text-base leading-relaxed text-pretty mb-6">
-                        {stance.stance}
-                    </p>
-                    <div className="mono-label text-foreground/60 mb-2">Example</div>
-                    <p className="text-foreground/80 text-sm leading-relaxed text-pretty">
-                        {stance.example}
-                    </p>
+                <article
+                    key={stance.title}
+                    className="grid grid-cols-12 gap-x-6 gap-y-5 py-10 md:py-14 border-b border-foreground/10"
+                >
+                    <div className="col-span-12 md:col-span-4">
+                        <h3 className="font-sans font-semibold text-xl md:text-2xl leading-tight tracking-tight">
+                            {stance.title}
+                        </h3>
+                    </div>
+
+                    <div className="col-span-12 md:col-span-8">
+                        <p className="text-foreground/80 text-base leading-relaxed text-pretty">
+                            {stance.stance}
+                        </p>
+
+                        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            {stance.examples.map((example) => (
+                                <p
+                                    key={example}
+                                    className="pt-3 border-t border-foreground/15 text-foreground/70 text-sm leading-relaxed text-pretty"
+                                >
+                                    {example}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
                 </article>
             ))}
         </div>

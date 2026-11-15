@@ -158,10 +158,10 @@ const ABOUT_QUERIES = {
         title, items
     }`,
     impactMetrics: `*[_type == "impactMetric" && !(_id in path("drafts.**"))] | order(order asc) {
-        value, label, description
+        value, label, description, href
     }`,
     operatingStances: `*[_type == "operatingStance" && !(_id in path("drafts.**"))] | order(order asc) {
-        title, stance, example
+        title, stance, examples
     }`,
     principles: `*[_type == "principle" && !(_id in path("drafts.**"))] | order(order asc) {
         title, text

@@ -32,13 +32,12 @@ export const metadata: Metadata = {
         template: "%s · Dhema'alam Fajrianto",
     },
     description:
-        'Product Manager leading core payments and disbursement infrastructure at Doitpay, previously at Transfez and Zero One Group.',
-    keywords: ['Product Manager', 'Fintech', 'Edtech', 'AI', 'Indonesia', 'Dhema'],
+        'Product Manager working across fintech payment rails, enterprise architecture consulting, and AI-enabled platforms.',
+    keywords: ['Product Manager', 'Fintech', 'Edtech', 'AI', 'Architecture', 'Indonesia', 'Dhema'],
     authors: [{ name: "Dhema'alam Fajrianto" }],
     openGraph: {
         title: "Dhema'alam Fajrianto · Product Manager",
-        description:
-            'Product Manager with 4+ years of experience delivering measurable business impact.',
+        description: profile.shortBio,
         url: siteUrl,
         siteName: 'Dhema Portfolio',
         images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Dhema Portfolio' }],
@@ -48,8 +47,7 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: "Dhema'alam Fajrianto · Product Manager",
-        description:
-            'Product Manager with 4+ years of experience delivering measurable business impact.',
+        description: profile.shortBio,
         images: ['/og-image.png'],
     },
 }
